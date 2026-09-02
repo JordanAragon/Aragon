@@ -1,0 +1,442 @@
+/*
+    ARAGON
+    Hoja de estilos principal
+*/
+
+/* Modelo de caja */
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    background-color: #f8f9fa;
+    color: #212529;
+    font-family: Arial, Helvetica, sans-serif;
+    line-height: 1.6;
+}
+
+/* Navegación */
+.encabezado-sitio {
+    background-color: #111827;
+    border-bottom: 1px solid #263244;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.navegacion {
+    min-height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+}
+
+.marca {
+    color: #ffffff;
+    font-size: 1.35rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-decoration: none;
+}
+
+.lista-navegacion,
+.lista-social {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.lista-navegacion a,
+.lista-social a {
+    color: #d1d5db;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.lista-navegacion a:hover,
+.lista-social a:hover {
+    color: #ffffff;
+}
+
+/* Elementos generales */
+.seccion {
+    padding: 90px 0;
+}
+
+.seccion-clara {
+    background-color: #eef2f7;
+}
+
+.seccion-oscura {
+    background-color: #111827;
+    color: #ffffff;
+}
+
+.encabezado-seccion {
+    margin-bottom: 45px;
+    max-width: 780px;
+}
+
+.encabezado-seccion h2 {
+    margin: 0 0 15px;
+    font-size: 2.4rem;
+    font-weight: 700;
+}
+
+.encabezado-seccion p:last-child {
+    margin-bottom: 0;
+    color: #6b7280;
+}
+
+.encabezado-seccion-oscuro p:last-child {
+    color: #cbd5e1;
+}
+
+.etiqueta-superior {
+    margin-bottom: 10px;
+    color: #0d6efd !important;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+/* Hero */
+.presentacion {
+    background-color: #e8f1ff;
+    min-height: 620px;
+    display: flex;
+    align-items: center;
+}
+
+.contenido-presentacion {
+    padding-top: 80px;
+    padding-bottom: 80px;
+}
+
+.presentacion h1 {
+    max-width: 850px;
+    margin: 0 0 25px;
+    font-size: clamp(2.7rem, 6vw, 5rem);
+    line-height: 1.05;
+    font-weight: 700;
+}
+
+.texto-presentacion {
+    max-width: 700px;
+    margin-bottom: 35px;
+    color: #4b5563;
+    font-size: 1.15rem;
+}
+
+/* Botones */
+.boton {
+    display: inline-block;
+    padding: 12px 22px;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.boton-primario {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+    color: #ffffff;
+}
+
+.boton-primario:hover {
+    background-color: #0b5ed7;
+    border-color: #0a58ca;
+}
+
+/* Servicios */
+.lista-servicios {
+    row-gap: 24px;
+}
+
+.tarjeta-servicio {
+    min-height: 220px;
+    padding: 30px;
+    background-color: #ffffff;
+    border: 1px solid #dce2e8;
+    border-radius: 8px;
+}
+
+.tarjeta-servicio h3 {
+    margin: 12px 0;
+    font-size: 1.35rem;
+}
+
+.tarjeta-servicio p {
+    margin: 0;
+    color: #6b7280;
+}
+
+.numero-servicio {
+    color: #0d6efd;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+/* Tabla de precios */
+.contenedor-tabla {
+    overflow-x: auto;
+}
+
+.tabla-precios {
+    margin-bottom: 15px;
+    background-color: #ffffff;
+    border: 1px solid #dce2e8;
+}
+
+.tabla-precios caption {
+    padding: 15px 0;
+    color: #6b7280;
+    caption-side: top;
+}
+
+.tabla-precios th,
+.tabla-precios td {
+    padding: 17px;
+    vertical-align: middle;
+}
+
+.tabla-precios thead th {
+    background-color: #111827;
+    color: #ffffff;
+}
+
+.tabla-precios tbody th {
+    font-weight: 700;
+}
+
+.tabla-precios tbody td:last-child {
+    color: #0d6efd;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.nota-precio {
+    margin: 0;
+    color: #6b7280;
+    font-size: 0.9rem;
+}
+
+/* Portafolio */
+.lista-portafolio {
+    row-gap: 24px;
+}
+
+.tarjeta-portafolio {
+    padding: 0 12px 25px;
+}
+
+.tarjeta-portafolio figure {
+    margin: 0 0 20px;
+    overflow: hidden;
+    background-color: #e5e7eb;
+    border: 1px solid #dce2e8;
+    border-radius: 8px;
+}
+
+.tarjeta-portafolio img {
+    width: 100%;
+    min-height: 220px;
+    object-fit: cover;
+    display: block;
+}
+
+.tarjeta-portafolio figcaption {
+    padding: 15px;
+    background-color: #ffffff;
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+.tarjeta-portafolio p {
+    color: #6b7280;
+}
+
+/* Formulario */
+.formulario-contacto {
+    max-width: 850px;
+}
+
+.formulario-contacto fieldset {
+    margin: 0 0 25px;
+    padding: 25px;
+    border: 1px solid #374151;
+    border-radius: 8px;
+}
+
+.formulario-contacto legend {
+    width: auto;
+    padding: 0 8px;
+    color: #ffffff;
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.formulario-contacto p {
+    margin-bottom: 20px;
+}
+
+.formulario-contacto label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 700;
+}
+
+.formulario-contacto input[type="text"],
+.formulario-contacto input[type="email"],
+.formulario-contacto textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #64748b;
+    border-radius: 6px;
+    background-color: #1f2937;
+    color: #ffffff;
+}
+
+.formulario-contacto input[type="text"]:focus,
+.formulario-contacto input[type="email"]:focus,
+.formulario-contacto textarea:focus {
+    outline: 2px solid #0d6efd;
+    border-color: #0d6efd;
+}
+
+.formulario-contacto input::placeholder,
+.formulario-contacto textarea::placeholder {
+    color: #94a3b8;
+}
+
+.formulario-contacto .opcion-radio {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.formulario-contacto .opcion-radio label {
+    margin: 0;
+    font-weight: 400;
+}
+
+.formulario-contacto input[type="radio"] {
+    width: 17px;
+    height: 17px;
+}
+
+/* Footer */
+.pie-sitio {
+    padding: 45px 0 25px;
+    background-color: #0b1120;
+    color: #ffffff;
+}
+
+.navegacion-social h2 {
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+}
+
+.derechos-autor {
+    margin-top: 30px;
+    margin-bottom: 0;
+    padding-top: 20px;
+    border-top: 1px solid #263244;
+    color: #94a3b8;
+    font-size: 0.9rem;
+}
+
+/* Ajustes para pantallas pequeñas */
+@media (max-width: 768px) {
+
+    .navegacion {
+        padding-top: 15px;
+        padding-bottom: 15px;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .lista-navegacion {
+        width: 100%;
+        gap: 14px;
+        flex-wrap: wrap;
+    }
+
+    .lista-navegacion a {
+        font-size: 0.9rem;
+    }
+
+    .presentacion {
+        min-height: auto;
+    }
+
+    .contenido-presentacion {
+        padding-top: 70px;
+        padding-bottom: 70px;
+    }
+
+    .presentacion h1 {
+        font-size: 2.7rem;
+    }
+
+    .seccion {
+        padding: 60px 15px;
+    }
+
+    .encabezado-seccion h2 {
+        font-size: 2rem;
+    }
+
+    .tarjeta-servicio {
+        min-height: auto;
+    }
+
+    .tabla-precios {
+        min-width: 700px;
+    }
+
+    .lista-social {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+}
+
+/* Ajustes para celulares pequeños */
+@media (max-width: 576px) {
+
+    .presentacion h1 {
+        font-size: 2.25rem;
+    }
+
+    .texto-presentacion {
+        font-size: 1rem;
+    }
+
+    .lista-navegacion {
+        gap: 10px 16px;
+    }
+
+    .seccion {
+        padding-top: 50px;
+        padding-bottom: 50px;
+    }
+
+    .formulario-contacto fieldset {
+        padding: 18px;
+    }
+}
