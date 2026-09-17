@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import './polish.css';
 import './audit.css';
+import './skiper.css';
 import { site, siteUrl } from './data/site';
 
 export const metadata: Metadata = {
@@ -16,7 +17,7 @@ export const metadata: Metadata = {
   authors: [{ name: site.person, url: siteUrl }],
   creator: site.person,
   publisher: site.person,
-  keywords: ['Aragon', 'Jordan Aragon', 'software', 'desarrollo web', 'productos digitales', 'sistemas', 'UX', 'frontend', 'Cali', 'Colombia'],
+  keywords: ['Aragon', 'Jordan Aragon', 'software', 'desarrollo web', 'productos digitales', 'sistemas', 'UX', 'frontend', 'Colombia'],
   alternates: { canonical: siteUrl },
   formatDetection: { email: false, address: false, telephone: false },
   openGraph: {
@@ -60,7 +61,7 @@ const structuredData = [
       name: site.person,
       url: siteUrl,
       jobTitle: 'Software Developer',
-      homeLocation: { '@type': 'Place', name: 'Cali, Colombia' },
+      homeLocation: { '@type': 'Place', name: 'Colombia' },
       sameAs: ['https://github.com/JordanAragon', 'https://www.linkedin.com/in/jordanaragon/'],
     },
   },
