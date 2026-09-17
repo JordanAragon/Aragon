@@ -3,11 +3,13 @@ import Hero from './components/hero';
 import SiteHeader from './components/site-header';
 import ScrollProgress from './components/scroll-progress';
 import WorkStory from './components/work-story';
+import Preloader from './components/preloader';
 import { CapabilitiesSection, ContextSection, Footer, MethodSection, ProblemSection } from './components/static-sections';
 
 export default function Home() {
   return (
     <>
+      <Preloader />
       <main className="site-root">
         <ScrollProgress />
         <div className="noise" aria-hidden="true" />
