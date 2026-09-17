@@ -8,13 +8,8 @@ export const site = {
   calLink: 'jordan-david-micolta-aragon-cognqx/30min',
 };
 
-export const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL
-    ? process.env.NEXT_PUBLIC_SITE_URL.replace(/\/$/, '')
-    : process.env.VERCEL_PROJECT_PRODUCTION_URL
-      ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-      : process.env.VERCEL_URL
-        ? `https://${process.env.VERCEL_URL}`
-        : site.fallbackUrl;
+export const siteUrl = process.env.NEXT_PUBLIC_SITE_URL
+  ? process.env.NEXT_PUBLIC_SITE_URL.replace(/\/$/, '')
+  : site.fallbackUrl;
 
 export const siteLastModified = '2026-09-17';
