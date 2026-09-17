@@ -111,6 +111,7 @@ export default function WorkStory() {
               ))}
             </div>
           </nav>
+          <div className="story-progress-rail" aria-hidden="true"><motion.i style={{ scaleX: smoothProgress }} /></div>
         </div>
       </div>
     </section>
