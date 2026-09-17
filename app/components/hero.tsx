@@ -88,7 +88,6 @@ export default function Hero() {
                 <span>PRODUCT / 02</span>
               </div>
             </motion.div>
-          </div>
 
           <motion.div className="hero-v3-beat hero-v3-beat-two" style={{ opacity: secondOpacity }} aria-hidden="true">
             <span>02 / THE FRICTION</span>
@@ -102,7 +101,7 @@ export default function Hero() {
 
           <div className="hero-v3-foot">
             <span>FROM IDEA TO SYSTEM</span>
-            <span className="hero-v3-foot-line"><i style={{ scaleX: lineScale }} /></span>
+            <span className="hero-v3-foot-line"><motion.i style={{ scaleX: lineScale }} /></span>
             <a href="#problema">KEEP SCROLLING <b>↓</b></a>
           </div>
         </div>
