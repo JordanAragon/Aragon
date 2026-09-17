@@ -71,7 +71,7 @@ export default function Preloader() {
           <span>SOFTWARE / DIGITAL / TECHNOLOGY</span>
           <b>{String(pct).padStart(3, '0')}</b>
         </div>
-        <div className="preloader-v3-bar"><i style={{ scaleX: progress }} /></div>
+        <div className="preloader-v3-bar"><motion.i style={{ scaleX: progress }} /></div>
       </div>
 
       <div className="preloader-v3-bottom"><span>BUILD WITH INTENT</span><span>LOADING EXPERIENCE</span></div>
