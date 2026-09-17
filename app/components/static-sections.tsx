@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { IconBox, icons } from './icons';
-import ScrollRevealText from './scroll-reveal-text';
+import CanvasCrowd from './skiper/canvas-crowd';
+import TextScrollTitle from './skiper/text-scroll-title';
 
 const problems = [
   { id: '01', word: 'MARCA', title: 'No se entiende.', copy: 'Una buena idea pierde fuerza cuando nadie entiende qué hace, para quién es o por qué importa.' },
@@ -27,19 +28,19 @@ export function ProblemSection() {
       <div className="page-shell">
         <div className="problem-intro">
           <div><span className="section-number">01</span><span className="section-label">EL PROBLEMA</span></div>
-          <ScrollRevealText>Los problemas digitales rara vez empiezan en el código.</ScrollRevealText>
+          <p>Los problemas digitales rara vez empiezan en el código.</p>
         </div>
         <div className="problem-marquee" aria-hidden="true"><span>¿QUÉ NO ESTÁ FUNCIONANDO?</span><span>¿QUÉ NO ESTÁ FUNCIONANDO?</span></div>
         <div className="problem-statement">
-          <h2 id="problem-title">Todo empieza con algo que <span>no funciona como debería.</span></h2>
-          <ScrollRevealText>Una marca que no se entiende. Un proceso que se complica. Un producto que se queda a medias.</ScrollRevealText>
+          <TextScrollTitle id="problem-title" segments={['Todo empieza con algo que', { text: 'no funciona como debería.', className: 'title-muted' }]} />
+          <p>Una marca que no se entiende. Un proceso que se complica. Un producto que se queda a medias.</p>
         </div>
         <div className="problem-list">
           {problems.map((problem) => (
             <article key={problem.id} className="problem-item">
               <span>{problem.id}</span>
               <div><small>{problem.word}</small><h3>{problem.title}</h3></div>
-              <ScrollRevealText>{problem.copy}</ScrollRevealText>
+              <p>{problem.copy}</p>
               <IconBox>{icons.arrow}</IconBox>
             </article>
           ))}
@@ -55,16 +56,16 @@ export function CapabilitiesSection() {
       <div className="page-shell">
         <div className="section-heading">
           <div><span className="section-number">02</span><span className="section-label">LO QUE CONSTRUYO</span></div>
-          <h2 id="capabilities-title">No vendo<br /><span>categorías.</span></h2>
+          <TextScrollTitle id="capabilities-title" segments={['No vendo', { text: 'categorías.', className: 'title-muted' }]} />
         </div>
-        <ScrollRevealText className="section-lead">A veces es una web. A veces es un sistema. A veces es un producto entero. Lo importante es qué necesita existir para resolver el problema.</ScrollRevealText>
+        <p className="section-lead">A veces es una web. A veces es un sistema. A veces es un producto entero. Lo importante es qué necesita existir para resolver el problema.</p>
         <div className="capability-grid">
           {capabilities.map((capability, index) => (
             <article key={capability.id} className="capability-card">
               <div className="capability-top"><span>{capability.id}</span><IconBox>{capability.icon}</IconBox></div>
               <small>{capability.kicker}</small>
               <h3>{capability.title}</h3>
-              <ScrollRevealText>{capability.copy}</ScrollRevealText>
+              <p>{capability.copy}</p>
               <span className="capability-index">0{index + 1} / 03</span>
             </article>
           ))}
@@ -80,14 +81,15 @@ export function ContextSection() {
       <div className="page-shell context-grid">
         <div className="context-visual">
           <Image src="/projects/infrastructure-context.svg" alt="Mapa conceptual de una infraestructura personal con hardware, servicios y red privada" fill sizes="(max-width: 900px) 100vw, 58vw" />
+          <CanvasCrowd />
           <div className="context-overlay" />
           <span className="context-stamp">CONTEXTO / 04</span>
           <span className="context-coordinates">HARDWARE · NETWORK · SOFTWARE · SYSTEMS</span>
         </div>
         <div className="context-copy">
           <span className="section-number">04</span><span className="section-label">LO QUE HAY DETRÁS</span>
-          <h2 id="context-title">No solo diseño <span>la superficie.</span></h2>
-          <ScrollRevealText>Mi recorrido mezcla soporte técnico, infraestructura, desarrollo web y construcción de productos. Por eso pienso en la interfaz, pero también en lo que tiene que funcionar detrás.</ScrollRevealText>
+          <TextScrollTitle id="context-title" segments={['No solo diseño', { text: 'la superficie.', className: 'title-muted' }]} />
+          <p>Mi recorrido mezcla soporte técnico, infraestructura, desarrollo web y construcción de productos. Por eso pienso en la interfaz, pero también en lo que tiene que funcionar detrás.</p>
           <div className="context-facts">
             <div><small>BASE</small><b>Sistemas / Tecnología</b></div>
             <div><small>ENFOQUE</small><b>Producto / Experiencia</b></div>
@@ -106,16 +108,16 @@ export function MethodSection() {
       <div className="page-shell">
         <div className="section-heading">
           <div><span className="section-number">05</span><span className="section-label">MÉTODO</span></div>
-          <h2 id="method-title">De la idea<br /><span>a algo que funciona.</span></h2>
+          <TextScrollTitle id="method-title" segments={['De la idea', { text: 'a algo que funciona.', className: 'title-muted' }]} />
         </div>
-        <div className="method-intro"><ScrollRevealText>La creatividad no reemplaza el criterio. El código tampoco. El proceso sirve para decidir qué vale la pena construir y qué sobra.</ScrollRevealText></div>
+        <div className="method-intro"><p>La creatividad no reemplaza el criterio. El código tampoco. El proceso sirve para decidir qué vale la pena construir y qué sobra.</p></div>
         <div className="method-grid">
           {steps.map(([id, title, copy], index) => (
             <div className="method-cell" key={id}>
               <span>{id}</span>
               <div className="method-glyph">{index === 0 ? icons.dot : index === 1 ? icons.spark : index === 2 ? icons.code : icons.plus}</div>
               <h3>{title}</h3>
-              <ScrollRevealText>{copy}</ScrollRevealText>
+              <p>{copy}</p>
             </div>
           ))}
         </div>
@@ -129,6 +131,7 @@ export function Footer() {
     <footer className="footer page-shell">
       <div className="footer-brand"><span className="brand-mark">A</span><div><strong>ARAGON</strong><small>Jordan Aragon · Software · Digital · Technology</small></div></div>
       <div className="footer-links"><a href="https://github.com/JordanAragon" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href="https://www.linkedin.com/in/jordanaragon/" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a><a href="#inicio">Top ↑</a></div>
+      <div className="footer-attribution">Motion studies <a href="https://skiper-ui.com/" target="_blank" rel="noopener noreferrer">Skiper UI</a></div>
     </footer>
   );
 }
