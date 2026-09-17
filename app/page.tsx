@@ -2,225 +2,88 @@
 
 import Image from 'next/image';
 import { AnimatePresence, motion, useMotionValue, useScroll, useSpring, useTransform } from 'motion/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-const image = (file: string) => `https://raw.githubusercontent.com/JordanAragon/Aragon/main/img/${file}`;
-
+const img = (file: string) => `https://raw.githubusercontent.com/JordanAragon/Aragon/main/img/${file}`;
+const icon = (path: React.ReactNode) => <svg viewBox="0 0 24 24" aria-hidden="true">{path}</svg>;
 const icons = {
-  arrow: <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19 19 5M8 5h11v11" /></svg>,
-  globe: <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M3.8 9h16.4M3.8 15h16.4M12 3.5c2.1 2.35 3.2 5.18 3.2 8.5s-1.1 6.15-3.2 8.5c-2.1-2.35-3.2-5.18-3.2-8.5s1.1-6.15 3.2-8.5Z"/></svg>,
-  layers: <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 4 8 4-8 4-8-4 8-4Z"/><path d="m4 12 8 4 8-4M4 16l8 4 8-4"/></svg>,
-  code: <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 7-5 5 5 5M16 7l5 5-5 5M14 4l-4 16"/></svg>,
-  spark: <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 1.6 5.4L19 10l-5.4 1.6L12 17l-1.6-5.4L5 10l5.4-1.6L12 3Z"/><path d="m19 16 .7 2.3L22 19l-2.3.7L19 22l-.7-2.3L16 19l2.3-.7L19 16Z"/></svg>,
-  cursor: <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 3 4.4 14 2.6-4.4 4.6 2.6L19 13l-4.8-2.7L18 7 5 3Z"/></svg>,
+  arrow: icon(<path d="M5 19 19 5M8 5h11v11" />),
+  plus: icon(<path d="M12 5v14M5 12h14" />),
+  dot: icon(<circle cx="12" cy="12" r="2.5" />),
+  globe: icon(<><circle cx="12" cy="12" r="8.5"/><path d="M3.8 9h16.4M3.8 15h16.4M12 3.5c2.1 2.35 3.2 5.18 3.2 8.5s-1.1 6.15-3.2 8.5c-2.1-2.35-3.2-5.18-3.2-8.5s1.1-6.15-3.2-8.5Z"/></>),
+  code: icon(<path d="m8 7-5 5 5 5M16 7l5 5-5 5M14 4l-4 16"/>),
+  stack: icon(<><path d="m12 4 8 4-8 4-8-4 8-4Z"/><path d="m4 12 8 4 8-4M4 16l8 4 8-4"/></>),
+  spark: icon(<><path d="m12 3 1.6 5.4L19 10l-5.4 1.6L12 17l-1.6-5.4L5 10l5.4-1.6L12 3Z"/><path d="m19 16 .7 2.3L22 19l-2.3.7L19 22l-.7-2.3L16 19l2.3-.7L19 16Z"/></>),
 };
 
 const projects = [
-  {
-    id: '01',
-    title: 'AiDEN',
-    type: 'Plataforma web',
-    state: 'En desarrollo',
-    description: 'Una plataforma para organizar la gestión operativa de viveros agrícolas, con módulos por rol y una interfaz pensada para trabajar, no para decorar.',
-    image: image('aiden.png'),
-    href: 'https://github.com/JordanAragon/AiDEN_',
-  },
-  {
-    id: '02',
-    title: 'Calendar App',
-    type: 'Web app',
-    state: 'Producto',
-    description: 'Una experiencia de calendario centrada en organizar eventos y resolver una necesidad concreta con una interfaz simple de usar.',
-    image: '/projects/calendar.svg',
-    href: 'https://github.com/JordanAragon/Calendar_App',
-    dark: true,
-  },
-  {
-    id: '03',
-    title: 'Inventario FNC',
-    type: 'Sistema interno',
-    state: 'Experiencia aplicada',
-    description: 'Trabajo sobre un sistema para convertir información operativa en una herramienta más clara para consultar, organizar y mantener activos.',
-    image: '/projects/inventory.svg',
-    href: 'mailto:jordandavidaragon@outlook.com?subject=Consulta sobre sistema de inventario',
-  },
+  { id: '01', title: 'AiDEN', label: 'PLATAFORMA OPERATIVA', image: img('aiden.png'), href: 'https://github.com/JordanAragon/AiDEN_', body: 'Gestión operativa para viveros agrícolas. Módulos por rol, trazabilidad y una interfaz construida alrededor del trabajo diario.', tags: ['React', 'Vite', 'Tailwind'] },
+  { id: '02', title: 'Calendar App', label: 'WEB APP', image: '/projects/calendar.svg', href: 'https://github.com/JordanAragon/Calendar_App', body: 'Una experiencia de calendario enfocada en organizar eventos y resolver una necesidad concreta.', tags: ['React', 'Vite', 'App'] },
+  { id: '03', title: 'Inventario FNC', label: 'SISTEMA INTERNO', image: '/projects/inventory.svg', href: 'mailto:jordandavidaragon@outlook.com?subject=Consulta sobre sistema de inventario', body: 'Interfaz y estructura para convertir información operativa en una herramienta más clara de consultar y mantener.', tags: ['Sistemas', 'Datos', 'UX'] },
 ];
 
 const services = [
-  { id: '01', title: 'Web', eyebrow: 'Presencia que convierte', copy: 'Sitios y experiencias digitales con una identidad propia, estructura clara y movimiento que acompaña el contenido.', icon: icons.globe },
-  { id: '02', title: 'Software', eyebrow: 'Problema → sistema', copy: 'Aplicaciones y herramientas construidas alrededor del flujo real que necesita una persona, un equipo o un negocio.', icon: icons.code },
-  { id: '03', title: 'Evolución', eyebrow: 'Mejorar lo que ya existe', copy: 'Rediseño, frontend, experiencia y optimización para productos que necesitan dejar de sentirse viejos o difíciles.', icon: icons.layers },
+  { id: '01', title: 'Web', kicker: 'IDENTIDAD + EXPERIENCIA', copy: 'Sitios que no parecen una plantilla con el logo cambiado. Dirección visual, estructura y movimiento con una razón.', icon: icons.globe },
+  { id: '02', title: 'Software', kicker: 'IDEA → SISTEMA', copy: 'Aplicaciones construidas alrededor de cómo funciona realmente un proceso, no de cuántos componentes podemos meter.', icon: icons.code },
+  { id: '03', title: 'Evolución', kicker: 'REHACER SIN PERDER', copy: 'Rediseño, frontend y optimización para productos que ya existen y necesitan volver a sentirse actuales.', icon: icons.stack },
 ];
 
-const steps = [
-  ['01', 'Contexto', 'Entender el problema, el objetivo y qué parte realmente merece ser construida.'],
-  ['02', 'Dirección', 'Definir una idea visual y funcional que tenga sentido antes de llenar la pantalla de componentes.'],
-  ['03', 'Construcción', 'Diseñar y desarrollar con atención a detalle, responsive, rendimiento y comportamiento real.'],
-  ['04', 'Pulido', 'Probar, ajustar y quitar lo que sobra hasta conseguir una experiencia que se sienta inevitable.'],
+const principles = [
+  ['01', 'Quitar', 'Si algo no aporta, desaparece.'],
+  ['02', 'Mostrar', 'La estructura también puede ser parte del diseño.'],
+  ['03', 'Mover', 'La animación guía. No entretiene por obligación.'],
+  ['04', 'Resolver', 'El resultado tiene que funcionar después del screenshot.'],
 ];
 
-function IconBox({ children }: { children: React.ReactNode }) {
-  return <span className="icon-box">{children}</span>;
-}
+function IconBox({ children, className = '' }: { children: React.ReactNode; className?: string }) { return <span className={`icon-box ${className}`}>{children}</span>; }
 
 export default function Home() {
-  const [open, setOpen] = useState(false);
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
+  const [menu, setMenu] = useState(false);
+  const [active, setActive] = useState('inicio');
+  const mx = useMotionValue(0); const my = useMotionValue(0);
   const { scrollYProgress } = useScroll();
-  const smoothProgress = useSpring(scrollYProgress, { stiffness: 70, damping: 28, mass: 0.25 });
-  const heroY = useTransform(smoothProgress, [0, 0.22], [0, -120]);
-  const visualY = useTransform(smoothProgress, [0, 0.2], [0, 100]);
+  const progress = useSpring(scrollYProgress, { stiffness: 65, damping: 25, mass: .2 });
+  const heroShift = useTransform(progress, [0, .18], [0, -150]);
+  const visualShift = useTransform(progress, [0, .25], [0, 120]);
 
-  const handleMove = (event: React.MouseEvent<HTMLElement>) => {
-    mouseX.set((event.clientX / window.innerWidth - 0.5) * 18);
-    mouseY.set((event.clientY / window.innerHeight - 0.5) * 18);
-  };
+  useEffect(() => { document.body.classList.toggle('menu-open', menu); return () => document.body.classList.remove('menu-open'); }, [menu]);
+  useEffect(() => {
+    const ids = ['inicio', 'manifiesto', 'servicios', 'trabajo', 'contexto', 'metodo', 'contacto'];
+    const nodes = ids.map((id) => document.getElementById(id)).filter(Boolean) as HTMLElement[];
+    const observer = new IntersectionObserver((entries) => { const current = entries.filter((e) => e.isIntersecting).sort((a,b)=>b.intersectionRatio-a.intersectionRatio)[0]; if (current) setActive(current.target.id); }, { rootMargin: '-40% 0px -50% 0px', threshold: [.05,.2,.5] });
+    nodes.forEach((node) => observer.observe(node)); return () => observer.disconnect();
+  }, []);
+  useEffect(() => { const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setMenu(false); window.addEventListener('keydown', onKey); return () => window.removeEventListener('keydown', onKey); }, []);
+  const handleMove = (e: React.MouseEvent<HTMLElement>) => { if (window.matchMedia('(pointer: coarse)').matches) return; mx.set((e.clientX/window.innerWidth-.5)*22); my.set((e.clientY/window.innerHeight-.5)*22); };
 
-  const closeMenu = () => setOpen(false);
+  return <main className="site-root" onMouseMove={handleMove}>
+    <motion.div className="scroll-progress" style={{ scaleX: progress }} /><div className="noise" aria-hidden="true"/><a className="skip-link" href="#contenido">Saltar al contenido</a>
+    <header className="site-header glass-panel"><a href="#inicio" className="brand" onClick={()=>setMenu(false)}><span className="brand-mark">A</span><strong>ARAGON</strong></a><nav className="desktop-nav" aria-label="Principal">{['servicios','trabajo','metodo','contacto'].map((id)=><a key={id} href={`#${id}`} className={active===id?'is-active':''}>{id}</a>)}<a href="https://jordanaragon.vercel.app" target="_blank" rel="noreferrer" className="nav-portfolio">PORTFOLIO {icons.arrow}</a></nav><button className={`menu-toggle ${menu?'is-open':''}`} onClick={()=>setMenu(v=>!v)} aria-expanded={menu} aria-label={menu?'Cerrar menú':'Abrir menú'}><span/><span/></button></header>
+    <AnimatePresence>{menu&&<motion.nav className="mobile-nav glass-panel" initial={{opacity:0,y:-14}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-14}}><div className="mobile-nav-head"><span>ARAGON / MENU</span><span>00{['servicios','trabajo','metodo','contacto'].indexOf(active)+1}</span></div>{['servicios','trabajo','metodo','contacto'].map((id,i)=><a key={id} href={`#${id}`} onClick={()=>setMenu(false)}><span>{id}</span><span>0{i+1}</span></a>)}<a href="https://jordanaragon.vercel.app" target="_blank" rel="noreferrer" className="mobile-portfolio">Abrir portfolio {icons.arrow}</a></motion.nav>}</AnimatePresence>
 
-  return (
-    <main className="site-root" onMouseMove={handleMove}>
-      <motion.div className="scroll-progress" style={{ scaleX: smoothProgress }} />
-      <div className="noise" aria-hidden="true" />
-
-      <header className="site-header glass-panel">
-        <a className="brand" href="#inicio" onClick={closeMenu} aria-label="Aragon, inicio">
-          <span className="brand-mark">A</span>
-          <span>ARAGON</span>
-        </a>
-
-        <nav className="desktop-nav" aria-label="Navegación principal">
-          <a href="#servicios">Servicios</a>
-          <a href="#trabajo">Trabajo</a>
-          <a href="#metodo">Método</a>
-          <a href="#contacto" className="nav-cta">Hablemos {icons.arrow}</a>
-        </nav>
-
-        <button className={`menu-toggle ${open ? 'is-open' : ''}`} type="button" aria-label={open ? 'Cerrar menú' : 'Abrir menú'} aria-expanded={open} onClick={() => setOpen((value) => !value)}>
-          <span /><span />
-        </button>
-      </header>
-
-      <AnimatePresence>
-        {open && (
-          <motion.nav className="mobile-nav glass-panel" initial={{ opacity: 0, y: -18 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -18 }} transition={{ duration: .35 }}>
-            <a href="#servicios" onClick={closeMenu}>Servicios <span>01</span></a>
-            <a href="#trabajo" onClick={closeMenu}>Trabajo <span>02</span></a>
-            <a href="#metodo" onClick={closeMenu}>Método <span>03</span></a>
-            <a href="#contacto" onClick={closeMenu}>Hablemos <span>04</span></a>
-          </motion.nav>
-        )}
-      </AnimatePresence>
-
-      <section id="inicio" className="hero">
-        <div className="hero-grid" aria-hidden="true" />
-        <div className="hero-crosshair crosshair-a" aria-hidden="true" />
-        <div className="hero-crosshair crosshair-b" aria-hidden="true" />
-
-        <motion.div className="hero-system" style={{ x: mouseX, y: mouseY }} aria-hidden="true">
-          <div className="system-orbit orbit-1" />
-          <div className="system-orbit orbit-2" />
-          <div className="system-orbit orbit-3" />
-          <div className="system-core"><span>A</span></div>
-          <span className="system-tag tag-top">SIGNAL / 001</span>
-          <span className="system-tag tag-right">BUILD + REFINE</span>
-          <span className="system-tag tag-bottom">POPAYÁN / 2026</span>
-        </motion.div>
-
-        <div className="hero-meta page-shell">
-          <span><i className="status-dot" /> ARAGON / DIGITAL STUDIO</span>
-          <span>COLOMBIA / REMOTE</span>
-          <span>SELECTED PROJECTS</span>
-        </div>
-
-        <motion.div className="hero-content page-shell" style={{ y: heroY }}>
-          <motion.div className="hero-kicker" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .7 }}>
-            <span>Diseño digital</span><b>×</b><span>Software</span><b>×</b><span>Interacción</span>
-          </motion.div>
-
-          <motion.h1 initial={{ opacity: 0, y: 44 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: .08, ease: [0.16, 1, .3, 1] }}>
-            Hacemos que las ideas <span>se vuelvan</span> <em>digitales.</em>
-          </motion.h1>
-
-          <div className="hero-bottom">
-            <div className="hero-intro">
-              <span className="micro-index">A / 0001</span>
-              <p>Aragon es un estudio de software y experiencias digitales. Partimos del problema, diseñamos la forma y construimos algo que tenga una razón para existir.</p>
-            </div>
-            <a className="hero-button" href="#trabajo">
-              <span>Ver lo que hacemos</span>
-              <IconBox>{icons.arrow}</IconBox>
-            </a>
-          </div>
-        </motion.div>
-
-        <div className="hero-side-note" aria-hidden="true">
-          <span>SCROLL TO EXPLORE</span><span className="side-line" /><span>↓</span>
-        </div>
+    <div id="contenido">
+      <section id="inicio" className="hero"><div className="hero-grid" aria-hidden="true"/><div className="hero-block hero-block-a" aria-hidden="true">001</div><div className="hero-block hero-block-b" aria-hidden="true">A / 26</div>
+        <motion.div className="hero-machine" style={{x:mx,y:my}} aria-hidden="true"><span className="machine-ring machine-ring-1"/><span className="machine-ring machine-ring-2"/><span className="machine-ring machine-ring-3"/><span className="machine-core"><b>A</b></span><i>INPUT</i><i>FORM</i><i>OUTPUT</i></motion.div>
+        <div className="hero-meta page-shell"><span><i className="status-dot"/> ARAGON / DIGITAL STUDIO</span><span>POPAYÁN / COLOMBIA</span><span>2026 / 001</span></div>
+        <motion.div className="hero-content page-shell" style={{y:heroShift}}><div className="hero-topline"><span>SOFTWARE × DIGITAL × EXPERIENCE</span><span>NOT A TEMPLATE.</span></div><motion.h1 initial={{opacity:0,y:40}} animate={{opacity:1,y:0}} transition={{duration:1,ease:[.16,1,.3,1]}}>No hacemos<br/><span>“páginas web”.</span><br/><em>Construimos presencia.</em></motion.h1><div className="hero-bottom"><div className="hero-copy"><span className="hero-index">MANIFESTO / 000</span><p>Diseño, desarrollo y tecnología para convertir una idea en algo que la gente pueda entender, usar y recordar.</p></div><a href="#trabajo" className="hero-cta"><span>Ver trabajo</span><IconBox>{icons.arrow}</IconBox></a></div></motion.div><div className="hero-side">SCROLL <span/> ↓</div>
       </section>
 
-      <section className="statement section-shell page-shell">
-        <div className="statement-index"><span className="section-number">00 / WHY</span><IconBox>{icons.spark}</IconBox></div>
-        <div className="statement-main">
-          <p className="statement-small">No hacemos páginas por hacer páginas.</p>
-          <h2>Hacemos <span>sistemas digitales</span> que ayudan a una idea a avanzar.</h2>
-          <div className="statement-foot"><p>La diferencia está en cómo pensamos antes de construir: qué necesita la persona, qué debe sentir, qué tiene que pasar después y qué podemos quitar sin perder valor.</p><div className="statement-points"><span>01 / Claridad</span><span>02 / Dirección</span><span>03 / Detalle</span></div></div>
-        </div>
+      <section id="manifiesto" className="manifesto section-shell page-shell"><div className="manifesto-rail"><span>00</span><span>MANIFIESTO</span><span className="vertical-rule"/></div><div className="manifesto-main"><span className="manifesto-kicker">PARA GENTE QUE ESTÁ CANSADA DE LO MISMO</span><h2>Tu negocio no necesita verse “profesional”. Necesita <span>tener una razón para entrar.</span></h2><div className="manifesto-foot"><p>La forma importa. La tecnología también. Pero ninguna sirve si la experiencia no tiene dirección. Aragon trabaja desde el problema, no desde el componente.</p><div className="stamps"><span>BUILT WITH INTENT</span><span>NO GENERIC UI</span><span>COLOMBIA → WORLD</span></div></div></div></section>
+      <section className="principles"><div className="page-shell principles-grid">{principles.map(([id,title,copy],i)=><motion.article key={id} initial={{opacity:0,y:30}} whileInView={{opacity:1,y:0}} viewport={{once:true,amount:.25}} transition={{duration:.55,delay:i*.05}}><span>{id}</span><strong>{title}</strong><p>{copy}</p></motion.article>)}</div></section>
+
+      <section id="servicios" className="services section-shell"><div className="page-shell"><div className="section-heading"><div><span className="section-number">01</span><p className="section-label">CAPACIDADES</p></div><h2>No vendemos humo.<br/><span>Construimos.</span></h2></div><div className="service-stack">{services.map((service,i)=><motion.article key={service.id} className="service-row" initial={{opacity:0,x:-28}} whileInView={{opacity:1,x:0}} viewport={{once:true,amount:.2}} transition={{duration:.6,delay:i*.06}}><span className="service-id">{service.id}</span><IconBox>{service.icon}</IconBox><div className="service-title"><span>{service.kicker}</span><h3>{service.title}</h3></div><p>{service.copy}</p><span className="service-mark">{icons.arrow}</span></motion.article>)}</div></div></section>
+
+      <section id="trabajo" className="work section-shell page-shell"><div className="section-heading work-heading"><div><span className="section-number">02</span><p className="section-label">TRABAJO REAL</p></div><div className="work-title"><h2>Hecho.<br/><span>No imaginado.</span></h2><a href="https://jordanaragon.vercel.app" target="_blank" rel="noreferrer">Ver todo el portfolio {icons.arrow}</a></div></div>
+        <div className="work-feature"><motion.a href={projects[0].href} target="_blank" rel="noreferrer" className="feature-media" initial={{opacity:0,scale:.97}} whileInView={{opacity:1,scale:1}} viewport={{once:true,amount:.2}} transition={{duration:.8}}><Image src={projects[0].image} alt="Interfaz de AiDEN" fill priority sizes="(max-width:900px) 100vw,72vw"/><div className="feature-overlay"/><div className="media-corner"><span>01 / AIDEN</span><span>OPEN ↗</span></div><div className="media-cross"/></motion.a><motion.div className="feature-info glass-card" style={{y:visualShift}} initial={{opacity:0,x:25}} whileInView={{opacity:1,x:0}} viewport={{once:true,amount:.2}} transition={{duration:.75,delay:.1}}><div className="feature-info-top"><span>{projects[0].label}</span><span>{projects[0].tags.join(' · ')}</span></div><span className="feature-number">/ 01</span><h3>AiDEN</h3><p>{projects[0].body}</p><a href={projects[0].href} target="_blank" rel="noreferrer" className="case-link">Abrir proyecto {icons.arrow}</a></motion.div></div>
+        <div className="project-grid">{projects.slice(1).map((project,i)=><motion.a key={project.id} href={project.href} target={project.href.startsWith('http')?'_blank':undefined} rel={project.href.startsWith('http')?'noreferrer':undefined} className="project-card" initial={{opacity:0,y:30}} whileInView={{opacity:1,y:0}} viewport={{once:true,amount:.15}} transition={{duration:.6,delay:i*.07}}><div className="project-image"><Image src={project.image} alt={`Vista de ${project.title}`} fill sizes="(max-width:760px) 100vw,50vw"/><div className="project-badge"><span>{project.id}</span><IconBox>{icons.arrow}</IconBox></div></div><div className="project-copy"><div><span>{project.label}</span><h3>{project.title}</h3></div><p>{project.body}</p></div><div className="project-footer"><span>{project.tags.join(' / ')}</span><span>OPEN ↗</span></div></motion.a>)}</div>
       </section>
 
-      <section id="servicios" className="services section-shell">
-        <div className="page-shell">
-          <div className="section-heading services-heading"><div><span className="section-number">01</span><p className="section-label">CAPACIDADES</p></div><div><p className="heading-note">Tres caminos. Un mismo objetivo:<br />que la tecnología tenga sentido.</p></div></div>
-          <div className="service-stack">
-            {services.map((service, index) => (
-              <motion.article key={service.title} className="service-row" initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: .25 }} transition={{ duration: .65, delay: index * .08 }}>
-                <div className="service-number">{service.id}</div><div className="service-icon"><IconBox>{service.icon}</IconBox></div><div className="service-title"><span>{service.eyebrow}</span><h3>{service.title}</h3></div><p>{service.copy}</p><div className="service-arrow">{icons.arrow}</div>
-              </motion.article>
-            ))}
-          </div>
-        </div>
-      </section>
+      <section id="contexto" className="context section-shell"><div className="page-shell context-grid"><div className="context-poster"><Image src={img('aragon-server.png')} alt="Infraestructura personal de Aragon" fill sizes="(max-width:900px) 100vw,65vw"/><div className="poster-mask"/><div className="poster-type"><span>CONTEXT / 03</span><h2>La tecnología<br/><span>también es</span><br/>criterio.</h2></div><div className="poster-coords"><span>HARDWARE</span><span>NETWORK</span><span>SOFTWARE</span><span>SYSTEMS</span></div></div><div className="context-copy"><span className="section-label">LO QUE HAY DETRÁS</span><p>Mi recorrido mezcla soporte técnico, infraestructura, desarrollo web y construcción de productos. Por eso no pienso solo en cómo se ve una interfaz: también en lo que ocurre detrás.</p><div className="context-list"><div><span>BASE</span><b>Sistemas / Tecnología</b></div><div><span>ENFOQUE</span><b>Producto / Experiencia</b></div><div><span>ORIGEN</span><b>Popayán, Colombia</b></div></div><a href="https://jordanaragon.vercel.app" target="_blank" rel="noreferrer">Conocer el recorrido {icons.arrow}</a></div></div></section>
 
-      <section id="trabajo" className="work section-shell page-shell">
-        <div className="section-heading work-heading"><div><span className="section-number">02</span><p className="section-label">TRABAJO DESTACADO</p></div><div className="work-heading-main"><h2>Hecho, probado<br /><span>y todavía creciendo.</span></h2><a href="https://jordanaragon.vercel.app" target="_blank" rel="noreferrer">Abrir portfolio completo {icons.arrow}</a></div></div>
+      <section id="metodo" className="method section-shell"><div className="page-shell"><div className="section-heading"><div><span className="section-number">04</span><p className="section-label">MÉTODO</p></div><h2>Primero pensamos.<br/><span>Después rompemos la pantalla.</span></h2></div><div className="method-grid">{['01 / CONTEXTO','02 / DIRECCIÓN','03 / BUILD','04 / PULIDO'].map((label,i)=><motion.div key={label} className="method-cell" initial={{opacity:0,y:25}} whileInView={{opacity:1,y:0}} viewport={{once:true,amount:.2}} transition={{duration:.5,delay:i*.05}}><span>{label}</span><div className="method-glyph">{i===0?icons.dot:i===1?icons.spark:i===2?icons.code:icons.plus}</div><h3>{principles[i][1]}</h3><p>{principles[i][2]}</p></motion.div>)}</div></div></section>
 
-        <div className="project-feature">
-          <motion.a href={projects[0].href} target="_blank" rel="noreferrer" className="project-feature-media" initial={{ opacity: 0, scale: .965 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true, amount: .2 }} transition={{ duration: .9, ease: [.16, 1, .3, 1] }}>
-            <Image src={projects[0].image} alt="Vista del proyecto AiDEN" fill sizes="(max-width: 900px) 100vw, 68vw" priority />
-            <div className="project-media-shade" /><div className="project-media-ui"><span>01 / AIDEN</span><span>OPEN CASE {icons.arrow}</span></div>
-          </motion.a>
-          <motion.div className="project-feature-card glass-card" style={{ y: visualY }} initial={{ opacity: 0, x: 28 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, amount: .2 }} transition={{ duration: .8, delay: .15 }}>
-            <div className="case-top"><span>{projects[0].type}</span><span>{projects[0].state}</span></div>
-            <div className="case-middle"><span className="case-index">01</span><h3>{projects[0].title}</h3><p>{projects[0].description}</p></div>
-            <div className="case-bottom"><span>React · Vite · Tailwind</span><span>↗</span></div>
-          </motion.div>
-        </div>
-
-        <div className="project-grid">
-          {projects.slice(1).map((project, index) => (
-            <motion.a key={project.title} href={project.href} className="project-card" target={project.href.startsWith('http') ? '_blank' : undefined} rel={project.href.startsWith('http') ? 'noreferrer' : undefined} initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: .15 }} transition={{ duration: .65, delay: index * .08 }}>
-              <div className={`project-image ${project.dark ? 'is-dark' : ''}`}><Image src={project.image} alt={`Vista visual de ${project.title}`} fill sizes="(max-width: 760px) 100vw, 50vw" /><div className="project-image-meta"><span>{project.id}</span><IconBox>{icons.arrow}</IconBox></div></div>
-              <div className="project-card-copy"><div><span>{project.type}</span><h3>{project.title}</h3></div><p>{project.description}</p></div>
-              <div className="project-card-foot"><span>{project.state}</span><span>View ↗</span></div>
-            </motion.a>
-          ))}
-        </div>
-      </section>
-
-      <section className="experience section-shell"><div className="page-shell experience-grid">
-        <div className="experience-visual glass-card"><div className="experience-orbit" aria-hidden="true"><span /><span /><span /></div><div className="experience-copy"><span className="section-number">03 / CONTEXTO</span><h2>Del mantenimiento de equipos al desarrollo de <span>productos.</span></h2></div><div className="experience-meta"><span>HARDWARE</span><span>WEB</span><span>SYSTEMS</span><span>SOFTWARE</span></div></div>
-        <div className="experience-text"><span className="section-label">UNA MIRADA MÁS AMPLIA</span><p>Mi recorrido mezcla soporte técnico, infraestructura, desarrollo web y construcción de productos. Esa mezcla cambia la forma de pensar un proyecto: no solo cómo se ve, también cómo funciona detrás.</p><div className="experience-lines"><div><span>BASE</span><b>Sistemas / Tecnología</b></div><div><span>ENFOQUE</span><b>Producto / Experiencia</b></div><div><span>ORIGEN</span><b>Popayán, Colombia</b></div></div><a className="text-link" href="https://jordanaragon.vercel.app" target="_blank" rel="noreferrer">Conocer mi recorrido {icons.arrow}</a></div>
-      </div></section>
-
-      <section id="metodo" className="method section-shell"><div className="page-shell"><div className="section-heading method-heading"><div><span className="section-number">04</span><p className="section-label">MÉTODO</p></div><h2>Primero pensamos.<br /><span>Después hacemos.</span></h2></div><div className="method-grid">
-        {steps.map(([id, title, copy], index) => <motion.article key={id} initial={{ opacity: 0, y: 25 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: .2 }} transition={{ duration: .6, delay: index * .06 }}><span className="method-id">{id}</span><div className="method-symbol">{index === 0 ? icons.cursor : index === 1 ? icons.spark : index === 2 ? icons.code : icons.layers}</div><h3>{title}</h3><p>{copy}</p></motion.article>)}
-      </div></div></section>
-
-      <section className="presence section-shell page-shell"><div className="presence-shell glass-card"><div className="presence-top"><span>05 / PRESENCIA DIGITAL</span><span>ARAGON ONLINE</span></div><div className="presence-main"><div><span className="section-label">PARA VER MÁS</span><h2>El trabajo está<br /><span>en internet.</span></h2></div><div className="presence-links"><a href="https://github.com/JordanAragon" target="_blank" rel="noreferrer"><span><b>GH</b> GitHub</span>{icons.arrow}</a><a href="https://www.linkedin.com/in/jordanaragon/" target="_blank" rel="noreferrer"><span><b>in</b> LinkedIn</span>{icons.arrow}</a><a href="https://jordanaragon.vercel.app" target="_blank" rel="noreferrer"><span><b>↗</b> Portfolio</span>{icons.arrow}</a></div></div><div className="signal-panel" aria-label="Firma visual de movimiento de Aragon"><div className="signal-copy"><span>SIGNAL / MOTION</span><strong>07.26</strong></div><div className="signal-wave">{Array.from({ length: 42 }).map((_, i) => <i key={i} style={{ height: `${20 + ((i * 29) % 72)}%`, animationDelay: `${i * -.06}s` }} />)}</div><div className="signal-foot"><span>VISUAL SYSTEM</span><span>01 — 42</span></div></div></div></section>
-
-      <section id="contacto" className="contact"><div className="contact-grid page-shell"><div className="contact-index"><span className="section-number">06</span><p className="section-label">CONTACTO</p><span className="contact-coordinate">2.4419° N / 76.6069° W</span></div><div className="contact-main"><span className="contact-kicker">Una idea. Un problema. Un proyecto.</span><h2>Construyamos<br /><span>algo que importe.</span></h2><a className="contact-button" href="mailto:jordandavidaragon@outlook.com"><span>jordandavidaragon@outlook.com</span><IconBox>{icons.arrow}</IconBox></a></div><div className="contact-side"><span>ARAGON / 2026</span><span>POPAYÁN / COLOMBIA</span><span>OPEN TO WORK</span></div></div></section>
-      <footer className="footer page-shell"><div className="footer-brand"><span className="brand-mark">A</span><div><strong>ARAGON</strong><p>Software · Digital · Technology</p></div></div><div className="footer-right"><span>© 2026</span><a href="#inicio">TOP ↑</a></div></footer>
-    </main>
-  );
+      <section id="contacto" className="contact"><div className="contact-scan"/><div className="page-shell contact-grid"><div className="contact-meta"><span>05 / CONTACT</span><span>ARAGON / 2026</span><span>OPEN FOR SELECTED PROJECTS</span></div><div className="contact-main"><span className="contact-kicker">UNA IDEA. UN PROBLEMA. ALGO QUE CONSTRUIR.</span><h2>Haz que<br/><span>pase algo.</span></h2><a href="mailto:jordandavidaragon@outlook.com" className="contact-link"><span>jordandavidaragon@outlook.com</span><IconBox>{icons.arrow}</IconBox></a></div><div className="contact-stamp">A<br/>R<br/>A<br/>G<br/>O<br/>N</div></div></section>
+      <footer className="footer page-shell"><div className="footer-brand"><span className="brand-mark">A</span><div><strong>ARAGON</strong><small>Software · Digital · Technology</small></div></div><div className="footer-links"><a href="https://github.com/JordanAragon" target="_blank" rel="noreferrer">GitHub ↗</a><a href="https://www.linkedin.com/in/jordanaragon/" target="_blank" rel="noreferrer">LinkedIn ↗</a><a href="#inicio">Top ↑</a></div></footer>
+    </div>
+  </main>;
 }
