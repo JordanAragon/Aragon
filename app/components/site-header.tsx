@@ -14,6 +14,7 @@ export default function SiteHeader() {
   const [active, setActive] = useState('inicio');
   const triggerRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLElement>(null);
+  const wasOpen = useRef(false);
 
   useEffect(() => {
     const sections = ['inicio', 'problema', 'capacidades', 'trabajo', 'contexto', 'metodo', 'contacto']
@@ -35,35 +36,39 @@ export default function SiteHeader() {
   }, []);
 
   useEffect(() => {
-    if (!menuOpen) {
-      triggerRef.current?.focus();
-      return;
+    if (menuOpen) {
+      wasOpen.current = true;
+      const links = menuRef.current?.querySelectorAll<HTMLAnchorElement>('a');
+      links?.[0]?.focus();
+
+      const onKeyDown = (event: KeyboardEvent) => {
+        if (event.key === 'Escape') {
+          event.preventDefault();
+          setMenuOpen(false);
+          return;
+        }
+
+        if (event.key !== 'Tab' || !links?.length) return;
+        const first = links[0];
+        const last = links[links.length - 1];
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
+          last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first.focus();
+        }
+      };
+
+      document.addEventListener('keydown', onKeyDown);
+      return () => document.removeEventListener('keydown', onKeyDown);
     }
 
-    const links = menuRef.current?.querySelectorAll<HTMLAnchorElement>('a');
-    links?.[0]?.focus();
-
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        event.preventDefault();
-        setMenuOpen(false);
-        return;
-      }
-
-      if (event.key !== 'Tab' || !links?.length) return;
-      const first = links[0];
-      const last = links[links.length - 1];
-      if (event.shiftKey && document.activeElement === first) {
-        event.preventDefault();
-        last.focus();
-      } else if (!event.shiftKey && document.activeElement === last) {
-        event.preventDefault();
-        first.focus();
-      }
-    };
-
-    document.addEventListener('keydown', onKeyDown);
-    return () => document.removeEventListener('keydown', onKeyDown);
+    if (wasOpen.current) {
+      wasOpen.current = false;
+      requestAnimationFrame(() => triggerRef.current?.focus());
+    }
+    return undefined;
   }, [menuOpen]);
 
   useEffect(() => {
@@ -75,12 +80,10 @@ export default function SiteHeader() {
     };
   }, [menuOpen]);
 
-  const closeMenu = () => setMenuOpen(false);
-
   return (
     <>
       <header className="site-header glass-panel">
-        <a href="#inicio" className="brand" onClick={closeMenu} aria-label="Aragon, inicio">
+        <a href="#inicio" className="brand" onClick={() => setMenuOpen(false)} aria-label="Aragon, inicio">
           <span className="brand-mark">A</span>
           <strong>ARAGON</strong>
         </a>
@@ -91,20 +94,10 @@ export default function SiteHeader() {
               {label}
             </a>
           ))}
-          <a href="#contacto" className="nav-portfolio">
-            Agendar
-          </a>
+          <a href="#contacto" className="nav-portfolio">Agendar</a>
         </nav>
 
-        <button
-          ref={triggerRef}
-          type="button"
-          className={`menu-toggle ${menuOpen ? 'is-open' : ''}`}
-          onClick={() => setMenuOpen((value) => !value)}
-          aria-expanded={menuOpen}
-          aria-controls="mobile-nav"
-          aria-label={menuOpen ? 'Cerrar menú' : 'Abrir menú'}
-        >
+        <button ref={triggerRef} type="button" className={`menu-toggle ${menuOpen ? 'is-open' : ''}`} onClick={() => setMenuOpen((value) => !value)} aria-expanded={menuOpen} aria-controls="mobile-nav" aria-label={menuOpen ? 'Cerrar menú' : 'Abrir menú'}>
           <span />
           <span />
         </button>
@@ -112,17 +105,14 @@ export default function SiteHeader() {
 
       <div className={`mobile-nav-shell ${menuOpen ? 'is-open' : ''}`} data-open={menuOpen || undefined}>
         <nav id="mobile-nav" ref={menuRef} className="mobile-nav glass-panel" aria-label="Menú móvil" aria-hidden={!menuOpen}>
-          <div className="mobile-nav-head">
-            <span>ARAGON / MENÚ</span>
-            <span>00{Math.max(1, navItems.findIndex(([id]) => id === active) + 1)}</span>
-          </div>
+          <div className="mobile-nav-head"><span>ARAGON / MENÚ</span><span>00{Math.max(1, navItems.findIndex(([id]) => id === active) + 1)}</span></div>
           {navItems.map(([id, label], index) => (
-            <a key={id} href={`#${id}`} onClick={closeMenu} tabIndex={menuOpen ? 0 : -1}>
+            <a key={id} href={`#${id}`} onClick={() => setMenuOpen(false)} tabIndex={menuOpen ? 0 : -1}>
               <span>{label}</span>
               <span>0{index + 1}</span>
             </a>
           ))}
-          <a href="#contacto" onClick={closeMenu} className="mobile-portfolio" tabIndex={menuOpen ? 0 : -1}>
+          <a href="#contacto" onClick={() => setMenuOpen(false)} className="mobile-portfolio" tabIndex={menuOpen ? 0 : -1}>
             Agendar <span aria-hidden="true">↗</span>
           </a>
         </nav>
