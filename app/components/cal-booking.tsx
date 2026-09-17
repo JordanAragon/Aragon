@@ -56,7 +56,7 @@ export default function CalBooking() {
 
     let disposed = false;
     let timeoutId: number | undefined;
-    let observer: MutationObserver | undefined;
+    let mutationObserver: MutationObserver | undefined;
     let visibilityObserver: IntersectionObserver | undefined;
 
     const init = () => {
@@ -72,22 +72,20 @@ export default function CalBooking() {
         namespace('inline', {
           elementOrSelector: target,
           calLink: site.calLink,
-          config: { layout: 'month_view', theme: 'dark', useSlotsViewOnSmallScreen: true },
+          config: { layout: 'month_view', theme: 'dark' },
         });
         namespace('ui', {
           styles: { branding: { brandColor: '#f6f6f2' } },
-          hideEventTypeDetails: false,
         });
 
-        setState('loading');
-        observer = new MutationObserver(() => {
+        mutationObserver = new MutationObserver(() => {
           if (target.querySelector('iframe')) {
             setState('ready');
             if (timeoutId) window.clearTimeout(timeoutId);
-            observer?.disconnect();
+            mutationObserver?.disconnect();
           }
         });
-        observer.observe(target, { childList: true, subtree: true });
+        mutationObserver.observe(target, { childList: true, subtree: true });
 
         if (target.querySelector('iframe')) setState('ready');
         timeoutId = window.setTimeout(() => {
@@ -101,7 +99,6 @@ export default function CalBooking() {
     const load = () => {
       if (disposed) return;
       setState('loading');
-
       const existing = document.querySelector<HTMLScriptElement>('script[data-aragon-cal-bootstrap="true"]');
       if (!existing) {
         const bootstrap = document.createElement('script');
@@ -110,7 +107,6 @@ export default function CalBooking() {
         bootstrap.textContent = CAL_BOOTSTRAP;
         document.head.appendChild(bootstrap);
       }
-
       requestAnimationFrame(init);
     };
 
@@ -128,7 +124,7 @@ export default function CalBooking() {
     return () => {
       disposed = true;
       visibilityObserver?.disconnect();
-      observer?.disconnect();
+      mutationObserver?.disconnect();
       if (timeoutId) window.clearTimeout(timeoutId);
     };
   }, []);
@@ -141,9 +137,7 @@ export default function CalBooking() {
         <div className="cal-fallback" role="alert">
           <strong>La agenda no pudo cargarse aquí.</strong>
           <span>Puedes reservar directamente en Cal.com sin perder el contexto.</span>
-          <a href={`https://cal.com/${site.calLink}`} target="_blank" rel="noopener noreferrer">
-            Abrir Cal.com {icons.arrow}
-          </a>
+          <a href={`https://cal.com/${site.calLink}`} target="_blank" rel="noopener noreferrer">Abrir Cal.com {icons.arrow}</a>
         </div>
       )}
     </div>
