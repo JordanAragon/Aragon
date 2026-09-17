@@ -51,7 +51,7 @@ export default function CanvasCrowd({ src, rows = 15, cols = 7 }: Props) {
     let dpr = 1;
     let rectWidth = 0;
     let rectHeight = 0;
-    let targetActive = 12;
+    let targetActive = 18;
     let spawnTimer: TweenHandle | null = null;
 
     const allPeeps: Peep[] = [];
@@ -93,12 +93,12 @@ export default function CanvasCrowd({ src, rows = 15, cols = 7 }: Props) {
       killPeepTweens(peep);
 
       const compact = width < 640;
-      const scaleMin = compact ? 0.38 : 0.44;
-      const scaleMax = compact ? 0.52 : 0.68;
-      const travelPadding = Math.max(rectWidth * 0.52, width * 0.12);
+      const scaleMin = compact ? 0.46 : 0.54;
+      const scaleMax = compact ? 0.64 : 0.84;
+      const travelPadding = Math.max(rectWidth * 0.52, width * 0.1);
       const direction: 1 | -1 = Math.random() > 0.5 ? 1 : -1;
       const scale = scaleMin + Math.random() * (scaleMax - scaleMin);
-      const anchorY = height * (0.72 + Math.random() * 0.24);
+      const anchorY = height * (0.68 + Math.random() * 0.27);
 
       peep.scale = scale;
       peep.scaleX = direction === 1 ? 1 : -1;
@@ -140,7 +140,7 @@ export default function CanvasCrowd({ src, rows = 15, cols = 7 }: Props) {
         const drawHeight = rectHeight * peep.scale;
 
         context.save();
-        context.globalAlpha = 0.7;
+        context.globalAlpha = 0.86;
         context.translate(peep.x, peep.y - drawHeight);
         context.scale(peep.scaleX, 1);
         context.drawImage(
@@ -160,10 +160,10 @@ export default function CanvasCrowd({ src, rows = 15, cols = 7 }: Props) {
 
     const activatePeep = (peep: Peep, progress = Math.random()) => {
       const distance = Math.abs(peep.endX - peep.startX);
-      const totalDuration = clamp(distance / (70 + Math.random() * 42), 9, 18);
+      const totalDuration = clamp(distance / (68 + Math.random() * 38), 8, 17);
       const clampedProgress = clamp(progress, 0, 0.98);
       const remainingDuration = Math.max(2.5, totalDuration * (1 - clampedProgress));
-      const bobHeight = Math.max(2.5, rectHeight * peep.scale * 0.045);
+      const bobHeight = Math.max(3, rectHeight * peep.scale * 0.05);
 
       peep.x = peep.startX + (peep.endX - peep.startX) * clampedProgress;
       peep.y = peep.anchorY;
@@ -171,7 +171,7 @@ export default function CanvasCrowd({ src, rows = 15, cols = 7 }: Props) {
 
       peep.bob = gsap.to(peep, {
         y: peep.anchorY - bobHeight,
-        duration: 0.24 + Math.random() * 0.08,
+        duration: 0.22 + Math.random() * 0.08,
         ease: 'sine.inOut',
         repeat: -1,
         yoyo: true,
@@ -197,14 +197,14 @@ export default function CanvasCrowd({ src, rows = 15, cols = 7 }: Props) {
       for (let i = 0; i < count; i += 1) {
         const index = Math.floor(Math.random() * availablePeeps.length);
         const peep = availablePeeps.splice(index, 1)[0];
-        activatePeep(peep, 0.06 + Math.random() * 0.88);
+        activatePeep(peep, 0.04 + Math.random() * 0.92);
       }
     };
 
     const scheduleSpawn = () => {
       if (!running || reducedMotion || spawnTimer || activePeeps.length >= targetActive) return;
 
-      const delay = 0.16 + Math.random() * 0.48;
+      const delay = 0.14 + Math.random() * 0.4;
       spawnTimer = gsap.delayedCall(delay, () => {
         spawnTimer = null;
         if (!running || availablePeeps.length === 0 || activePeeps.length >= targetActive) {
@@ -220,7 +220,7 @@ export default function CanvasCrowd({ src, rows = 15, cols = 7 }: Props) {
     };
 
     const placeStaticCrowd = () => {
-      const count = clamp(Math.round(width / 72), 4, 8);
+      const count = clamp(Math.round(width / 68), 5, 10);
       for (let i = 0; i < count && availablePeeps.length; i += 1) {
         const peep = availablePeeps.splice(Math.floor(Math.random() * availablePeeps.length), 1)[0];
         const progress = (i + 1) / (count + 1);
@@ -273,9 +273,9 @@ export default function CanvasCrowd({ src, rows = 15, cols = 7 }: Props) {
       rectHeight = image.naturalHeight / cols;
       const compact = width < 640;
       targetActive = clamp(
-        Math.round(width / (compact ? 30 : 29)),
-        compact ? 8 : 16,
-        compact ? 14 : 36,
+        Math.round(width / (compact ? 34 : 33)),
+        compact ? 8 : 18,
+        compact ? 14 : 38,
       );
 
       if (!ready || !rectWidth || !rectHeight) return;
