@@ -22,15 +22,18 @@ function RevealWord({ word, index, total, progress }: { word: string; index: num
 }
 
 export default function ScrollRevealText({ children, className, as = 'p' }: Props) {
-  const ref = useRef<HTMLElement>(null);
+  const ref = useRef<HTMLDivElement>(null);
   const progress = useScroll({ target: ref, offset: ['start 88%', 'end 36%'] }).scrollYProgress;
   const words = children.trim().split(/\s+/);
-
   const content = words.map((word, index) => (
     <RevealWord key={`${word}-${index}`} word={word} index={index} total={words.length} progress={progress} />
   ));
 
-  if (as === 'span') return <motion.span ref={ref} className={className}>{content}</motion.span>;
-  if (as === 'div') return <motion.div ref={ref} className={className}>{content}</motion.div>;
-  return <motion.p ref={ref} className={className}>{content}</motion.p>;
+  return (
+    <div ref={ref} className="scroll-reveal-trigger">
+      {as === 'span' && <motion.span className={className}>{content}</motion.span>}
+      {as === 'div' && <motion.div className={className}>{content}</motion.div>}
+      {as === 'p' && <motion.p className={className}>{content}</motion.p>}
+    </div>
+  );
 }
