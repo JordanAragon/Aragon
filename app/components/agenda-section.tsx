@@ -5,6 +5,7 @@ import { projects } from '../data/projects';
 import { site } from '../data/site';
 import CalBooking from './cal-booking';
 import { icons } from './icons';
+import TextScrollTitle from './skiper/text-scroll-title';
 
 export default function AgendaSection() {
   const [selectedProject, setSelectedProject] = useState<string | null>(() => {
@@ -44,9 +45,12 @@ export default function AgendaSection() {
         <div className="agenda-intro">
           <div className="contact-meta"><span>06 / AGENDA</span><span>ARAGON / 2026</span><span>CALI / COLOMBIA</span></div>
           <span className="contact-kicker">UNA IDEA. UN PROBLEMA. ALGO QUE CONSTRUIR.</span>
-          <h2 id="contact-title">
-            {project ? <>Hablemos de<br /><span>{project.title}.</span></> : <>Hablemos de<br /><span>lo que sigue.</span></>}
-          </h2>
+          <TextScrollTitle
+            id="contact-title"
+            segments={project
+              ? ['Hablemos de', { text: `${project.title}.`, className: 'title-muted' }]
+              : ['Hablemos de', { text: 'lo que sigue.', className: 'title-muted' }]}
+          />
           <p>{project ? `La conversación parte de ${project.title}, pero el objetivo es entender el problema detrás del concepto y decidir qué tendría sentido construir.` : 'Elige un horario y cuéntame qué necesitas construir. La primera conversación sirve para entender el problema, no para venderte una solución prefabricada.'}</p>
           {project && <button type="button" className="context-reset" onClick={clearContext}>Quitar contexto {icons.plus}</button>}
           <a href={`https://cal.com/${site.calLink}`} target="_blank" rel="noopener noreferrer" className="under-link">Abrir Cal.com en otra ventana {icons.arrow}</a>
