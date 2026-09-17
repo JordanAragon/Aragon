@@ -1,5 +1,6 @@
 import AgendaSection from './components/agenda-section';
-import ContextSkiperSection from './components/context-skiper-section';
+import NarrativeCrowd from './components/narrative-crowd';
+import CursorOrbit from './components/cursor-orbit';
 import Hero from './components/hero';
 import SiteHeader from './components/site-header';
 import ScrollProgress from './components/scroll-progress';
@@ -12,6 +13,7 @@ export default function Home() {
     <>
       <Preloader />
       <main className="site-root">
+        <CursorOrbit />
         <ScrollProgress />
         <div className="noise" aria-hidden="true" />
         <a className="skip-link" href="#contenido">Saltar al contenido</a>
@@ -19,9 +21,9 @@ export default function Home() {
         <div id="contenido">
           <Hero />
           <ProblemSection />
+          <NarrativeCrowd />
           <CapabilitiesSection />
           <WorkStory />
-          <ContextSkiperSection />
           <MethodSection />
           <AgendaSection />
           <Footer />

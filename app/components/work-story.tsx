@@ -66,7 +66,7 @@ export default function WorkStory() {
     <section id="trabajo" ref={sectionRef} className="work-story section-shell" aria-labelledby="work-title">
       <div className="work-stage">
         <div className="page-shell work-story-head">
-          <div><span className="section-number">03</span><span className="section-label">LAB / FUTURO</span></div>
+          <div><span className="section-number">05</span><span className="section-label">LAB / FUTURO</span></div>
           <TextScrollTitle id="work-title" segments={['Cuatro ideas.', { text: 'Cuatro sistemas por construir.', className: 'title-muted' }]} />
         </div>
 

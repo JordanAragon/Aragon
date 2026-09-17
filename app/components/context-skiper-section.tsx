@@ -3,7 +3,7 @@
 import CanvasCrowdExact from './skiper/canvas-crowd-exact';
 import TextScrollTitle from './skiper/text-scroll-title';
 
-const SKIPER_SPRITE = 'https://assets.codepen.io/721952/all-peeps.png';
+const ARAGON_CROWD_SPRITE = '/images/peeps/aragon-crowd-sprite.svg';
 
 export default function ContextSkiperSection() {
   return (
@@ -21,13 +21,15 @@ export default function ContextSkiperSection() {
         .context-skiper-fact small{color:var(--muted);font:900 8px/1 var(--body);letter-spacing:.15em;text-transform:uppercase}
         .context-skiper-fact b{font:800 11px/1.35 var(--body);letter-spacing:.02em}
         .context-skiper-link{display:inline-flex;margin-top:28px;color:var(--ink);font-size:10px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;text-decoration:underline;text-underline-offset:5px}
-        .context-skiper-visual{position:relative;min-height:100svh;overflow:hidden;background:#000}
-        .context-skiper-stage{position:absolute;inset:0;width:100%;height:100%;overflow:hidden;background:#000}
-        .context-skiper-stage-inner{position:absolute;left:50%;bottom:0;width:100vw;height:100%;transform:translateX(-50%);background:#000}
-        .context-skiper-stage-inner>canvas{position:absolute!important;left:0!important;bottom:0!important;width:100%!important;height:90vh!important;display:block!important}
+        .context-skiper-visual{position:relative;min-height:100svh;overflow:hidden;background:#fff;border-left:1px solid var(--line)}
+        .context-skiper-stage{position:absolute;inset:0;overflow:hidden;background:#fff}
+        .context-skiper-stage-label{position:absolute;left:50%;top:42px;z-index:3;display:grid;justify-items:center;gap:8px;transform:translateX(-50%);color:rgba(8,8,9,.42);font:700 9px/1.15 var(--body);letter-spacing:.06em;text-align:center;text-transform:uppercase;pointer-events:none}
+        .context-skiper-stage-label::after{content:'';width:1px;height:52px;background:linear-gradient(to bottom,rgba(8,8,9,.16),rgba(8,8,9,.52));}
+        .context-skiper-stage canvas{position:absolute;inset:auto 0 0 0!important;width:100%!important;height:min(90vh,100%)!important;display:block!important}
+        .context-skiper-attribution{position:absolute;left:18px;bottom:14px;z-index:4;color:rgba(8,8,9,.28);font:900 7px/1 var(--body);letter-spacing:.13em;text-transform:uppercase;pointer-events:none}
         @media (max-width:1100px){.context-skiper-grid{grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:34px}.context-skiper-copy .text-scroll-title{font-size:clamp(52px,7.4vw,90px)}}
-        @media (max-width:780px){.context-skiper-grid{grid-template-columns:1fr;min-height:0;gap:0}.context-skiper-visual{min-height:72svh;order:-1}.context-skiper-copy{padding-block:64px 72px}.context-skiper-copy .text-scroll-title{font-size:clamp(50px,13vw,82px)}.context-skiper-copy>p{font-size:13px}.context-skiper-fact{grid-template-columns:72px minmax(0,1fr)}}
-        @media (max-width:520px){.context-skiper-visual{min-height:64svh}.context-skiper-copy{padding-block:54px 64px}.context-skiper-copy .text-scroll-title{font-size:clamp(45px,13.5vw,66px)}.context-skiper-fact{gap:14px}}
+        @media (max-width:780px){.context-skiper-grid{grid-template-columns:1fr;min-height:0;gap:0}.context-skiper-visual{min-height:72svh;order:-1;border-left:0;border-bottom:1px solid var(--line)}.context-skiper-copy{padding-block:64px 72px}.context-skiper-copy .text-scroll-title{font-size:clamp(50px,13vw,82px)}.context-skiper-copy>p{font-size:13px}.context-skiper-fact{grid-template-columns:72px minmax(0,1fr)}}
+        @media (max-width:520px){.context-skiper-visual{min-height:64svh}.context-skiper-copy{padding-block:54px 64px}.context-skiper-copy .text-scroll-title{font-size:clamp(45px,13.5vw,66px)}.context-skiper-fact{gap:14px}.context-skiper-stage-label{top:28px}}
       `}</style>
 
       <div className="page-shell context-skiper-grid">
@@ -47,11 +49,11 @@ export default function ContextSkiperSection() {
           <a href="https://github.com/JordanAragon" target="_blank" rel="noopener noreferrer" className="context-skiper-link">Ver trabajo técnico ↗</a>
         </div>
 
-        <div className="context-skiper-visual" aria-hidden="true">
-          <div className="context-skiper-stage">
-            <div className="context-skiper-stage-inner">
-              <CanvasCrowdExact src={SKIPER_SPRITE} rows={15} cols={7} />
-            </div>
+        <div className="context-skiper-visual">
+          <div className="context-skiper-stage" aria-label="Animación Crowd Canvas de Skiper UI">
+            <div className="context-skiper-stage-label" aria-hidden="true">CROWD<br />CANVAS</div>
+            <CanvasCrowdExact src={ARAGON_CROWD_SPRITE} rows={15} cols={7} />
+            <div className="context-skiper-attribution" aria-hidden="true">SKIPER UI · CROWD CANVAS · ARAGON</div>
           </div>
         </div>
       </div>

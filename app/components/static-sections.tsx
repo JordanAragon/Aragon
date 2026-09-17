@@ -26,7 +26,7 @@ export function ProblemSection() {
     <section id="problema" className="problem section-shell" aria-labelledby="problem-title">
       <div className="page-shell">
         <div className="problem-intro">
-          <div><span className="section-number">01</span><span className="section-label">EL PROBLEMA</span></div>
+          <div><span className="section-number">02</span><span className="section-label">EL PROBLEMA</span></div>
           <p>Los problemas digitales rara vez empiezan en el código.</p>
         </div>
         <div className="problem-marquee" aria-hidden="true"><span>¿QUÉ NO ESTÁ FUNCIONANDO?</span><span>¿QUÉ NO ESTÁ FUNCIONANDO?</span></div>
@@ -54,7 +54,7 @@ export function CapabilitiesSection() {
     <section id="capacidades" className="capabilities section-shell" aria-labelledby="capabilities-title">
       <div className="page-shell">
         <div className="section-heading">
-          <div><span className="section-number">02</span><span className="section-label">LO QUE CONSTRUYO</span></div>
+          <div><span className="section-number">04</span><span className="section-label">LO QUE CONSTRUYO</span></div>
           <TextScrollTitle id="capabilities-title" segments={['No vendo', { text: 'categorías.', className: 'title-muted' }]} />
         </div>
         <p className="section-lead">A veces es una web. A veces es un sistema. A veces es un producto entero. Lo importante es qué necesita existir para resolver el problema.</p>
@@ -153,7 +153,7 @@ export function ContextSection() {
           <div className="context-crowd-stage" aria-hidden="true">
             <span className="context-ground-label">PEOPLE / SYSTEM / FLOW</span>
             <span className="context-ground-line" />
-            <CanvasCrowd src="/images/peeps/aragon-crowd-sprite.svg" rows={15} cols={7} />
+            <CanvasCrowd src="/images/peeps/aragon-crowd-scene.png" rows={1} cols={1} />
           </div>
         </figure>
       </div>
@@ -166,7 +166,7 @@ export function MethodSection() {
     <section id="metodo" className="method section-shell" aria-labelledby="method-title">
       <div className="page-shell">
         <div className="section-heading">
-          <div><span className="section-number">05</span><span className="section-label">MÉTODO</span></div>
+          <div><span className="section-number">06</span><span className="section-label">MÉTODO</span></div>
           <TextScrollTitle id="method-title" segments={['De la idea', { text: 'a algo que funciona.', className: 'title-muted' }]} />
         </div>
         <div className="method-intro"><p>La creatividad no reemplaza el criterio. El código tampoco. El proceso sirve para decidir qué vale la pena construir y qué sobra.</p></div>

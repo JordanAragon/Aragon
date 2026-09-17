@@ -14,6 +14,8 @@ Sitio web de Aragon, la identidad digital de Jordan Aragon para diseño y desarr
 
 La homepage utiliza Server Components para el contenido estático y Client Components pequeños para las partes que necesitan interacción: navegación, preloader, hero, progreso de scroll, reveals tipográficos, project story y agenda.
 
+La sección de contexto incorpora el componente Crowd Canvas de Skiper UI como un Client Component de canvas + GSAP. El sprite se sirve localmente desde `public/images/peeps/aragon-crowd-sprite.svg` para evitar depender de un asset remoto en runtime.
+
 La sección Lab conserva un storytelling guiado por scroll: cuatro conceptos atraviesan una escena persistente con transiciones de imagen, dirección de movimiento, progreso continuo y controles manuales accesibles. Los proyectos de `app/data/projects.ts` que aparecen en la sección Lab son conceptos en desarrollo. Las etiquetas de stack indican dirección técnica o de producto propuesta y no deben interpretarse como productos lanzados o clientes reales.
 
 ## Scripts
