@@ -3,419 +3,201 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Aragon ofrece desarrollo de páginas web, mantenimiento de equipos de cómputo y soporte técnico.">
-    <title>Aragon | Soluciones Digitales</title>
-
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-    >
-
+    <meta name="description" content="Aragon crea sitios web, software y soluciones digitales para convertir ideas en herramientas útiles.">
+    <meta name="theme-color" content="#ffffff">
+    <title>Aragon — Tecnología que toma forma</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
 </head>
-
 <body>
-
-    <header class="encabezado-sitio">
-        <nav class="container navegacion" aria-label="Navegación principal">
-            <a class="marca" href="#inicio">ARAGON</a>
-
-            <ul class="lista-navegacion">
-                <li><a href="#inicio">Inicio</a></li>
+    <header class="encabezado-sitio" id="inicio">
+        <nav class="navegacion contenedor" aria-label="Navegación principal">
+            <a class="marca" href="#inicio" aria-label="Aragon, inicio">ARAGON<span>®</span></a>
+            <button class="boton-menu" type="button" aria-expanded="false" aria-controls="menu-principal" aria-label="Abrir menú">
+                <span></span><span></span>
+            </button>
+            <ul class="lista-navegacion" id="menu-principal">
                 <li><a href="#servicios">Servicios</a></li>
-                <li><a href="#planes">Precios</a></li>
-                <li><a href="#portafolio">Portafolio</a></li>
+                <li><a href="#proyectos">Proyectos</a></li>
+                <li><a href="#aragon">Aragon</a></li>
                 <li><a href="#contacto">Contacto</a></li>
             </ul>
+            <a class="enlace-contacto" href="mailto:jordandavidaragon@outlook.com?subject=Proyecto%20con%20Aragon">Hablemos <span>↗</span></a>
         </nav>
     </header>
 
     <main>
-
-        <section id="inicio" class="presentacion">
-            <header class="container contenido-presentacion">
-                <p class="etiqueta-superior">ARAGON · SOLUCIONES DIGITALES</p>
-                <h1>Soluciones tecnológicas para personas y empresas.</h1>
-                <p class="texto-presentacion">
-                    Desarrollo de páginas web, mantenimiento de equipos de cómputo
-                    y soporte técnico con soluciones claras y funcionales.
-                </p>
-                <p>
-                    <a class="boton boton-primario" href="#servicios">
-                        Ver servicios
-                    </a>
-                </p>
+        <section class="hero contenedor seccion-revelar" aria-labelledby="titulo-principal">
+            <header class="hero-superior">
+                <p class="eyebrow">DIGITAL STUDIO / POPAYÁN, COLOMBIA</p>
+                <p class="estado"><span></span> Disponible para proyectos</p>
             </header>
+            <h1 id="titulo-principal">Tecnología que <em>toma forma.</em></h1>
+            <section class="hero-inferior">
+                <p class="hero-descripcion">Construyo sitios web, software y soluciones digitales pensadas para resolver problemas reales.</p>
+                <a class="boton-flecha" href="#proyectos">Explorar proyectos <span>↓</span></a>
+            </section>
+            <p class="hero-indice">01 — 04</p>
         </section>
 
-        <section id="servicios" class="seccion">
-            <header class="container encabezado-seccion">
-                <p class="etiqueta-superior">SERVICIOS</p>
-                <h2>Lo que puedo hacer por ti</h2>
-                <p>
-                    Servicios tecnológicos pensados para pequeñas empresas,
-                    emprendimientos y usuarios que necesitan soluciones prácticas.
-                </p>
+        <section class="manifiesto seccion-revelar" aria-labelledby="titulo-manifiesto">
+            <section class="contenedor manifiesto-grid">
+                <p class="numero-seccion">01 / ENFOQUE</p>
+                <header>
+                    <h2 id="titulo-manifiesto">Del problema<br>al <em>producto.</em></h2>
+                    <p>Una idea no necesita más ruido. Necesita una solución que tenga sentido, funcione y pueda crecer contigo.</p>
+                </header>
+                <aside class="manifiesto-nota">
+                    <span>ARAGON / 2026</span>
+                    <p>Web · Software · Tecnología</p>
+                </aside>
+            </section>
+        </section>
+
+        <section id="servicios" class="seccion servicios seccion-revelar" aria-labelledby="titulo-servicios">
+            <header class="contenedor encabezado-seccion">
+                <p class="numero-seccion">02 / SERVICIOS</p>
+                <h2 id="titulo-servicios">Lo que construyo.</h2>
             </header>
-
-            <section class="container">
-                <article class="row lista-servicios">
-
-                    <article class="col-sm-6 col-md-4 tarjeta-servicio">
-                        <header>
-                            <span class="numero-servicio">01</span>
-                            <h3>Desarrollo de páginas web</h3>
-                        </header>
-                        <p>
-                            Creación de páginas web modernas, organizadas y
-                            adaptables a computadores, tablets y celulares.
-                        </p>
-                    </article>
-
-                    <article class="col-sm-6 col-md-4 tarjeta-servicio">
-                        <header>
-                            <span class="numero-servicio">02</span>
-                            <h3>Mantenimiento de equipos</h3>
-                        </header>
-                        <p>
-                            Mantenimiento preventivo para computadores de escritorio
-                            y portátiles, incluyendo limpieza y revisión general.
-                        </p>
-                    </article>
-
-                    <article class="col-sm-6 col-md-4 tarjeta-servicio">
-                        <header>
-                            <span class="numero-servicio">03</span>
-                            <h3>Soporte técnico</h3>
-                        </header>
-                        <p>
-                            Diagnóstico y solución de problemas relacionados con
-                            hardware, software y configuración básica.
-                        </p>
-                    </article>
-
-                    <article class="col-sm-6 col-md-4 tarjeta-servicio">
-                        <header>
-                            <span class="numero-servicio">04</span>
-                            <h3>Diseño y mejora web</h3>
-                        </header>
-                        <p>
-                            Actualización de páginas existentes para mejorar su
-                            organización, presentación y adaptación a dispositivos.
-                        </p>
-                    </article>
-
-                    <article class="col-sm-6 col-md-4 tarjeta-servicio">
-                        <header>
-                            <span class="numero-servicio">05</span>
-                            <h3>Soluciones digitales</h3>
-                        </header>
-                        <p>
-                            Desarrollo de soluciones sencillas para necesidades
-                            específicas de estudiantes, emprendimientos y empresas.
-                        </p>
-                    </article>
-
-                    <article class="col-sm-6 col-md-4 tarjeta-servicio">
-                        <header>
-                            <span class="numero-servicio">06</span>
-                            <h3>Optimización de equipos</h3>
-                        </header>
-                        <p>
-                            Revisión básica del sistema y recomendaciones para
-                            mejorar el rendimiento del computador.
-                        </p>
-                    </article>
-
+            <section class="contenedor lista-servicios">
+                <article class="servicio-item">
+                    <p class="servicio-numero">01</p>
+                    <header>
+                        <h3>Desarrollo web</h3>
+                        <p>Sitios, landing pages y experiencias digitales que representan bien una marca y funcionan en cualquier pantalla.</p>
+                    </header>
+                    <a href="#contacto" aria-label="Hablar sobre desarrollo web">↗</a>
+                </article>
+                <article class="servicio-item">
+                    <p class="servicio-numero">02</p>
+                    <header>
+                        <h3>Software a medida</h3>
+                        <p>Herramientas construidas alrededor de una necesidad concreta, desde la idea hasta una versión utilizable.</p>
+                    </header>
+                    <a href="#contacto" aria-label="Hablar sobre software a medida">↗</a>
+                </article>
+                <article class="servicio-item">
+                    <p class="servicio-numero">03</p>
+                    <header>
+                        <h3>Mejora de productos digitales</h3>
+                        <p>Rediseño, responsive, organización y optimización para proyectos que ya existen y necesitan evolucionar.</p>
+                    </header>
+                    <a href="#contacto" aria-label="Hablar sobre mejora de productos digitales">↗</a>
+                </article>
+                <article class="servicio-item">
+                    <p class="servicio-numero">04</p>
+                    <header>
+                        <h3>Soluciones tecnológicas</h3>
+                        <p>Cuando el problema no cabe en una categoría bonita, diseñamos una solución práctica para resolverlo.</p>
+                    </header>
+                    <a href="#contacto" aria-label="Hablar sobre soluciones tecnológicas">↗</a>
                 </article>
             </section>
         </section>
 
-        <section id="planes" class="seccion seccion-clara">
-            <header class="container encabezado-seccion">
-                <p class="etiqueta-superior">PRECIOS</p>
-                <h2>Servicios y tarifas de referencia</h2>
-                <p>
-                    Precios orientativos en pesos colombianos. El valor final
-                    puede variar según el estado del equipo o el alcance del proyecto.
-                </p>
+        <section id="proyectos" class="proyectos seccion-revelar" aria-labelledby="titulo-proyectos">
+            <header class="contenedor encabezado-seccion proyectos-encabezado">
+                <p class="numero-seccion">03 / PROYECTOS</p>
+                <h2 id="titulo-proyectos">Trabajo que habla<br>por sí <em>solo.</em></h2>
+                <a class="enlace-texto" href="https://jordanaragon.vercel.app/" target="_blank" rel="noopener noreferrer">Ver portafolio completo <span>↗</span></a>
             </header>
-
-            <section class="container contenedor-tabla">
-                <table class="table tabla-precios">
-                    <caption>
-                        Tarifas de referencia para servicios tecnológicos de Aragon
-                    </caption>
-
-                    <thead>
-                        <tr>
-                            <th scope="col">Servicio</th>
-                            <th scope="col">Descripción</th>
-                            <th scope="col">Precio desde</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        <tr>
-                            <th scope="row">Landing page</th>
-                            <td>Página web de una sección, adaptable a dispositivos.</td>
-                            <td>$800.000</td>
-                        </tr>
-
-                        <tr>
-                            <th scope="row">Sitio web corporativo</th>
-                            <td>Web informativa de varias secciones para empresas.</td>
-                            <td>$2.500.000</td>
-                        </tr>
-
-                        <tr>
-                            <th scope="row">Mantenimiento PC</th>
-                            <td>Limpieza, revisión de hardware y optimización básica.</td>
-                            <td>$100.000</td>
-                        </tr>
-
-                        <tr>
-                            <th scope="row">Mantenimiento portátil</th>
-                            <td>Limpieza interna, revisión y optimización básica.</td>
-                            <td>$120.000</td>
-                        </tr>
-
-                        <tr>
-                            <th scope="row">Soporte técnico</th>
-                            <td>Diagnóstico y asistencia para problemas de software.</td>
-                            <td>$50.000</td>
-                        </tr>
-
-                        <tr>
-                            <th scope="row">Mejora de página web</th>
-                            <td>Cambios de diseño y organización en un sitio existente.</td>
-                            <td>$400.000</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <p class="nota-precio">
-                    Los precios son de referencia y no incluyen repuestos, componentes,
-                    dominio, alojamiento u otros servicios externos cuando sean necesarios.
-                </p>
+            <section class="contenedor lista-proyectos">
+                <article class="proyecto proyecto-principal">
+                    <a class="proyecto-media" href="https://github.com/JordanAragon/AiDEN" target="_blank" rel="noopener noreferrer" aria-label="Ver AiDEN en GitHub">
+                        <figure><img src="img/aiden.png" alt="Vista previa de AiDEN" loading="lazy"></figure>
+                        <span class="proyecto-accion">Ver proyecto ↗</span>
+                    </a>
+                    <header class="proyecto-info">
+                        <p>01 / 03 · SOFTWARE</p>
+                        <h3>AiDEN</h3>
+                        <p>Plataforma digital para la gestión de un vivero, desarrollada como proyecto formativo.</p>
+                        <span>Web · Gestión · 2026</span>
+                    </header>
+                </article>
+                <article class="proyecto">
+                    <a class="proyecto-media" href="https://github.com/JordanAragon" target="_blank" rel="noopener noreferrer" aria-label="Ver proyectos relacionados con Aragon Server">
+                        <figure><img src="img/aragon-server.png" alt="Vista previa de Aragon Server" loading="lazy"></figure>
+                        <span class="proyecto-accion">Explorar ↗</span>
+                    </a>
+                    <header class="proyecto-info">
+                        <p>02 / 03 · INFRAESTRUCTURA</p>
+                        <h3>Aragon Server</h3>
+                        <p>Servidor personal para alojar servicios y herramientas digitales propias.</p>
+                        <span>Self-hosted · Infraestructura · 2026</span>
+                    </header>
+                </article>
+                <article class="proyecto">
+                    <a class="proyecto-media" href="https://jordanaragon.vercel.app/" target="_blank" rel="noopener noreferrer" aria-label="Ver el portafolio personal">
+                        <figure><img src="img/portafolio.png" alt="Vista previa del portafolio personal" loading="lazy"></figure>
+                        <span class="proyecto-accion">Visitar ↗</span>
+                    </a>
+                    <header class="proyecto-info">
+                        <p>03 / 03 · IDENTIDAD DIGITAL</p>
+                        <h3>Portafolio personal</h3>
+                        <p>Un espacio para presentar proyectos, experiencia y el trabajo que estoy construyendo.</p>
+                        <span>Portfolio · Web · 2026</span>
+                    </header>
+                </article>
             </section>
         </section>
 
-        <section id="portafolio" class="seccion">
-            <header class="container encabezado-seccion">
-                <p class="etiqueta-superior">PORTAFOLIO</p>
-                <h2>Algunos proyectos</h2>
-                <p>
-                    Una selección de proyectos desarrollados como parte de mi formación
-                    y experiencia en tecnología.
-                </p>
-            </header>
-
-            <section class="container">
-                <section class="row lista-portafolio">
-
-                    <article class="col-sm-6 col-md-4 tarjeta-portafolio">
-                        <figure>
-                            <img
-                                src="img/aiden.png"
-                                alt="Vista previa del proyecto AiDEN"
-                                class="img-fluid"
-                            >
-                            <figcaption>AiDEN</figcaption>
-                        </figure>
-                        <p>
-                            Plataforma orientada a la gestión y optimización
-                            de procesos mediante herramientas digitales.
-                        </p>
-                    </article>
-
-                    <article class="col-sm-6 col-md-4 tarjeta-portafolio">
-                        <figure>
-                            <img
-                                src="img/aragon-server.png"
-                                alt="Vista previa del proyecto Aragon Server"
-                                class="img-fluid"
-                            >
-                            <figcaption>Aragon Server</figcaption>
-                        </figure>
-                        <p>
-                            Proyecto personal para disponer de servicios
-                            digitales y almacenamiento desde un servidor propio.
-                        </p>
-                    </article>
-
-                    <article class="col-sm-6 col-md-4 tarjeta-portafolio">
-                        <figure>
-                            <img
-                                src="img/portafolio.png"
-                                alt="Vista previa del portafolio personal de Aragon"
-                                class="img-fluid"
-                            >
-                            <figcaption>Portafolio personal</figcaption>
-                        </figure>
-                        <p>
-                            Sitio web personal para presentar proyectos,
-                            habilidades y servicios profesionales.
-                        </p>
-                    </article>
-
+        <section id="aragon" class="sobre-aragon seccion-revelar" aria-labelledby="titulo-aragon">
+            <section class="contenedor sobre-grid">
+                <p class="numero-seccion">04 / ARAGON</p>
+                <header>
+                    <h2 id="titulo-aragon">Una marca pequeña.<br>Una forma distinta de <em>trabajar.</em></h2>
+                </header>
+                <section>
+                    <p>Aragon nace de una idea sencilla: construir tecnología útil sin convertir cada proyecto en una montaña de procesos.</p>
+                    <p>Detrás de la marca estoy yo, Jordan Aragon, desarrollador y estudiante de Ingeniería de Sistemas. Aragon reúne mis proyectos, servicios y la experiencia que voy construyendo.</p>
+                    <a class="enlace-texto" href="https://jordanaragon.vercel.app/" target="_blank" rel="noopener noreferrer">Conocer mi trabajo <span>↗</span></a>
                 </section>
             </section>
         </section>
 
-        <section id="contacto" class="seccion seccion-oscura">
-            <header class="container encabezado-seccion encabezado-seccion-oscuro">
-                <p class="etiqueta-superior">CONTACTO</p>
-                <h2>Cuéntame qué necesitas</h2>
-                <p>
-                    Completa el formulario y describe brevemente el servicio que buscas.
-                </p>
+        <section class="presencia-digital seccion-revelar" aria-labelledby="titulo-presencia">
+            <header class="contenedor encabezado-seccion">
+                <p class="numero-seccion">05 / PRESENCIA DIGITAL</p>
+                <h2 id="titulo-presencia">También estoy<br><em>por aquí.</em></h2>
             </header>
-
-            <form class="container formulario-contacto" action="#" method="post">
-
-                <fieldset>
-                    <legend>Información de contacto</legend>
-
-                    <p>
-                        <label for="nombre">Nombre completo</label>
-                        <input
-                            type="text"
-                            id="nombre"
-                            name="nombre"
-                            placeholder="Escribe tu nombre"
-                            required
-                        >
-                    </p>
-
-                    <p>
-                        <label for="correo">Correo electrónico</label>
-                        <input
-                            type="email"
-                            id="correo"
-                            name="correo"
-                            placeholder="correo@ejemplo.com"
-                            required
-                        >
-                    </p>
-
-                </fieldset>
-
-                <fieldset>
-                    <legend>Servicio de interés</legend>
-
-                    <p class="opcion-radio">
-                        <input
-                            type="radio"
-                            id="desarrollo"
-                            name="servicio"
-                            value="desarrollo-web"
-                            required
-                        >
-                        <label for="desarrollo">Desarrollo web</label>
-                    </p>
-
-                    <p class="opcion-radio">
-                        <input
-                            type="radio"
-                            id="mantenimiento"
-                            name="servicio"
-                            value="mantenimiento-equipos"
-                        >
-                        <label for="mantenimiento">Mantenimiento de equipos</label>
-                    </p>
-
-                    <p class="opcion-radio">
-                        <input
-                            type="radio"
-                            id="soporte"
-                            name="servicio"
-                            value="soporte-tecnico"
-                        >
-                        <label for="soporte">Soporte técnico</label>
-                    </p>
-
-                    <p class="opcion-radio">
-                        <input
-                            type="radio"
-                            id="mejora-web"
-                            name="servicio"
-                            value="mejora-web"
-                        >
-                        <label for="mejora-web">Mejora de página web</label>
-                    </p>
-
-                </fieldset>
-
-                <fieldset>
-                    <legend>Mensaje</legend>
-
-                    <p>
-                        <label for="mensaje">Describe tu solicitud</label>
-                        <textarea
-                            id="mensaje"
-                            name="mensaje"
-                            rows="6"
-                            placeholder="Escribe aquí los detalles..."
-                            required
-                        ></textarea>
-                    </p>
-                </fieldset>
-
-                <p>
-                    <button type="submit" class="boton boton-primario">
-                        Enviar solicitud
-                    </button>
-                </p>
-
-            </form>
+            <nav class="contenedor lista-redes" aria-label="Redes y perfiles de Aragon">
+                <a href="https://github.com/JordanAragon" target="_blank" rel="noopener noreferrer"><span>GitHub</span><small>JordanAragon</small><b>↗</b></a>
+                <a href="https://www.linkedin.com/in/jordanaragon/" target="_blank" rel="noopener noreferrer"><span>LinkedIn</span><small>Jordan Aragon</small><b>↗</b></a>
+                <a href="https://jordanaragon.vercel.app/" target="_blank" rel="noopener noreferrer"><span>Portafolio</span><small>jordanaragon.vercel.app</small><b>↗</b></a>
+                <a href="mailto:jordandavidaragon@outlook.com"><span>Email</span><small>jordandavidaragon@outlook.com</small><b>↗</b></a>
+            </nav>
         </section>
 
+        <section id="contacto" class="contacto seccion-revelar" aria-labelledby="titulo-contacto">
+            <section class="contenedor contacto-grid">
+                <p class="numero-seccion">06 / CONTACTO</p>
+                <header>
+                    <h2 id="titulo-contacto">¿Tienes algo<br>que <em>construir?</em></h2>
+                    <p>Cuéntame la idea, el problema o simplemente lo que quieres mejorar.</p>
+                </header>
+                <a class="boton-contacto" href="mailto:jordandavidaragon@outlook.com?subject=Proyecto%20con%20Aragon">Cuéntame tu proyecto <span>↗</span></a>
+            </section>
+        </section>
     </main>
 
     <footer class="pie-sitio">
-        <nav class="container navegacion-social" aria-label="Redes sociales">
-            <h2>Aragon</h2>
-
-            <ul class="lista-social">
-                <li>
-                    <a
-                        href="https://github.com/JordanAragon"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        GitHub
-                    </a>
-                </li>
-
-                <li>
-                    <a
-                        href="https://www.linkedin.com/in/jordanaragon/"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        LinkedIn
-                    </a>
-                </li>
-
-                <li>
-                    <a href="tel:+573158154915">
-                        315 815 4915
-                    </a>
-                </li>
-
-                <li>
-                    <a href="mailto:jordandavidaragon@outlook.com">
-                        jordandavidaragon@outlook.com
-                    </a>
-                </li>
-            </ul>
-        </nav>
-
-        <p class="container derechos-autor">
-            &copy; 2026 Aragon. Todos los derechos reservados.
-        </p>
+        <section class="contenedor pie-grid">
+            <a class="marca marca-footer" href="#inicio">ARAGON<span>®</span></a>
+            <p>Technology · Development · Digital Solutions</p>
+            <nav aria-label="Enlaces del pie de página">
+                <a href="https://github.com/JordanAragon" target="_blank" rel="noopener noreferrer">GitHub</a>
+                <a href="https://www.linkedin.com/in/jordanaragon/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                <a href="https://jordanaragon.vercel.app/" target="_blank" rel="noopener noreferrer">Portafolio</a>
+                <a href="mailto:jordandavidaragon@outlook.com">Email</a>
+            </nav>
+        </section>
+        <section class="contenedor pie-final">
+            <span>Popayán, Colombia</span>
+            <span>© <span id="anio"></span> Aragon</span>
+        </section>
     </footer>
-
+    <script src="js/main.js"></script>
 </body>
 </html>
