@@ -80,19 +80,6 @@ export function ContextSection() {
   return (
     <section id="contexto" className="context section-shell" aria-labelledby="context-title">
       <div className="page-shell context-grid">
-        <div className="context-visual">
-          <Image src="/projects/infrastructure-context.svg" alt="Mapa conceptual de una infraestructura personal con hardware, servicios y red privada" fill sizes="(max-width: 900px) 100vw, 58vw" />
-          <div className="context-crowd-layer" aria-hidden="true">
-            <div className="context-crowd-canvas">
-              <CanvasCrowd src="/images/peeps/aragon-crowd-sprite.svg" rows={15} cols={7} />
-              <ProgressiveBlur position="top" backgroundColor="var(--bg)" height={92} blurAmount={7} />
-              <ProgressiveBlur position="bottom" backgroundColor="var(--bg)" height={152} blurAmount={11} />
-            </div>
-          </div>
-          <div className="context-overlay" />
-          <span className="context-stamp">CONTEXTO / 04</span>
-          <span className="context-coordinates">HARDWARE · NETWORK · SOFTWARE · SYSTEMS</span>
-        </div>
         <div className="context-copy">
           <span className="section-number">04</span><span className="section-label">LO QUE HAY DETRÁS</span>
           <TextScrollTitle id="context-title" segments={['No solo diseño', { text: 'la superficie.', className: 'title-muted' }]} />
@@ -103,6 +90,20 @@ export function ContextSection() {
             <div><small>ORIGEN</small><b>Cali, Colombia</b></div>
           </div>
           <a href="https://github.com/JordanAragon" target="_blank" rel="noopener noreferrer" className="under-link">Ver trabajo técnico ↗</a>
+        </div>
+
+        <div className="context-visual">
+          <Image src="/projects/infrastructure-context.svg" alt="Mapa conceptual de una infraestructura personal con hardware, servicios y red privada" fill sizes="(max-width: 900px) 100vw, 58vw" />
+          <div className="context-crowd-layer" aria-hidden="true">
+            <div className="context-crowd-canvas">
+              <CanvasCrowd src="/images/peeps/aragon-crowd-sprite.svg" rows={15} cols={7} />
+              <ProgressiveBlur position="top" backgroundColor="var(--bg)" height={54} blurAmount={5} />
+              <ProgressiveBlur position="bottom" backgroundColor="var(--bg)" height={92} blurAmount={8} />
+            </div>
+          </div>
+          <div className="context-overlay" />
+          <span className="context-stamp">CONTEXTO / 04</span>
+          <span className="context-coordinates">HARDWARE · NETWORK · SOFTWARE · SYSTEMS</span>
         </div>
       </div>
     </section>
