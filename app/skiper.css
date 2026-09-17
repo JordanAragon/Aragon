@@ -17,3 +17,24 @@
 @media (prefers-reduced-motion:reduce){.text-scroll-title-word{will-change:auto}.project-card{will-change:auto}.canvas-crowd{opacity:.28;filter:none;mask-image:linear-gradient(to bottom,transparent 0%,#000 32%,#000 100%);-webkit-mask-image:linear-gradient(to bottom,transparent 0%,#000 32%,#000 100%)}.progressive-blur{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}.footer-attribution{display:none}}
 
 @media (forced-colors:active){.progressive-blur,.canvas-crowd,.project-card-shade{display:none}.project-card{border:1px solid CanvasText;box-shadow:none}.text-scroll-title-word.title-outline{color:CanvasText;-webkit-text-stroke:0}}
+
+/* Aragon adaptation of the Skiper 39 crowd: the animation owns the lower visual, not a tiny clipped strip. */
+.context-grid{grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);grid-template-areas:"copy visual";align-items:center;gap:clamp(42px,6.5vw,104px)}
+.context-copy{grid-area:copy;position:relative;z-index:5;min-width:0}
+.context-visual{grid-area:visual;position:relative;isolation:isolate;overflow:hidden;min-height:clamp(540px,62svh,760px);aspect-ratio:1.08/1}
+.context-crowd-layer{z-index:4}
+.context-crowd-canvas{inset:43% 0 0}
+.canvas-crowd-wrap{z-index:1}
+.canvas-crowd{opacity:.84;filter:contrast(1.04);mask-image:linear-gradient(to bottom,transparent 0%,rgba(0,0,0,.72) 8%,#000 22%,#000 100%);-webkit-mask-image:linear-gradient(to bottom,transparent 0%,rgba(0,0,0,.72) 8%,#000 22%,#000 100%)}
+.context-crowd-canvas:after{background:linear-gradient(to bottom,rgba(244,244,240,.02),transparent 35%,transparent 76%,rgba(244,244,240,.08))}
+.context-overlay{z-index:2;pointer-events:none}
+.context-stamp,.context-coordinates{z-index:5}
+.context-crowd-canvas .progressive-blur{z-index:3}
+
+@media (max-width:1100px){.context-grid{grid-template-columns:minmax(0,.86fr) minmax(0,1.14fr);gap:38px}.context-visual{min-height:520px}.context-crowd-canvas{inset:46% 0 0}.canvas-crowd{opacity:.8}}
+
+@media (max-width:780px){.context-grid{grid-template-columns:1fr;grid-template-areas:"visual" "copy";gap:32px}.context-visual{min-height:430px;aspect-ratio:1.1/1}.context-crowd-canvas{inset:48% 0 0}.canvas-crowd{opacity:.76;mask-image:linear-gradient(to bottom,transparent 0%,rgba(0,0,0,.72) 6%,#000 20%,#000 100%);-webkit-mask-image:linear-gradient(to bottom,transparent 0%,rgba(0,0,0,.72) 6%,#000 20%,#000 100%)}.context-copy{padding-bottom:8px}.context-crowd-canvas .progressive-blur:first-of-type{height:46px!important}.context-crowd-canvas .progressive-blur:last-of-type{height:82px!important}}
+
+@media (max-width:520px){.context-visual{min-height:380px;aspect-ratio:1/1}.context-crowd-canvas{inset:50% 0 0}.canvas-crowd{opacity:.72}.context-copy{padding-inline:2px}}
+
+@media (prefers-reduced-motion:reduce){.canvas-crowd{opacity:.48;filter:none}}
