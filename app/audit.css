@@ -13,6 +13,70 @@ body {
   overscroll-behavior-x: none;
 }
 
+.preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  padding: 22px clamp(18px, 3vw, 48px);
+  background: #080809;
+  color: #f4f4f0;
+  pointer-events: none;
+  user-select: none;
+}
+
+.preloader-top,
+.preloader-bottom {
+  display: flex;
+  justify-content: space-between;
+  font: 900 8px/1 var(--body);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  opacity: .62;
+}
+
+.preloader-center {
+  align-self: center;
+  justify-self: center;
+  display: grid;
+  justify-items: center;
+  gap: 18px;
+  text-align: center;
+}
+
+.preloader-mark {
+  font: 800 clamp(72px, 11vw, 150px)/.75 var(--body);
+  letter-spacing: -.12em;
+}
+
+.preloader-line {
+  width: min(180px, 42vw);
+  height: 1px;
+  overflow: hidden;
+  background: rgba(244,244,240,.2);
+}
+
+.preloader-line i {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform-origin: left;
+  background: #f4f4f0;
+  animation: preloader-line 1.05s cubic-bezier(.16,1,.3,1) both;
+}
+
+.preloader-center > span {
+  font: 900 7px/1 var(--body);
+  letter-spacing: .2em;
+  opacity: .62;
+}
+
+@keyframes preloader-line {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
 .scroll-progress {
   z-index: 800;
   background: #fff;
@@ -23,6 +87,11 @@ body {
 .site-header {
   -webkit-backdrop-filter: blur(14px);
   backdrop-filter: blur(14px);
+}
+
+.scroll-word {
+  display: inline-block;
+  will-change: transform, opacity, filter;
 }
 
 .desktop-nav > a,
@@ -82,7 +151,7 @@ body {
 }
 
 .work-story {
-  min-height: 245svh;
+  min-height: 300svh;
 }
 
 .work-stage {
@@ -90,7 +159,11 @@ body {
 }
 
 .story-viewport {
-  min-height: min(680px, calc(100svh - 180px));
+  min-height: min(720px, calc(100svh - 150px));
+}
+
+.story-backdrop {
+  will-change: transform, clip-path;
 }
 
 .story-copy-item > a {
@@ -121,9 +194,9 @@ body {
 }
 
 .story-controls button {
-  width: 28px;
-  min-width: 28px;
-  height: 28px;
+  width: 44px;
+  min-width: 44px;
+  height: 44px;
   padding: 0;
   display: grid;
   place-items: center;
@@ -185,6 +258,15 @@ body {
 @media (max-width: 780px) {
   html {
     scroll-padding-top: 78px;
+  }
+
+  .preloader {
+    padding: 18px 16px;
+  }
+
+  .preloader-top,
+  .preloader-bottom {
+    font-size: 7px;
   }
 
   .mobile-nav-shell {
@@ -261,13 +343,13 @@ body {
   }
 
   .work-story {
-    min-height: 235svh;
+    min-height: 270svh;
   }
 
   .story-controls button {
-    width: 32px;
-    min-width: 32px;
-    height: 32px;
+    width: 36px;
+    min-width: 36px;
+    height: 36px;
   }
 
   .context-reset {
@@ -309,11 +391,18 @@ body {
     transition: none !important;
   }
 
+  .preloader-line i {
+    animation: none;
+    transform: scaleX(1);
+  }
+
   .hero-visual,
   .story-backdrop,
   .story-layer,
-  .story-copy-item {
+  .story-copy-item,
+  .scroll-word {
     transform: none !important;
+    filter: none !important;
   }
 }
 
