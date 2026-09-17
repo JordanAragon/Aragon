@@ -26,38 +26,34 @@ export default function ProjectCardStack({ cards, progress, activeIndex }: Props
     const stack = stackRef.current;
     if (!stack) return;
 
-    const context = gsap.context(() => {
-      const render = (value: number) => {
-        const cursor = Math.min(cards.length - 1, Math.max(0, value * cards.length));
+    const render = (value: number) => {
+      const cursor = Math.min(cards.length - 1, Math.max(0, value * cards.length));
 
-        cardRefs.current.forEach((card, index) => {
-          if (!card) return;
-          const distance = index - cursor;
-          const absolute = Math.min(3, Math.abs(distance));
-          const behind = distance < 0;
-          const x = Math.max(-16, Math.min(16, distance * 12));
-          const y = behind ? -absolute * 7 : absolute * 8;
-          const scale = 1 - absolute * 0.045;
-          const rotation = distance * 4.5;
-          const opacity = absolute > 2.1 ? 0 : 1 - absolute * 0.16;
+      cardRefs.current.forEach((card, index) => {
+        if (!card) return;
+        const distance = index - cursor;
+        const absolute = Math.min(3, Math.abs(distance));
+        const behind = distance < 0;
+        const x = Math.max(-16, Math.min(16, distance * 12));
+        const y = behind ? -absolute * 7 : absolute * 8;
+        const scale = 1 - absolute * 0.045;
+        const rotation = distance * 4.5;
+        const opacity = absolute > 2.1 ? 0 : 1 - absolute * 0.16;
 
-          gsap.set(card, {
-            xPercent: x,
-            yPercent: y,
-            scale,
-            rotation,
-            opacity,
-            zIndex: 100 - Math.round(absolute * 10) - (behind ? 20 : 0),
-          });
+        gsap.set(card, {
+          xPercent: x,
+          yPercent: y,
+          scale,
+          rotation,
+          opacity,
+          zIndex: 100 - Math.round(absolute * 10) - (behind ? 20 : 0),
         });
-      };
+      });
+    };
 
-      render(progress.get());
-      const unsubscribe = progress.on('change', render);
-      return unsubscribe;
-    }, stack);
-
-    return () => context.revert();
+    render(progress.get());
+    const unsubscribe = progress.on('change', render);
+    return () => unsubscribe();
   }, [cards.length, progress]);
 
   return (
