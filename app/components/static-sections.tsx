@@ -1,7 +1,5 @@
-import Image from 'next/image';
 import { IconBox, icons } from './icons';
 import CanvasCrowd from './skiper/canvas-crowd';
-import ProgressiveBlur from './skiper/progressive-blur';
 import TextScrollTitle from './skiper/text-scroll-title';
 
 const problems = [
@@ -81,30 +79,51 @@ export function ContextSection() {
     <section id="contexto" className="context section-shell" aria-labelledby="context-title">
       <div className="page-shell context-grid">
         <div className="context-copy">
-          <span className="section-number">04</span><span className="section-label">LO QUE HAY DETRÁS</span>
+          <span className="section-number">04</span>
+          <span className="section-label">LO QUE HAY DETRÁS</span>
           <TextScrollTitle id="context-title" segments={['No solo diseño', { text: 'la superficie.', className: 'title-muted' }]} />
           <p>Mi recorrido mezcla soporte técnico, infraestructura, desarrollo web y construcción de productos. Por eso pienso en la interfaz, pero también en lo que tiene que funcionar detrás.</p>
           <div className="context-facts">
-            <div><small>BASE</small><b>Sistemas / Tecnología</b></div>
-            <div><small>ENFOQUE</small><b>Producto / Experiencia</b></div>
-            <div><small>ORIGEN</small><b>Cali, Colombia</b></div>
+            <article><small>BASE</small><b>Sistemas / Tecnología</b></article>
+            <article><small>ENFOQUE</small><b>Producto / Experiencia</b></article>
+            <article><small>ORIGEN</small><b>Popayán, Colombia</b></article>
           </div>
           <a href="https://github.com/JordanAragon" target="_blank" rel="noopener noreferrer" className="under-link">Ver trabajo técnico ↗</a>
         </div>
 
-        <div className="context-visual">
-          <Image src="/projects/infrastructure-context.svg" alt="Mapa conceptual de una infraestructura personal con hardware, servicios y red privada" fill sizes="(max-width: 900px) 100vw, 58vw" />
-          <div className="context-crowd-layer" aria-hidden="true">
-            <div className="context-crowd-canvas">
-              <CanvasCrowd src="/images/peeps/aragon-crowd-sprite.svg" rows={15} cols={7} />
-              <ProgressiveBlur position="top" backgroundColor="var(--bg)" height={54} blurAmount={5} />
-              <ProgressiveBlur position="bottom" backgroundColor="var(--bg)" height={92} blurAmount={8} />
-            </div>
+        <figure className="context-visual" aria-labelledby="context-visual-caption">
+          <header className="context-visual-head">
+            <span>ARAGON / SYSTEMS</span>
+            <span>04 — 2026</span>
+          </header>
+
+          <div className="context-visual-grid" aria-hidden="true" />
+          <div className="context-architecture" aria-hidden="true">
+            <span className="context-orbit context-orbit-a" />
+            <span className="context-orbit context-orbit-b" />
+            <span className="context-orbit context-orbit-c" />
+            <span className="context-node context-node-core">A</span>
+            <span className="context-node context-node-hardware">HARDWARE</span>
+            <span className="context-node context-node-network">NETWORK</span>
+            <span className="context-node context-node-software">SOFTWARE</span>
+            <span className="context-node context-node-product">PRODUCT</span>
           </div>
-          <div className="context-overlay" />
-          <span className="context-stamp">CONTEXTO / 04</span>
-          <span className="context-coordinates">HARDWARE · NETWORK · SOFTWARE · SYSTEMS</span>
-        </div>
+
+          <div className="context-readout" aria-hidden="true">
+            <span><i />ONLINE</span>
+            <span>PRIVATE STACK</span>
+            <span>LOCAL / REMOTE</span>
+          </div>
+
+          <div className="context-crowd-stage" aria-hidden="true">
+            <span className="context-ground-label">PEOPLE / SYSTEM / FLOW</span>
+            <span className="context-ground-line" />
+            <CanvasCrowd src="/images/peeps/aragon-crowd-sprite.svg" rows={15} cols={7} />
+            <span className="context-ground-shadow" />
+          </div>
+
+          <figcaption id="context-visual-caption">Una forma de pensar: interfaz arriba, sistema debajo, y personas atravesando ambos.</figcaption>
+        </figure>
       </div>
     </section>
   );
