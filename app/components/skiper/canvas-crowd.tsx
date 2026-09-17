@@ -33,7 +33,7 @@ export default function CanvasCrowd() {
       const x = figure.x * width;
       const ground = figure.y * height;
       const unit = Math.max(7, Math.min(width, height) * 0.018) * figure.scale;
-      const stride = reduced ? 0 : Math.sin(time * 0.005 * figure.speed * 1100 + figure.phase) * unit * 0.32;
+      const stride = reduced ? 0 : Math.sin(time * 0.003 + figure.phase) * unit * 0.32;
 
       context.save();
       context.translate(x, ground);
