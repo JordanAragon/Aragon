@@ -36,7 +36,7 @@ const projects = [
   { id: '03', title: 'Inventario FNC', label: 'SISTEMA INTERNO', image: '/projects/inventory.svg', href: 'mailto:jordandavidaragon@outlook.com?subject=Consulta sobre sistema de inventario', kicker: 'CUANDO DEMASIADA INFORMACIÓN NECESITA ENCONTRAR UNA ESTRUCTURA.', body: 'Una interfaz para convertir información operativa en una herramienta más clara de consultar y mantener.', tags: 'Sistemas · Datos · UX' },
 ];
 
-const process = [
+const steps = [
   ['01', 'Entender', 'Qué está pasando realmente.'],
   ['02', 'Definir', 'Qué necesita cambiar.'],
   ['03', 'Construir', 'La experiencia, sistema o producto adecuado.'],
@@ -91,6 +91,7 @@ export default function Home() {
   const heroScale = useTransform(heroProgress, [0, 1], [1, 0.72]);
   const heroOpacity = useTransform(heroProgress, [0, 0.55, 1], [1, 1, 0]);
   const heroVisualScale = useTransform(heroProgress, [0, 1], [1, 1.4]);
+  const heroGhostX = useTransform(heroProgress, [0, 1], [0, -150]);
   const storyScale = useTransform(workProgress, [0, 0.5, 1], [0.82, 1, 1.05]);
   const storyY = useTransform(workProgress, [0, 0.5, 1], ['8vh', '0vh', '-5vh']);
   const storyClip = useTransform(workProgress, [0, 0.18, 0.5, 0.82, 1], ['inset(14% 10% 14% 10% round 28px)', 'inset(7% 5% 7% 5% round 20px)', 'inset(0% 0% 0% 0% round 0px)', 'inset(7% 5% 7% 5% round 20px)', 'inset(14% 10% 14% 10% round 28px)']);
@@ -208,7 +209,7 @@ export default function Home() {
               <motion.h1 style={{ scale: heroScale }} initial={{ opacity: 0, y: 36 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 1.55, ease: [0.16, 1, 0.3, 1] }}>
                 Tu idea<br /><span>ya existe.</span><br /><em>Ahora hagámosla funcionar.</em>
               </motion.h1>
-              <motion.div className="hero-ghost" style={{ x: useTransform(heroProgress, [0, 1], [0, -150]) }} aria-hidden="true">ARAGON / 001</motion.div>
+              <motion.div className="hero-ghost" style={{ x: heroGhostX }} aria-hidden="true">ARAGON / 001</motion.div>
               <div className="hero-bottom">
                 <div className="hero-copy"><span className="hero-index">THE PREMISE</span><p>Aragon diseña y desarrolla experiencias digitales, software y sistemas para convertir problemas reales en productos que la gente puede entender y usar.</p></div>
                 <a href="#trabajo" className="hero-cta"><span>Ver lo que construimos</span><IconBox>{icons.arrow}</IconBox></a>
@@ -282,7 +283,7 @@ export default function Home() {
             <div className="page-shell">
               <div className="section-heading"><div><span className="section-number">05</span><span className="section-label">MÉTODO</span></div><h2>De la idea<br /><span>a algo que funciona.</span></h2></div>
               <div className="method-intro"><p>La creatividad no reemplaza el criterio. El código tampoco. El proceso sirve para decidir qué vale la pena construir y qué sobra.</p></div>
-              <div className="method-grid">{process.map(([id, title, copy], index) => <motion.div className="method-cell" key={id} whileHover={{ y: -8, backgroundColor: '#09090a', color: '#fff' }} transition={{ duration: 0.25 }}><span>{id}</span><div className="method-glyph">{index === 0 ? icons.dot : index === 1 ? icons.spark : index === 2 ? icons.code : icons.plus}</div><h3>{title}</h3><p>{copy}</p></motion.div>)}</div>
+              <div className="method-grid">{steps.map(([id, title, copy], index) => <motion.div className="method-cell" key={id} whileHover={{ y: -8, backgroundColor: '#09090a', color: '#fff' }} transition={{ duration: 0.25 }}><span>{id}</span><div className="method-glyph">{index === 0 ? icons.dot : index === 1 ? icons.spark : index === 2 ? icons.code : icons.plus}</div><h3>{title}</h3><p>{copy}</p></motion.div>)}</div>
             </div>
           </section>
 
