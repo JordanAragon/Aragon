@@ -72,7 +72,7 @@ export default function CanvasCrowd({ src, rows = 15, cols = 7 }: Props) {
     };
 
     const normalWalk = ({ peep, props }: { peep: Peep; props: ReturnType<typeof resetPeep> }) => {
-      const { startX, startY, endX } = props;
+      const { startY, endX } = props;
       const xDuration = 10;
       const yDuration = 0.25;
       const timeline = gsap.timeline();
@@ -93,8 +93,7 @@ export default function CanvasCrowd({ src, rows = 15, cols = 7 }: Props) {
       return timeline;
     };
 
-    type WalkFactory = (args: { peep: Peep; props: ReturnType<typeof resetPeep> }) => gsap.core.Timeline;
-    const walks: WalkFactory[] = [normalWalk];
+    const walks = [normalWalk];
 
     const createPeep = ({ image, rect }: { image: HTMLImageElement; rect: number[] }): Peep => {
       const peep: Peep = {
@@ -196,7 +195,8 @@ export default function CanvasCrowd({ src, rows = 15, cols = 7 }: Props) {
     const render = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.save();
-      ctx.scale(window.devicePixelRatio || 1, window.devicePixelRatio || 1);
+      const dpr = window.devicePixelRatio || 1;
+      ctx.scale(dpr, dpr);
       crowd.forEach((peep) => peep.render(ctx));
       ctx.restore();
     };
@@ -241,5 +241,24 @@ export default function CanvasCrowd({ src, rows = 15, cols = 7 }: Props) {
     };
   }, [src, rows, cols]);
 
-  return <canvas ref={canvasRef} className="absolute bottom-0 h-full w-full" aria-hidden="true" />;
+  return (
+    <>
+      <style>{`
+        .context-visual{background:#000!important;border-color:#000!important;border-radius:0!important;box-shadow:none!important;aspect-ratio:auto!important;min-height:clamp(620px,72svh,840px)!important;}
+        .context-crowd-layer{position:absolute!important;inset:0!important;z-index:30!important;background:#000!important;overflow:hidden!important;}
+        .context-crowd-canvas{position:absolute!important;inset:0!important;z-index:1!important;overflow:hidden!important;}
+        .context-crowd-canvas .progressive-blur{display:none!important;}
+        .context-visual-head,.context-visual-grid,.context-architecture,.context-readout,.context-ground-label,.context-ground-line{display:none!important;}
+        .context-visual::before{display:none!important;}
+        .context-visual::after{content:"SKIPER UI · CODEPEN · OPEN PEEPS"!important;position:absolute!important;left:18px!important;right:auto!important;top:auto!important;bottom:16px!important;z-index:50!important;border:0!important;width:auto!important;height:auto!important;color:rgba(255,255,255,.42)!important;font:800 7px/1 var(--body)!important;letter-spacing:.13em!important;text-transform:uppercase!important;pointer-events:none!important;background:none!important;}
+        .context-crowd-canvas .canvas-crowd{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;display:block!important;opacity:1!important;filter:none!important;mask-image:none!important;-webkit-mask-image:none!important;}
+        @media (max-width:780px){
+          .context-visual{min-height:480px!important;}
+          .context-visual::after{left:14px!important;bottom:13px!important;font-size:6px!important;}
+        }
+        @media (max-width:520px){.context-visual{min-height:420px!important;}}
+      `}</style>
+      <canvas ref={canvasRef} className="absolute bottom-0 h-full w-full" aria-hidden="true" />
+    </>
+  );
 }
