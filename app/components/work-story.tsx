@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { AnimatePresence, motion, useReducedMotion, useScroll, useSpring, useTransform, useVelocity } from 'motion/react';
 import { useEffect, useRef, useState } from 'react';
 import { projects } from '../data/projects';
-import { IconBox, icons } from './icons';
+import { icons } from './icons';
 
 function rememberProject(slug: string) {
   try {
@@ -56,6 +56,15 @@ export default function WorkStory() {
     window.scrollTo({ top, behavior: reduced ? 'auto' : 'smooth' });
   };
 
+  const handleControlKey = (event: React.KeyboardEvent<HTMLButtonElement>, index: number) => {
+    const target = index + (event.key === 'ArrowRight' ? 1 : event.key === 'ArrowLeft' ? -1 : 0);
+    if (target === index || target < 0 || target >= projects.length) return;
+    event.preventDefault();
+    const button = event.currentTarget.parentElement?.querySelectorAll<HTMLButtonElement>('button')[target];
+    button?.focus();
+    jumpToProject(target);
+  };
+
   const active = projects[activeProject];
 
   return (
@@ -73,22 +82,13 @@ export default function WorkStory() {
               const directionForLayer = distance < 0 ? -1 : 1;
               const isActive = activeProject === index;
               return (
-                <motion.div
-                  key={project.id}
-                  className="story-layer"
-                  animate={{ opacity: isActive ? 1 : 0, scale: isActive ? 1 : 1.045, x: reduced || isActive ? 0 : directionForLayer * 34, y: reduced || isActive ? 0 : 10, rotateZ: reduced || isActive ? 0 : directionForLayer * -0.7 }}
-                  transition={{ duration: reduced ? 0 : 0.65, ease: [0.16, 1, 0.3, 1] }}
-                  aria-hidden={!isActive}
-                >
+                <motion.div key={project.id} className="story-layer" animate={{ opacity: isActive ? 1 : 0, scale: isActive ? 1 : 1.045, x: reduced || isActive ? 0 : directionForLayer * 34, y: reduced || isActive ? 0 : 10, rotateZ: reduced || isActive ? 0 : directionForLayer * -0.7 }} transition={{ duration: reduced ? 0 : 0.65, ease: [0.16, 1, 0.3, 1] }} aria-hidden={!isActive}>
                   <Image src={project.image} alt={isActive ? `Concepto visual de ${project.title}` : ''} fill sizes="(max-width: 900px) 100vw, 82vw" priority={index === 0} />
                   <div className="story-layer-shade" />
                 </motion.div>
               );
             })}
-            <div className="story-ui">
-              <span>{active.status}</span>
-              <span>{active.id} / 04</span>
-            </div>
+            <div className="story-ui"><span>{active.status}</span><span>{active.id} / 04</span></div>
           </motion.div>
 
           <div className="story-copy">
@@ -107,9 +107,7 @@ export default function WorkStory() {
             <span>SCROLL STORY</span>
             <div className="story-controls">
               {projects.map((project, index) => (
-                <button key={project.id} type="button" className={activeProject === index ? 'is-active' : undefined} onClick={() => jumpToProject(index)} aria-label={`Ver ${project.title}`} aria-current={activeProject === index ? 'step' : undefined}>
-                  {project.id}
-                </button>
+                <button key={project.id} type="button" className={activeProject === index ? 'is-active' : undefined} onClick={() => jumpToProject(index)} onKeyDown={(event) => handleControlKey(event, index)} aria-label={`Ver ${project.title}`} aria-current={activeProject === index ? 'step' : undefined}>{project.id}</button>
               ))}
             </div>
           </nav>
