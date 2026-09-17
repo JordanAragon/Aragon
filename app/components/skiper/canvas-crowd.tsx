@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { gsap } from 'gsap';
-import { useEffect, useRef } from 'react';
+import { gsap } from "gsap";
+import { useEffect, useRef } from "react";
 
 type Props = {
   src: string;
@@ -9,337 +9,237 @@ type Props = {
   cols?: number;
 };
 
-type TweenHandle = { kill: () => void };
-
 type Peep = {
-  frame: number;
+  image: HTMLImageElement;
+  rect: number[];
+  width: number;
+  height: number;
   x: number;
   y: number;
   anchorY: number;
-  scale: number;
-  scaleX: 1 | -1;
-  startX: number;
-  endX: number;
-  walk: TweenHandle | null;
-  bob: TweenHandle | null;
+  scaleX: number;
+  walk: gsap.core.Timeline | null;
+  setRect: (rect: number[]) => void;
+  render: (ctx: CanvasRenderingContext2D) => void;
 };
 
-const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
+const SKIPER_SPRITE = "https://assets.codepen.io/721952/all-peeps.png";
 
 export default function CanvasCrowd({ src, rows = 15, cols = 7 }: Props) {
-  const stageRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
-    const stage = stageRef.current;
     const canvas = canvasRef.current;
-    if (!stage || !canvas) return;
+    if (!canvas) return;
 
-    const context = canvas.getContext('2d', { alpha: true });
-    if (!context) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
 
-    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const image = new window.Image();
-    image.decoding = 'async';
+    const config = { src, rows, cols };
 
-    let ready = false;
-    let running = false;
-    let intersecting = false;
-    let pageVisible = document.visibilityState === 'visible';
-    let width = 1;
-    let height = 1;
-    let dpr = 1;
-    let rectWidth = 0;
-    let rectHeight = 0;
-    let targetActive = 18;
-    let spawnTimer: TweenHandle | null = null;
+    const randomRange = (min: number, max: number) => min + Math.random() * (max - min);
+    const randomIndex = (array: unknown[]) => randomRange(0, array.length) | 0;
+    const removeFromArray = <T,>(array: T[], index: number) => array.splice(index, 1)[0];
+    const removeItemFromArray = <T,>(array: T[], item: T) => {
+      const index = array.indexOf(item);
+      if (index >= 0) removeFromArray(array, index);
+    };
+    const removeRandomFromArray = <T,>(array: T[]) => removeFromArray(array, randomIndex(array));
+    const getRandomFromArray = <T,>(array: T[]) => array[randomIndex(array)];
 
+    const resetPeep = ({ stage, peep }: { stage: { width: number; height: number }; peep: Peep }) => {
+      const direction = Math.random() > 0.5 ? 1 : -1;
+      const offsetY = 100 - 250 * gsap.parseEase("power2.in")(Math.random());
+      const startY = stage.height - peep.height + offsetY;
+      let startX: number;
+      let endX: number;
+
+      if (direction === 1) {
+        startX = -peep.width;
+        endX = stage.width;
+        peep.scaleX = 1;
+      } else {
+        startX = stage.width + peep.width;
+        endX = 0;
+        peep.scaleX = -1;
+      }
+
+      peep.x = startX;
+      peep.y = startY;
+      peep.anchorY = startY;
+
+      return { startX, startY, endX };
+    };
+
+    const normalWalk = ({ peep, props }: { peep: Peep; props: ReturnType<typeof resetPeep> }) => {
+      const { startX, startY, endX } = props;
+      const xDuration = 10;
+      const yDuration = 0.25;
+      const timeline = gsap.timeline();
+
+      timeline.timeScale(randomRange(0.5, 1.5));
+      timeline.to(peep, { duration: xDuration, x: endX, ease: "none" }, 0);
+      timeline.to(
+        peep,
+        {
+          duration: yDuration,
+          repeat: xDuration / yDuration,
+          yoyo: true,
+          y: startY - 10,
+        },
+        0,
+      );
+
+      return timeline;
+    };
+
+    type WalkFactory = (args: { peep: Peep; props: ReturnType<typeof resetPeep> }) => gsap.core.Timeline;
+    const walks: WalkFactory[] = [normalWalk];
+
+    const createPeep = ({ image, rect }: { image: HTMLImageElement; rect: number[] }): Peep => {
+      const peep: Peep = {
+        image,
+        rect: [],
+        width: 0,
+        height: 0,
+        x: 0,
+        y: 0,
+        anchorY: 0,
+        scaleX: 1,
+        walk: null,
+        setRect: (nextRect) => {
+          peep.rect = nextRect;
+          peep.width = nextRect[2];
+          peep.height = nextRect[3];
+        },
+        render: (context) => {
+          context.save();
+          context.translate(peep.x, peep.y);
+          context.scale(peep.scaleX, 1);
+          context.drawImage(
+            peep.image,
+            peep.rect[0],
+            peep.rect[1],
+            peep.rect[2],
+            peep.rect[3],
+            0,
+            0,
+            peep.width,
+            peep.height,
+          );
+          context.restore();
+        },
+      };
+
+      peep.setRect(rect);
+      return peep;
+    };
+
+    const img = document.createElement("img");
+    const stage = { width: 0, height: 0 };
     const allPeeps: Peep[] = [];
     const availablePeeps: Peep[] = [];
-    const activePeeps: Peep[] = [];
+    const crowd: Peep[] = [];
 
     const createPeeps = () => {
+      const { rows: sheetRows, cols: sheetCols } = config;
+      const { naturalWidth: width, naturalHeight: height } = img;
+      const rectWidth = width / sheetRows;
+      const rectHeight = height / sheetCols;
+
       allPeeps.length = 0;
-      availablePeeps.length = 0;
-      activePeeps.length = 0;
-
-      const total = rows * cols;
-      for (let i = 0; i < total; i += 1) {
-        allPeeps.push({
-          frame: i,
-          x: 0,
-          y: 0,
-          anchorY: 0,
-          scale: 0.5,
-          scaleX: Math.random() > 0.5 ? 1 : -1,
-          startX: 0,
-          endX: 0,
-          walk: null,
-          bob: null,
-        });
+      for (let i = 0; i < sheetRows * sheetCols; i += 1) {
+        allPeeps.push(
+          createPeep({
+            image: img,
+            rect: [
+              (i % sheetRows) * rectWidth,
+              Math.floor(i / sheetRows) * rectHeight,
+              rectWidth,
+              rectHeight,
+            ],
+          }),
+        );
       }
-
-      availablePeeps.push(...allPeeps);
     };
 
-    const killPeepTweens = (peep: Peep) => {
-      peep.walk?.kill();
-      peep.bob?.kill();
-      peep.walk = null;
-      peep.bob = null;
+    const removePeepFromCrowd = (peep: Peep) => {
+      removeItemFromArray(crowd, peep);
+      availablePeeps.push(peep);
     };
 
-    const resetPeep = (peep: Peep) => {
-      killPeepTweens(peep);
+    const addPeepToCrowd = () => {
+      if (!availablePeeps.length) return null;
 
-      const compact = width < 640;
-      const scaleMin = compact ? 0.46 : 0.54;
-      const scaleMax = compact ? 0.64 : 0.84;
-      const travelPadding = Math.max(rectWidth * 0.52, width * 0.1);
-      const direction: 1 | -1 = Math.random() > 0.5 ? 1 : -1;
-      const scale = scaleMin + Math.random() * (scaleMax - scaleMin);
-      const anchorY = height * (0.68 + Math.random() * 0.27);
+      const peep = removeRandomFromArray(availablePeeps);
+      const walk = getRandomFromArray(walks)({ peep, props: resetPeep({ peep, stage }) }).eventCallback(
+        "onComplete",
+        () => {
+          removePeepFromCrowd(peep);
+          addPeepToCrowd();
+        },
+      );
 
-      peep.scale = scale;
-      peep.scaleX = direction === 1 ? 1 : -1;
-      peep.anchorY = anchorY;
-      peep.startX = direction === 1 ? -travelPadding : width + travelPadding;
-      peep.endX = direction === 1 ? width + travelPadding : -travelPadding;
-      peep.x = peep.startX;
-      peep.y = anchorY;
+      peep.walk = walk;
+      crowd.push(peep);
+      crowd.sort((a, b) => a.anchorY - b.anchorY);
+      return peep;
     };
 
-    const resetCrowd = () => {
-      if (spawnTimer) {
-        spawnTimer.kill();
-        spawnTimer = null;
-      }
-
-      for (const peep of allPeeps) killPeepTweens(peep);
-      activePeeps.length = 0;
-      availablePeeps.length = 0;
-
-      for (const peep of allPeeps) {
-        resetPeep(peep);
-        availablePeeps.push(peep);
+    const initCrowd = () => {
+      while (availablePeeps.length) {
+        const peep = addPeepToCrowd();
+        peep?.walk?.progress(Math.random());
       }
     };
 
     const render = () => {
-      context.setTransform(dpr, 0, 0, dpr, 0, 0);
-      context.clearRect(0, 0, width, height);
-
-      activePeeps.sort((a, b) => a.anchorY - b.anchorY);
-
-      for (const peep of activePeeps) {
-        const frameX = peep.frame % rows;
-        const frameY = Math.floor(peep.frame / rows);
-        const sourceX = frameX * rectWidth;
-        const sourceY = frameY * rectHeight;
-        const drawWidth = rectWidth * peep.scale;
-        const drawHeight = rectHeight * peep.scale;
-
-        context.save();
-        context.globalAlpha = 0.86;
-        context.translate(peep.x, peep.y - drawHeight);
-        context.scale(peep.scaleX, 1);
-        context.drawImage(
-          image,
-          sourceX,
-          sourceY,
-          rectWidth,
-          rectHeight,
-          -drawWidth / 2,
-          0,
-          drawWidth,
-          drawHeight,
-        );
-        context.restore();
-      }
-    };
-
-    const activatePeep = (peep: Peep, progress = Math.random()) => {
-      const distance = Math.abs(peep.endX - peep.startX);
-      const totalDuration = clamp(distance / (68 + Math.random() * 38), 8, 17);
-      const clampedProgress = clamp(progress, 0, 0.98);
-      const remainingDuration = Math.max(2.5, totalDuration * (1 - clampedProgress));
-      const bobHeight = Math.max(3, rectHeight * peep.scale * 0.05);
-
-      peep.x = peep.startX + (peep.endX - peep.startX) * clampedProgress;
-      peep.y = peep.anchorY;
-      activePeeps.push(peep);
-
-      peep.bob = gsap.to(peep, {
-        y: peep.anchorY - bobHeight,
-        duration: 0.22 + Math.random() * 0.08,
-        ease: 'sine.inOut',
-        repeat: -1,
-        yoyo: true,
-      });
-
-      peep.walk = gsap.to(peep, {
-        x: peep.endX,
-        duration: remainingDuration,
-        ease: 'none',
-        onComplete: () => {
-          const activeIndex = activePeeps.indexOf(peep);
-          if (activeIndex >= 0) activePeeps.splice(activeIndex, 1);
-          killPeepTweens(peep);
-          resetPeep(peep);
-          availablePeeps.push(peep);
-          scheduleSpawn();
-        },
-      });
-    };
-
-    const fillCrowd = () => {
-      const count = Math.min(targetActive, availablePeeps.length);
-      for (let i = 0; i < count; i += 1) {
-        const index = Math.floor(Math.random() * availablePeeps.length);
-        const peep = availablePeeps.splice(index, 1)[0];
-        activatePeep(peep, 0.04 + Math.random() * 0.92);
-      }
-    };
-
-    const scheduleSpawn = () => {
-      if (!running || reducedMotion || spawnTimer || activePeeps.length >= targetActive) return;
-
-      const delay = 0.14 + Math.random() * 0.4;
-      spawnTimer = gsap.delayedCall(delay, () => {
-        spawnTimer = null;
-        if (!running || availablePeeps.length === 0 || activePeeps.length >= targetActive) {
-          scheduleSpawn();
-          return;
-        }
-
-        const index = Math.floor(Math.random() * availablePeeps.length);
-        const peep = availablePeeps.splice(index, 1)[0];
-        activatePeep(peep, 0);
-        scheduleSpawn();
-      });
-    };
-
-    const placeStaticCrowd = () => {
-      const count = clamp(Math.round(width / 68), 5, 10);
-      for (let i = 0; i < count && availablePeeps.length; i += 1) {
-        const peep = availablePeeps.splice(Math.floor(Math.random() * availablePeeps.length), 1)[0];
-        const progress = (i + 1) / (count + 1);
-        peep.x = progress * width;
-        peep.y = peep.anchorY;
-        activePeeps.push(peep);
-      }
-    };
-
-    const start = () => {
-      if (!ready || running || !intersecting || !pageVisible) return;
-      running = true;
-      resetCrowd();
-
-      if (reducedMotion) {
-        placeStaticCrowd();
-        render();
-        return;
-      }
-
-      gsap.ticker.add(render);
-      fillCrowd();
-      scheduleSpawn();
-    };
-
-    const stop = () => {
-      if (!running) return;
-      running = false;
-      if (spawnTimer) {
-        spawnTimer.kill();
-        spawnTimer = null;
-      }
-      gsap.ticker.remove(render);
-      resetCrowd();
-      render();
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.save();
+      ctx.scale(window.devicePixelRatio || 1, window.devicePixelRatio || 1);
+      crowd.forEach((peep) => peep.render(ctx));
+      ctx.restore();
     };
 
     const resize = () => {
-      const bounds = stage.getBoundingClientRect();
-      width = Math.max(1, bounds.width);
-      height = Math.max(1, bounds.height);
-      dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+      stage.width = canvas.clientWidth;
+      stage.height = canvas.clientHeight;
 
-      canvas.width = Math.max(1, Math.round(width * dpr));
-      canvas.height = Math.max(1, Math.round(height * dpr));
-      canvas.style.width = `${width}px`;
-      canvas.style.height = `${height}px`;
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = stage.width * dpr;
+      canvas.height = stage.height * dpr;
 
-      rectWidth = image.naturalWidth / rows;
-      rectHeight = image.naturalHeight / cols;
-      const compact = width < 640;
-      targetActive = clamp(
-        Math.round(width / (compact ? 34 : 33)),
-        compact ? 8 : 18,
-        compact ? 14 : 38,
-      );
-
-      if (!ready || !rectWidth || !rectHeight) return;
-      resetCrowd();
-      if (running) {
-        if (reducedMotion) placeStaticCrowd();
-        else fillCrowd();
-      }
+      crowd.forEach((peep) => peep.walk?.kill());
+      crowd.length = 0;
+      availablePeeps.length = 0;
+      availablePeeps.push(...allPeeps);
+      initCrowd();
       render();
-      if (running && !reducedMotion) scheduleSpawn();
     };
 
-    const intersection = new IntersectionObserver(
-      ([entry]) => {
-        intersecting = entry.isIntersecting;
-        if (intersecting) start();
-        else stop();
-      },
-      { rootMargin: '280px 0px', threshold: 0.01 },
-    );
-
-    const handleVisibility = () => {
-      pageVisible = document.visibilityState === 'visible';
-      if (pageVisible) start();
-      else stop();
-    };
-
-    const handleImageError = () => {
-      ready = false;
-      canvas.dataset.error = 'true';
-    };
-
-    image.onload = () => {
-      rectWidth = image.naturalWidth / rows;
-      rectHeight = image.naturalHeight / cols;
-      if (!rectWidth || !rectHeight) return;
+    const init = () => {
       createPeeps();
-      ready = true;
-      canvas.dataset.error = 'false';
       resize();
-      if (intersecting) start();
+      gsap.ticker.add(render);
     };
-    image.onerror = handleImageError;
-    image.src = src;
 
-    intersection.observe(stage);
-    document.addEventListener('visibilitychange', handleVisibility);
+    img.onload = init;
+    img.onerror = () => {
+      canvas.dataset.error = "true";
+    };
 
-    const resizeObserver = new ResizeObserver(resize);
-    resizeObserver.observe(stage);
+    // Keep the public component API, but use the exact sprite used by the Skiper 39 reference.
+    img.src = SKIPER_SPRITE || config.src;
+
+    const handleResize = () => resize();
+    window.addEventListener("resize", handleResize);
 
     return () => {
-      stop();
-      resizeObserver.disconnect();
-      intersection.disconnect();
-      document.removeEventListener('visibilitychange', handleVisibility);
-      image.onload = null;
-      image.onerror = null;
+      window.removeEventListener("resize", handleResize);
+      gsap.ticker.remove(render);
+      crowd.forEach((peep) => peep.walk?.kill());
     };
-  }, [cols, rows, src]);
+  }, [src, rows, cols]);
 
-  return (
-    <div ref={stageRef} className="canvas-crowd-wrap" aria-hidden="true">
-      <canvas ref={canvasRef} className="canvas-crowd" />
-    </div>
-  );
+  return <canvas ref={canvasRef} className="absolute bottom-0 h-full w-full" aria-hidden="true" />;
 }
