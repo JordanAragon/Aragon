@@ -1,6 +1,6 @@
 'use client';
 
-import CanvasCrowd from './skiper/canvas-crowd';
+import CanvasCrowdExact from './skiper/canvas-crowd-exact';
 import TextScrollTitle from './skiper/text-scroll-title';
 
 const SKIPER_SPRITE = 'https://assets.codepen.io/721952/all-peeps.png';
@@ -23,8 +23,8 @@ export default function ContextSkiperSection() {
         .context-skiper-link{display:inline-flex;margin-top:28px;color:var(--ink);font-size:10px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;text-decoration:underline;text-underline-offset:5px}
         .context-skiper-visual{position:relative;min-height:100svh;overflow:hidden;background:#000}
         .context-skiper-stage{position:absolute;inset:0;width:100%;height:100%;overflow:hidden;background:#000}
-        .context-skiper-stage .canvas-crowd-wrap{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;overflow:hidden!important;z-index:1!important}
-        .context-skiper-stage .canvas-crowd{position:absolute!important;left:0!important;bottom:0!important;width:100%!important;height:100%!important;display:block!important;opacity:1!important;filter:none!important;mask-image:none!important;-webkit-mask-image:none!important}
+        .context-skiper-stage>canvas{position:absolute!important;left:0!important;bottom:0!important;width:100%!important;height:100%!important;display:block!important}
+        .context-skiper-stage::after{content:'SKIPER UI';position:absolute;left:18px;bottom:15px;z-index:3;color:rgba(255,255,255,.28);font:800 7px/1 var(--body);letter-spacing:.15em;text-transform:uppercase;pointer-events:none}
         @media (max-width:1100px){.context-skiper-grid{grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:34px}.context-skiper-copy .text-scroll-title{font-size:clamp(52px,7.4vw,90px)}}
         @media (max-width:780px){.context-skiper-grid{grid-template-columns:1fr;min-height:0;gap:0}.context-skiper-visual{min-height:72svh;order:-1}.context-skiper-copy{padding-block:64px 72px}.context-skiper-copy .text-scroll-title{font-size:clamp(50px,13vw,82px)}.context-skiper-copy>p{font-size:13px}.context-skiper-fact{grid-template-columns:72px minmax(0,1fr)}}
         @media (max-width:520px){.context-skiper-visual{min-height:64svh}.context-skiper-copy{padding-block:54px 64px}.context-skiper-copy .text-scroll-title{font-size:clamp(45px,13.5vw,66px)}.context-skiper-fact{gap:14px}}
@@ -49,7 +49,7 @@ export default function ContextSkiperSection() {
 
         <div className="context-skiper-visual" aria-hidden="true">
           <div className="context-skiper-stage">
-            <CanvasCrowd src={SKIPER_SPRITE} rows={15} cols={7} />
+            <CanvasCrowdExact src={SKIPER_SPRITE} rows={15} cols={7} />
           </div>
         </div>
       </div>
