@@ -1,8 +1,10 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import './polish.css';
 
 const siteUrl = 'https://jordanaragon.vercel.app';
+const siteDescription =
+  'Aragon diseña y desarrolla experiencias digitales, software y sistemas para convertir problemas reales en productos que la gente puede entender y usar.';
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -10,14 +12,19 @@ export const metadata: Metadata = {
     default: 'Aragon | Software · Digital · Technology',
     template: '%s | Aragon',
   },
-  description:
-    'Aragon diseña y desarrolla experiencias digitales, software y sistemas para convertir problemas reales en productos que la gente puede entender y usar.',
+  description: siteDescription,
   applicationName: 'Aragon',
+  category: 'portfolio',
   authors: [{ name: 'Jordan Aragon', url: siteUrl }],
   creator: 'Jordan Aragon',
   publisher: 'Jordan Aragon',
   keywords: ['Aragon', 'Jordan Aragon', 'software', 'desarrollo web', 'productos digitales', 'sistemas', 'UX', 'frontend', 'Cali', 'Colombia'],
   alternates: { canonical: siteUrl },
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
   openGraph: {
     title: 'Aragon | Software · Digital · Technology',
     description: 'Experiencias digitales, software y sistemas construidos con intención.',
@@ -41,8 +48,14 @@ export const metadata: Metadata = {
   icons: { icon: '/icon.svg' },
 };
 
-const structuredData = {
-  '@context': 'https://schema.org',
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  themeColor: '#f4f4f0',
+  colorScheme: 'light',
+};
+
+const person = {
   '@type': 'Person',
   name: 'Jordan Aragon',
   url: siteUrl,
@@ -50,6 +63,23 @@ const structuredData = {
   homeLocation: { '@type': 'Place', name: 'Cali, Colombia' },
   sameAs: ['https://github.com/JordanAragon', 'https://www.linkedin.com/in/jordanaragon/'],
 };
+
+const structuredData = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ProfilePage',
+    name: 'Jordan Aragon · Aragon',
+    url: siteUrl,
+    mainEntity: person,
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'Aragon',
+    url: siteUrl,
+    description: siteDescription,
+  },
+];
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
