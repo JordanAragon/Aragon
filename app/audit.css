@@ -89,6 +89,10 @@ body {
   backdrop-filter: blur(14px);
 }
 
+.scroll-reveal-trigger {
+  display: block;
+}
+
 .scroll-word {
   display: inline-block;
   will-change: transform, opacity, filter;
@@ -347,9 +351,9 @@ body {
   }
 
   .story-controls button {
-    width: 36px;
-    min-width: 36px;
-    height: 36px;
+    width: 44px;
+    min-width: 44px;
+    height: 44px;
   }
 
   .context-reset {
