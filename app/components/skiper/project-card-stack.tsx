@@ -20,7 +20,7 @@ type Props = {
 
 export default function ProjectCardStack({ cards, progress, activeIndex }: Props) {
   const stackRef = useRef<HTMLDivElement>(null);
-  const cardRefs = useRef<Array<HTMLDivElement | null>>([]);
+  const cardRefs = useRef<Array<HTMLElement | null>>([]);
 
   useEffect(() => {
     const stack = stackRef.current;
