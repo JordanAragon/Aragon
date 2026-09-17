@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import './polish.css';
+import './audit.css';
 import { site, siteUrl } from './data/site';
 
 export const metadata: Metadata = {
