@@ -5,25 +5,21 @@ import { motion, useReducedMotion } from 'motion/react';
 
 export default function Preloader() {
   const reduced = useReducedMotion();
-  const [phase, setPhase] = useState<'enter' | 'exit' | 'done'>('enter');
+  const [visible, setVisible] = useState(true);
 
   useEffect(() => {
-    const exitTimer = window.setTimeout(() => setPhase('exit'), reduced ? 80 : 760);
-    const doneTimer = window.setTimeout(() => setPhase('done'), reduced ? 220 : 1210);
-    return () => {
-      window.clearTimeout(exitTimer);
-      window.clearTimeout(doneTimer);
-    };
+    const timeout = window.setTimeout(() => setVisible(false), reduced ? 220 : 1050);
+    return () => window.clearTimeout(timeout);
   }, [reduced]);
 
-  if (phase === 'done') return null;
+  if (!visible) return null;
 
   return (
     <motion.div
       className="preloader"
       initial={{ opacity: 1 }}
-      animate={{ opacity: phase === 'exit' ? 0 : 1 }}
-      transition={{ duration: reduced ? 0.12 : 0.42, ease: [0.76, 0, 0.24, 1] }}
+      animate={{ opacity: visible ? 1 : 0 }}
+      transition={{ duration: reduced ? 0 : 0.45, ease: [0.76, 0, 0.24, 1] }}
       aria-hidden="true"
     >
       <div className="preloader-top"><span>ARAGON</span><span>2026 / 001</span></div>
@@ -32,7 +28,7 @@ export default function Preloader() {
         <div className="preloader-line"><i /></div>
         <span>SOFTWARE · DIGITAL · TECHNOLOGY</span>
       </div>
-      <div className="preloader-bottom"><span>JORDAN ARAGON</span><span>HECHO CON INTENCIÓN</span></div>
+      <div className="preloader-bottom"><span>JORDAN ARAGON</span><span>BUILT WITH INTENT</span></div>
     </motion.div>
   );
 }
