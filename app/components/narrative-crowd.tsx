@@ -61,7 +61,7 @@ export default function NarrativeCrowd() {
         </div>
 
         <div className="page-shell crowd-story-v4-footer" aria-hidden="true">
-          <span>PEOPLE</span><i><b style={{ scaleX: lineX }} /></i><span>PROCESS</span><i /><span>SYSTEM</span>
+          <span>PEOPLE</span><i><motion.b style={{ scaleX: lineX, transformOrigin: 'left' }} /></i><span>PROCESS</span><i /><span>SYSTEM</span>
         </div>
       </div>
     </section>

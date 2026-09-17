@@ -95,7 +95,7 @@ export default function Hero() {
 
           <div className="hero-v4-footer">
             <span>FROM IDEA TO SYSTEM</span>
-            <span className="hero-v4-progress"><i style={{ scaleX: lineProgress }} /></span>
+            <span className="hero-v4-progress"><motion.i style={{ scaleX: lineProgress, transformOrigin: 'left' }} /></span>
             <a href="#problema">SCROLL <b>↓</b></a>
           </div>
         </div>

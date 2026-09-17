@@ -99,7 +99,7 @@ export default function Preloader() {
           <b className="preloader-v4-caret" />
         </div>
         <div className="preloader-v4-meta"><span>SOFTWARE / DIGITAL / TECHNOLOGY</span><b>{String(pct).padStart(3, '0')}</b></div>
-        <div className="preloader-v4-bar"><i style={{ scaleX: progress }} /></div>
+        <div className="preloader-v4-bar"><motion.i style={{ scaleX: progress, transformOrigin: 'left' }} /></div>
       </div>
 
       <div className="preloader-v4-bottom"><span>LOADING ASSETS</span><span>EXPERIENCE / 01</span></div>
