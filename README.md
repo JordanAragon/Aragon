@@ -12,9 +12,9 @@ Sitio web de Aragon, la identidad digital de Jordan Aragon para diseño y desarr
 
 ## Arquitectura
 
-La homepage utiliza Server Components para el contenido estático y Client Components pequeños para las partes que necesitan interacción: navegación, hero, progreso de scroll, project story y agenda.
+La homepage utiliza Server Components para el contenido estático y Client Components pequeños para las partes que necesitan interacción: navegación, preloader, hero, progreso de scroll, reveals tipográficos, project story y agenda.
 
-Los proyectos de `app/data/projects.ts` que aparecen en la sección Lab son conceptos en desarrollo. Las etiquetas de stack indican dirección técnica o de producto propuesta y no deben interpretarse como productos lanzados o clientes reales.
+La sección Lab conserva un storytelling guiado por scroll: cuatro conceptos atraviesan una escena persistente con transiciones de imagen, dirección de movimiento, progreso continuo y controles manuales accesibles. Los proyectos de `app/data/projects.ts` que aparecen en la sección Lab son conceptos en desarrollo. Las etiquetas de stack indican dirección técnica o de producto propuesta y no deben interpretarse como productos lanzados o clientes reales.
 
 ## Scripts
 
@@ -30,7 +30,7 @@ Abrir `http://localhost:3000`.
 
 ## Configuración pública
 
-La URL canónica utiliza `NEXT_PUBLIC_SITE_URL` cuando está disponible. En Vercel también puede resolverse desde las variables de plataforma; el fallback actual apunta al deployment público `aragon-two.vercel.app` hasta que el dominio principal de Aragon quede enlazado al proyecto correcto.
+La URL canónica utiliza `NEXT_PUBLIC_SITE_URL` cuando está disponible. Sin esa variable, el fallback actual apunta al alias público del proyecto `aragon-jordanaragons-projects.vercel.app` hasta que el dominio principal de Aragon quede enlazado al proyecto correcto.
 
 ## Cal.com
 
