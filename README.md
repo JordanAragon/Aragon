@@ -39,3 +39,7 @@ La agenda se carga únicamente cuando la sección se acerca al viewport. Si el e
 ## Contenido y privacidad
 
 No se utilizan métricas ficticias como resultados reales. Los mockups conceptuales usan estados o datos de muestra. La visual pública de infraestructura no expone datos operacionales del servidor personal.
+
+## QA de producción
+
+Cada cambio relevante debe pasar `npm run build`, que ejecuta ESLint, TypeScript y el build de Next.js antes de considerarse listo para producción. La verificación final debe incluir navegación, storytelling por scroll, preloader, reduced motion, teclado, responsive y agenda Cal.com.
