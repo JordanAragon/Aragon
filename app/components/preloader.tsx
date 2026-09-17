@@ -17,10 +17,7 @@ export default function Preloader() {
   }, []);
 
   useEffect(() => {
-    if (reduced) {
-      setVisible(false);
-      return undefined;
-    }
+    if (reduced) return undefined;
 
     let raf = 0;
     let timeout = 0;
@@ -41,7 +38,7 @@ export default function Preloader() {
     };
   }, [reduced]);
 
-  if (!visible) return null;
+  if (reduced || !visible) return null;
   const pct = Math.round(progress * 100);
 
   return (
