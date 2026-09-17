@@ -83,9 +83,11 @@ export function ContextSection() {
         <div className="context-visual">
           <Image src="/projects/infrastructure-context.svg" alt="Mapa conceptual de una infraestructura personal con hardware, servicios y red privada" fill sizes="(max-width: 900px) 100vw, 58vw" />
           <div className="context-crowd-layer" aria-hidden="true">
-            <CanvasCrowd src="/images/peeps/aragon-crowd-sprite.svg" rows={15} cols={7} />
-            <ProgressiveBlur position="top" backgroundColor="var(--bg)" height={96} blurAmount={7} />
-            <ProgressiveBlur position="bottom" backgroundColor="var(--bg)" height={152} blurAmount={11} />
+            <div className="context-crowd-canvas">
+              <CanvasCrowd src="/images/peeps/aragon-crowd-sprite.svg" rows={15} cols={7} />
+              <ProgressiveBlur position="top" backgroundColor="var(--bg)" height={92} blurAmount={7} />
+              <ProgressiveBlur position="bottom" backgroundColor="var(--bg)" height={152} blurAmount={11} />
+            </div>
           </div>
           <div className="context-overlay" />
           <span className="context-stamp">CONTEXTO / 04</span>
