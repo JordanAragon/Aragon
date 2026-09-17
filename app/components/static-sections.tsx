@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import aragonServerImage from '../../img/aragon-server.png';
 import { IconBox, icons } from './icons';
 
 const problems = [
@@ -29,7 +28,7 @@ export function ProblemSection() {
           <div><span className="section-number">01</span><span className="section-label">EL PROBLEMA</span></div>
           <p>Los problemas digitales rara vez empiezan en el código.</p>
         </div>
-        <div className="problem-marquee" aria-hidden="true"><span>WHAT ISN’T WORKING?</span><span>WHAT ISN’T WORKING?</span></div>
+        <div className="problem-marquee" aria-hidden="true"><span>¿QUÉ NO ESTÁ FUNCIONANDO?</span><span>¿QUÉ NO ESTÁ FUNCIONANDO?</span></div>
         <div className="problem-statement">
           <h2 id="problem-title">Todo empieza con algo que <span>no funciona como debería.</span></h2>
           <p>Una marca que no se entiende. Un proceso que se complica. Un producto que se queda a medias.</p>
@@ -54,8 +53,8 @@ export function CapabilitiesSection() {
     <section id="capacidades" className="capabilities section-shell" aria-labelledby="capabilities-title">
       <div className="page-shell">
         <div className="section-heading">
-          <div><span className="section-number">02</span><span className="section-label">LO QUE CONSTRUIMOS</span></div>
-          <h2 id="capabilities-title">No vendemos<br /><span>categorías.</span></h2>
+          <div><span className="section-number">02</span><span className="section-label">LO QUE CONSTRUYO</span></div>
+          <h2 id="capabilities-title">No vendo<br /><span>categorías.</span></h2>
         </div>
         <p className="section-lead">A veces es una web. A veces es un sistema. A veces es un producto entero. Lo importante es qué necesita existir para resolver el problema.</p>
         <div className="capability-grid">
@@ -79,9 +78,9 @@ export function ContextSection() {
     <section id="contexto" className="context section-shell" aria-labelledby="context-title">
       <div className="page-shell context-grid">
         <div className="context-visual">
-          <Image src={aragonServerImage} alt="Infraestructura personal de Aragon" fill sizes="(max-width: 900px) 100vw, 58vw" quality={72} />
+          <Image src="/projects/infrastructure-context.svg" alt="Mapa conceptual de una infraestructura personal con hardware, servicios y red privada" fill sizes="(max-width: 900px) 100vw, 58vw" />
           <div className="context-overlay" />
-          <span className="context-stamp">CONTEXT / 04</span>
+          <span className="context-stamp">CONTEXTO / 04</span>
           <span className="context-coordinates">HARDWARE · NETWORK · SOFTWARE · SYSTEMS</span>
         </div>
         <div className="context-copy">
@@ -93,7 +92,7 @@ export function ContextSection() {
             <div><small>ENFOQUE</small><b>Producto / Experiencia</b></div>
             <div><small>ORIGEN</small><b>Cali, Colombia</b></div>
           </div>
-          <a href="https://github.com/JordanAragon" target="_blank" rel="noopener noreferrer" className="under-link">Conocer el trabajo técnico ↗</a>
+          <a href="https://github.com/JordanAragon" target="_blank" rel="noopener noreferrer" className="under-link">Ver trabajo técnico ↗</a>
         </div>
       </div>
     </section>
