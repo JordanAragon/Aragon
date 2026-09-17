@@ -1,27 +1,24 @@
 # Aragon
 
-Sitio web de Aragon, un emprendimiento enfocado en desarrollo web, software y soluciones tecnológicas.
-
-## Dirección
-
-La web utiliza una estética editorial y minimalista con blanco como color principal, tipografía de gran escala, grid limpio, líneas sutiles y microinteracciones discretas.
-
-## Estructura
-
-- Inicio / propuesta de valor
-- Enfoque de trabajo
-- Servicios
-- Proyectos seleccionados
-- Sobre Aragon
-- Presencia digital
-- Contacto
+Sitio web de Aragon, un emprendimiento orientado al desarrollo web, software y soluciones digitales.
 
 ## Stack
 
-HTML semántico, CSS propio y JavaScript vanilla. No depende de Bootstrap ni de un framework para la interfaz principal.
+- Next.js 16.3.5
+- React 19.3
+- TypeScript
+- Motion
+- CSS propio
 
-## Perfiles
+## Dirección
 
-- GitHub: https://github.com/JordanAragon
-- LinkedIn: https://www.linkedin.com/in/jordanaragon/
-- Portafolio: https://jordanaragon.vercel.app/
+La interfaz usa una estética editorial y minimalista con blanco como base, negro profundo para contraste y una escala tipográfica amplia. El contenido prioriza servicios, proyectos, trabajo personal y contacto.
+
+## Desarrollo local
+
+```bash
+npm install
+npm run dev
+```
+
+Abrir `http://localhost:3000`.
