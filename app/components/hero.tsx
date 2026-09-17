@@ -47,7 +47,7 @@ export default function Hero() {
       <motion.div className="hero-content page-shell" style={{ y: heroTextY, opacity: heroOpacity }}>
         <div className="hero-topline">
           <span>IDEA → PROBLEMA → SISTEMA</span>
-          <span>BUILT WITH INTENT</span>
+          <span>HECHO CON INTENCIÓN</span>
         </div>
 
         <motion.h1 id="hero-title" style={{ scale: heroScale }} initial={false}>
@@ -61,10 +61,10 @@ export default function Hero() {
         <div className="hero-bottom">
           <div className="hero-copy">
             <span className="hero-index">LA PREMISA</span>
-            <p>Aragon es el espacio de Jordan Aragon para diseñar y desarrollar experiencias digitales, software y sistemas alrededor de problemas reales.</p>
+            <p>Diseño y desarrollo experiencias digitales, software y sistemas alrededor de problemas reales.</p>
           </div>
           <a href="#trabajo" className="hero-cta">
-            <span>Ver lo que construimos</span>
+            <span>Ver lo que construyo</span>
             <IconBox>{icons.arrow}</IconBox>
           </a>
         </div>
