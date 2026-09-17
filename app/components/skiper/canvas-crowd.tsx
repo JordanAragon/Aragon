@@ -139,6 +139,7 @@ export default function CanvasCrowd({ src, rows = 15, cols = 7 }: Props) {
     const allPeeps: Peep[] = [];
     const availablePeeps: Peep[] = [];
     const crowd: Peep[] = [];
+    let usingFallback = false;
 
     const createPeeps = () => {
       const { rows: sheetRows, cols: sheetCols } = config;
@@ -225,11 +226,16 @@ export default function CanvasCrowd({ src, rows = 15, cols = 7 }: Props) {
 
     img.onload = init;
     img.onerror = () => {
+      if (!usingFallback && config.src && config.src !== SKIPER_SPRITE) {
+        usingFallback = true;
+        img.src = config.src;
+        return;
+      }
       canvas.dataset.error = "true";
     };
 
-    // Keep the public component API, but use the exact sprite used by the Skiper 39 reference.
-    img.src = SKIPER_SPRITE || config.src;
+    // The reference uses the exact public sprite behind Skiper 39.
+    img.src = SKIPER_SPRITE;
 
     const handleResize = () => resize();
     window.addEventListener("resize", handleResize);
