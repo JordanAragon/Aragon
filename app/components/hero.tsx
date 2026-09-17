@@ -5,105 +5,98 @@ import { motion, useReducedMotion, useScroll, useSpring, useTransform } from 'mo
 import { useRef } from 'react';
 import { IconBox, icons } from './icons';
 
-const letters = 'ARAGON'.split('');
+const word = 'ARAGON'.split('');
 
 export default function Hero() {
-  const heroRef = useRef<HTMLElement>(null);
+  const ref = useRef<HTMLElement>(null);
   const reduced = useReducedMotion();
-  const rawProgress = useScroll({ target: heroRef, offset: ['start start', 'end end'] }).scrollYProgress;
-  const progress = useSpring(rawProgress, { stiffness: 90, damping: 28, mass: 0.28 });
+  const raw = useScroll({ target: ref, offset: ['start start', 'end end'] }).scrollYProgress;
+  const progress = useSpring(raw, { stiffness: 85, damping: 30, mass: 0.25 });
 
-  const wordY = useTransform(progress, [0, 0.45, 1], [0, reduced ? 0 : -80, reduced ? 0 : -160]);
-  const wordScale = useTransform(progress, [0, 0.52, 1], [1, reduced ? 1 : 0.9, reduced ? 1 : 0.74]);
-  const visualY = useTransform(progress, [0, 0.42, 1], [80, reduced ? 0 : -10, reduced ? 0 : -135]);
-  const visualScale = useTransform(progress, [0, 0.5, 1], [0.84, reduced ? 0.94 : 1.02, reduced ? 0.94 : 1.12]);
-  const visualRotate = useTransform(progress, [0, 0.52, 1], [2.5, reduced ? 0 : -2, reduced ? 0 : -6]);
-  const copyOpacity = useTransform(progress, [0.25, 0.48, 0.68], [1, 1, 0]);
-  const secondOpacity = useTransform(progress, [0.4, 0.58, 0.76], [0, 1, 0]);
-  const thirdOpacity = useTransform(progress, [0.66, 0.82, 1], [0, 1, 1]);
-  const lineScale = useTransform(progress, [0, 1], [0, 1]);
+  const wordY = useTransform(progress, [0, 0.35, 1], [0, reduced ? 0 : -26, reduced ? 0 : -84]);
+  const wordScale = useTransform(progress, [0, 0.42, 1], [1, reduced ? 1 : 0.96, reduced ? 1 : 0.78]);
+  const visualY = useTransform(progress, [0, 0.35, 0.72, 1], [22, reduced ? 0 : -8, reduced ? 0 : -54, reduced ? 0 : -92]);
+  const visualScale = useTransform(progress, [0, 0.4, 0.78, 1], [0.92, reduced ? 0.96 : 1, reduced ? 1.04 : 1.12, reduced ? 0.98 : 1.16]);
+  const visualRotate = useTransform(progress, [0, 0.4, 1], [1.6, reduced ? 0 : -1, reduced ? 0 : -3]);
+  const heroCopyOpacity = useTransform(progress, [0, 0.22, 0.34], [1, 1, 0]);
+  const bridgeOpacity = useTransform(progress, [0.24, 0.34, 0.57, 0.68], [0, 1, 1, 0]);
+  const bridgeY = useTransform(progress, [0.24, 0.36, 0.68], [38, 0, -22]);
+  const finalOpacity = useTransform(progress, [0.6, 0.74, 1], [0, 1, 1]);
+  const finalY = useTransform(progress, [0.6, 0.76, 1], [28, 0, reduced ? 0 : -10]);
+  const lineProgress = useTransform(progress, [0, 1], [0, 1]);
 
   return (
-    <section id="inicio" ref={heroRef} className="hero-v3" aria-labelledby="hero-title">
-      <div className="hero-v3-grid" aria-hidden="true" />
-      <div className="hero-v3-glow" aria-hidden="true" />
-      <div className="hero-v3-ghost">ARAGON</div>
-
-      <div className="hero-v3-stage">
-        <div className="page-shell hero-v3-shell">
-          <header className="hero-v3-topline">
-            <span className="hero-v3-status"><i /> ONLINE / 2026</span>
-            <span>SOFTWARE · DIGITAL · TECHNOLOGY</span>
+    <section id="inicio" ref={ref} className="hero-v4" aria-labelledby="hero-title">
+      <div className="hero-v4-stage">
+        <div className="hero-v4-grid" aria-hidden="true" />
+        <div className="hero-v4-orbit hero-v4-orbit-a" aria-hidden="true" />
+        <div className="hero-v4-orbit hero-v4-orbit-b" aria-hidden="true" />
+        <div className="page-shell hero-v4-shell">
+          <div className="hero-v4-topline">
+            <span><i /> ARAGON / 2026</span>
+            <span>SOFTWARE · DIGITAL · SYSTEMS</span>
             <span>COLOMBIA / WORLDWIDE</span>
-          </header>
+          </div>
 
-          <div className="hero-v3-wordmark" aria-label="Aragon">
-            <motion.div style={{ y: wordY, scale: wordScale }} className="hero-v3-wordmark-track">
-              {letters.map((letter, index) => (
+          <div className="hero-v4-brandline" aria-label="Aragon">
+            <motion.div className="hero-v4-brandline-track" style={{ y: wordY, scale: wordScale }}>
+              {word.map((letter, index) => (
                 <motion.span
                   key={`${letter}-${index}`}
-                  initial={{ opacity: 0, y: 42, rotateX: 65 }}
+                  initial={{ opacity: 0, y: 44, rotateX: 62 }}
                   animate={{ opacity: 1, y: 0, rotateX: 0 }}
-                  transition={{ delay: 0.16 + index * 0.07, duration: 0.72, ease: [0.16, 1, 0.3, 1] }}
+                  transition={{ delay: 0.12 + index * 0.075, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
                 >
                   {letter}
                 </motion.span>
               ))}
+              <b className="hero-v4-caret" aria-hidden="true" />
             </motion.div>
           </div>
 
-          <div className="hero-v3-main">
-            <motion.div className="hero-v3-copy" style={{ opacity: copyOpacity }}>
-              <span className="hero-v3-index">01 / THE PREMISE</span>
+          <motion.div className="hero-v4-phase hero-v4-phase-main" style={{ opacity: heroCopyOpacity }}>
+            <div className="hero-v4-copy">
+              <span className="hero-v4-kicker">01 / FROM IDEA TO SYSTEM</span>
               <h1 id="hero-title">Lo complejo puede <em>sentirse simple.</em></h1>
               <p>
-                Diseño y desarrollo experiencias digitales, software y sistemas para que las ideas dejen de ser piezas sueltas y empiecen a funcionar como una sola cosa.
+                Diseño y desarrollo experiencias digitales, software y sistemas que conectan lo que hoy está disperso.
               </p>
-              <div className="hero-v3-actions">
-                <a href="#trabajo" className="hero-v3-primary">Explorar el trabajo <IconBox>{icons.arrow}</IconBox></a>
-                <a href="#contacto" className="hero-v3-link">Contar un problema ↗</a>
+              <div className="hero-v4-actions">
+                <a href="#trabajo" className="hero-v4-primary">Explorar el trabajo <IconBox>{icons.arrow}</IconBox></a>
+                <a href="#contacto" className="hero-v4-text-link">Contar un problema ↗</a>
               </div>
-            </motion.div>
-
-            <motion.div className="hero-v3-visual" style={{ y: visualY, scale: visualScale, rotate: visualRotate }}>
-              <div className="hero-v3-frame">
-                <div className="hero-v3-frame-head">
-                  <span>ARAGON / SYSTEM PREVIEW</span>
-                  <span>LIVE CONCEPT</span>
-                </div>
-                <div className="hero-v3-image">
-                  <Image src="/img/portafolio.png" alt="Interfaces y sistemas digitales de Aragon" fill priority sizes="(max-width: 900px) 96vw, 59vw" />
-                </div>
-                <div className="hero-v3-window-note hero-v3-window-note-a">WEB / PRODUCT</div>
-                <div className="hero-v3-window-note hero-v3-window-note-b">SYSTEM / DATA</div>
-                <div className="hero-v3-frame-foot"><span>SCROLL TO BREAK IT APART</span><span>↘</span></div>
-              </div>
-
-              <div className="hero-v3-mini hero-v3-mini-a">
-                <Image src="/img/aragon-server.png" alt="Terminal e infraestructura de Aragon" fill sizes="260px" />
-                <span>INFRA / 01</span>
-              </div>
-              <div className="hero-v3-mini hero-v3-mini-b">
-                <Image src="/img/aiden.png" alt="Producto digital de Aragon" fill sizes="290px" />
-                <span>PRODUCT / 02</span>
-              </div>
-            </motion.div>
-
-            <motion.div className="hero-v3-beat hero-v3-beat-two" style={{ opacity: secondOpacity }} aria-hidden="true">
-              <span>02 / THE FRICTION</span>
-              <p>No necesitas otra herramienta.<br /><em>Necesitas que las piezas conversen.</em></p>
-            </motion.div>
-
-            <motion.div className="hero-v3-beat hero-v3-beat-three" style={{ opacity: thirdOpacity }} aria-hidden="true">
-              <span>03 / THE BUILD</span>
-              <p>Problema → sistema → experiencia.</p>
-            </motion.div>
-
-            <div className="hero-v3-foot">
-              <span>FROM IDEA TO SYSTEM</span>
-              <span className="hero-v3-foot-line"><motion.i initial={{ scaleX: 0 }} animate={{ scaleX: lineScale }} /></span>
-              <a href="#problema">KEEP SCROLLING <b>↓</b></a>
             </div>
+
+            <motion.figure className="hero-v4-showcase" style={{ y: visualY, scale: visualScale, rotate: visualRotate }}>
+              <div className="hero-v4-showcase-top"><span>ARAGON / PRODUCT VIEW</span><span>SCROLL / 01</span></div>
+              <div className="hero-v4-showcase-image">
+                <Image src="/img/portafolio.png" alt="Interfaces y sistemas digitales de Aragon" fill priority sizes="(max-width: 1000px) 94vw, 62vw" />
+                <span className="hero-v4-tag hero-v4-tag-a">WEB / PRODUCT</span>
+                <span className="hero-v4-tag hero-v4-tag-b">SYSTEM / DATA</span>
+              </div>
+              <figcaption><span>Design / Development / Infrastructure</span><span>↘</span></figcaption>
+            </motion.figure>
+          </motion.div>
+
+          <motion.div className="hero-v4-phase hero-v4-phase-bridge" style={{ opacity: bridgeOpacity, y: bridgeY }} aria-hidden="true">
+            <span className="hero-v4-kicker">02 / THE FRICTION</span>
+            <div className="hero-v4-bridge-copy"><p>El problema casi nunca es que falte otra herramienta.</p><strong>Es que las piezas <em>no conversan.</em></strong></div>
+            <div className="hero-v4-bridge-rail"><span>TOOLS</span><i /><span>DATA</span><i /><span>PEOPLE</span><i /><span>PRODUCT</span></div>
+          </motion.div>
+
+          <motion.div className="hero-v4-phase hero-v4-phase-final" style={{ opacity: finalOpacity, y: finalY }} aria-hidden="true">
+            <span className="hero-v4-kicker">03 / THE BUILD</span>
+            <div className="hero-v4-final-wrap">
+              <p>Una sola dirección.</p>
+              <h2>Un sistema que <em>se entiende.</em></h2>
+              <a href="#capacidades" className="hero-v4-underline">Ver cómo se construye ↗</a>
+            </div>
+          </motion.div>
+
+          <div className="hero-v4-footer">
+            <span>FROM IDEA TO SYSTEM</span>
+            <span className="hero-v4-progress"><i style={{ scaleX: lineProgress }} /></span>
+            <a href="#problema">SCROLL <b>↓</b></a>
           </div>
         </div>
       </div>
