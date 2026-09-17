@@ -1,93 +1,315 @@
 'use client';
 
+import { gsap } from 'gsap';
 import { useEffect, useRef } from 'react';
 
-export default function CanvasCrowd() {
+type Props = {
+  src: string;
+  rows?: number;
+  cols?: number;
+};
+
+type Peep = {
+  frame: number;
+  x: number;
+  y: number;
+  anchorY: number;
+  scale: number;
+  scaleX: 1 | -1;
+  startX: number;
+  endX: number;
+  walk: { kill: () => void } | null;
+  bob: { kill: () => void } | null;
+};
+
+const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
+
+export default function CanvasCrowd({ src, rows = 15, cols = 7 }: Props) {
+  const stageRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
+    const stage = stageRef.current;
     const canvas = canvasRef.current;
-    if (!canvas) return;
-    const context = canvas.getContext('2d');
+    if (!stage || !canvas) return;
+
+    const context = canvas.getContext('2d', { alpha: true });
     if (!context) return;
 
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const figures = Array.from({ length: 18 }, () => ({
-      x: Math.random(),
-      y: 0.55 + Math.random() * 0.32,
-      scale: 0.55 + Math.random() * 0.65,
-      speed: 0.006 + Math.random() * 0.012,
-      phase: Math.random() * Math.PI * 2,
-      alpha: 0.11 + Math.random() * 0.12,
-    }));
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const image = new window.Image();
+    image.decoding = 'async';
 
-    const resize = () => {
-      const rect = canvas.getBoundingClientRect();
-      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
-      canvas.width = Math.max(1, Math.round(rect.width * dpr));
-      canvas.height = Math.max(1, Math.round(rect.height * dpr));
-      context.setTransform(dpr, 0, 0, dpr, 0, 0);
-    };
+    let ready = false;
+    let running = false;
+    let intersecting = false;
+    let pageVisible = document.visibilityState === 'visible';
+    let width = 1;
+    let height = 1;
+    let dpr = 1;
+    let rectWidth = 0;
+    let rectHeight = 0;
+    let maxActive = 5;
+    let spawnTimer: { kill: () => void } | null = null;
 
-    const drawFigure = (figure: typeof figures[number], width: number, height: number, time: number) => {
-      const x = figure.x * width;
-      const ground = figure.y * height;
-      const unit = Math.max(7, Math.min(width, height) * 0.018) * figure.scale;
-      const stride = reduced ? 0 : Math.sin(time * 0.003 + figure.phase) * unit * 0.32;
+    const allPeeps: Peep[] = [];
+    const availablePeeps: Peep[] = [];
+    const activePeeps: Peep[] = [];
 
-      context.save();
-      context.translate(x, ground);
-      context.globalAlpha = figure.alpha;
-      context.fillStyle = '#080809';
-      context.strokeStyle = '#080809';
-      context.lineWidth = Math.max(0.8, unit * 0.12);
-      context.lineCap = 'round';
+    const createPeeps = () => {
+      allPeeps.length = 0;
+      availablePeeps.length = 0;
+      activePeeps.length = 0;
 
-      context.beginPath();
-      context.arc(0, -unit * 1.55, unit * 0.34, 0, Math.PI * 2);
-      context.fill();
-
-      context.beginPath();
-      context.moveTo(0, -unit * 1.16);
-      context.lineTo(-stride * 0.18, -unit * 0.15);
-      context.moveTo(0, -unit * 1.04);
-      context.lineTo(-unit * 0.62, -unit * 0.52 + stride * 0.2);
-      context.moveTo(0, -unit * 1.02);
-      context.lineTo(unit * 0.58, -unit * 0.47 - stride * 0.2);
-      context.moveTo(-stride * 0.18, -unit * 0.15);
-      context.lineTo(-unit * 0.48 - stride, unit * 0.72);
-      context.moveTo(-stride * 0.18, -unit * 0.15);
-      context.lineTo(unit * 0.48 + stride, unit * 0.72);
-      context.stroke();
-      context.restore();
-    };
-
-    let frame = 0;
-    const loop = (time: number) => {
-      const width = canvas.clientWidth;
-      const height = canvas.clientHeight;
-      context.clearRect(0, 0, width, height);
-
-      for (const figure of figures) {
-        drawFigure(figure, width, height, time);
-        if (!reduced) {
-          figure.x += figure.speed * 0.0015;
-          if (figure.x > 1.08) figure.x = -0.08;
-        }
+      const total = rows * cols;
+      for (let i = 0; i < total; i += 1) {
+        allPeeps.push({
+          frame: i,
+          x: 0,
+          y: 0,
+          anchorY: 0,
+          scale: 0.5,
+          scaleX: Math.random() > 0.5 ? 1 : -1,
+          startX: 0,
+          endX: 0,
+          walk: null,
+          bob: null,
+        });
       }
 
-      if (!reduced) frame = window.requestAnimationFrame(loop);
+      availablePeeps.push(...allPeeps);
     };
 
-    resize();
-    window.addEventListener('resize', resize, { passive: true });
-    frame = window.requestAnimationFrame(loop);
+    const killPeepTweens = (peep: Peep) => {
+      peep.walk?.kill();
+      peep.bob?.kill();
+      peep.walk = null;
+      peep.bob = null;
+    };
+
+    const resetPeep = (peep: Peep) => {
+      killPeepTweens(peep);
+
+      const compact = width < 640;
+      const scaleMin = compact ? 0.32 : 0.38;
+      const scaleMax = compact ? 0.46 : 0.58;
+      const travelPadding = rectWidth * 0.55;
+      const direction: 1 | -1 = Math.random() > 0.5 ? 1 : -1;
+      const scale = scaleMin + Math.random() * (scaleMax - scaleMin);
+      const anchorY = height * (0.76 + Math.random() * 0.19);
+
+      peep.scale = scale;
+      peep.scaleX = direction === 1 ? 1 : -1;
+      peep.anchorY = anchorY;
+      peep.startX = direction === 1 ? -travelPadding : width + travelPadding;
+      peep.endX = direction === 1 ? width + travelPadding : -travelPadding;
+      peep.x = peep.startX;
+      peep.y = anchorY;
+    };
+
+    const resetCrowd = () => {
+      if (spawnTimer) {
+        spawnTimer.kill();
+        spawnTimer = null;
+      }
+
+      for (const peep of allPeeps) killPeepTweens(peep);
+      activePeeps.length = 0;
+      availablePeeps.length = 0;
+
+      for (const peep of allPeeps) {
+        resetPeep(peep);
+        availablePeeps.push(peep);
+      }
+
+      if (reducedMotion) {
+        const count = clamp(Math.round(width / 115), 3, 6);
+        for (let i = 0; i < count && availablePeeps.length; i += 1) {
+          const peep = availablePeeps.splice(Math.floor(Math.random() * availablePeeps.length), 1)[0];
+          peep.x = ((i + 1) / (count + 1)) * width + (Math.random() - 0.5) * 22;
+          peep.y = height * (0.82 + Math.random() * 0.1);
+          activePeeps.push(peep);
+        }
+      }
+    };
+
+    const render = () => {
+      context.setTransform(dpr, 0, 0, dpr, 0, 0);
+      context.clearRect(0, 0, width, height);
+
+      activePeeps.sort((a, b) => a.anchorY - b.anchorY);
+
+      for (const peep of activePeeps) {
+        const frameX = peep.frame % rows;
+        const frameY = Math.floor(peep.frame / rows);
+        const sourceX = frameX * rectWidth;
+        const sourceY = frameY * rectHeight;
+        const drawWidth = rectWidth * peep.scale;
+        const drawHeight = rectHeight * peep.scale;
+
+        context.save();
+        context.globalAlpha = 0.42;
+        context.translate(peep.x, peep.y - drawHeight);
+        context.scale(peep.scaleX, 1);
+        context.drawImage(
+          image,
+          sourceX,
+          sourceY,
+          rectWidth,
+          rectHeight,
+          -drawWidth / 2,
+          0,
+          drawWidth,
+          drawHeight,
+        );
+        context.restore();
+      }
+    };
+
+    const scheduleSpawn = () => {
+      if (!running || reducedMotion || spawnTimer) return;
+
+      const delay = 0.7 + Math.random() * 1.2;
+      spawnTimer = gsap.delayedCall(delay, () => {
+        spawnTimer = null;
+        if (!running || availablePeeps.length === 0 || activePeeps.length >= maxActive) {
+          scheduleSpawn();
+          return;
+        }
+
+        const index = Math.floor(Math.random() * availablePeeps.length);
+        const peep = availablePeeps.splice(index, 1)[0];
+        const distance = Math.abs(peep.endX - peep.startX);
+        const duration = clamp(distance / (90 + Math.random() * 45), 7.5, 15);
+        const bobHeight = Math.max(2, rectHeight * peep.scale * 0.035);
+
+        peep.x = peep.startX;
+        peep.y = peep.anchorY;
+        activePeeps.push(peep);
+
+        peep.bob = gsap.to(peep, {
+          y: peep.anchorY - bobHeight,
+          duration: 0.24,
+          ease: 'sine.inOut',
+          repeat: -1,
+          yoyo: true,
+        });
+
+        peep.walk = gsap.to(peep, {
+          x: peep.endX,
+          duration,
+          ease: 'none',
+          onComplete: () => {
+            const activeIndex = activePeeps.indexOf(peep);
+            if (activeIndex >= 0) activePeeps.splice(activeIndex, 1);
+            killPeepTweens(peep);
+            resetPeep(peep);
+            availablePeeps.push(peep);
+            scheduleSpawn();
+          },
+        });
+
+        scheduleSpawn();
+      });
+    };
+
+    const start = () => {
+      if (!ready || running || !intersecting || !pageVisible) return;
+      running = true;
+      resetCrowd();
+      if (reducedMotion) {
+        render();
+        return;
+      }
+      gsap.ticker.add(render);
+      scheduleSpawn();
+    };
+
+    const stop = () => {
+      if (!running) return;
+      running = false;
+      if (spawnTimer) {
+        spawnTimer.kill();
+        spawnTimer = null;
+      }
+      gsap.ticker.remove(render);
+      resetCrowd();
+      render();
+    };
+
+    const resize = () => {
+      const bounds = stage.getBoundingClientRect();
+      width = Math.max(1, bounds.width);
+      height = Math.max(1, bounds.height);
+      dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+
+      canvas.width = Math.max(1, Math.round(width * dpr));
+      canvas.height = Math.max(1, Math.round(height * dpr));
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+
+      rectWidth = image.naturalWidth / rows;
+      rectHeight = image.naturalHeight / cols;
+      maxActive = clamp(Math.round(width / (width < 640 ? 118 : 150)), 4, 10);
+
+      if (!ready || !rectWidth || !rectHeight) return;
+      resetCrowd();
+      render();
+      if (running && !reducedMotion) scheduleSpawn();
+    };
+
+    const intersection = new IntersectionObserver(
+      ([entry]) => {
+        intersecting = entry.isIntersecting;
+        if (intersecting) start();
+        else stop();
+      },
+      { rootMargin: '240px 0px', threshold: 0.01 },
+    );
+
+    const handleVisibility = () => {
+      pageVisible = document.visibilityState === 'visible';
+      if (pageVisible) start();
+      else stop();
+    };
+
+    const handleImageError = () => {
+      ready = false;
+      canvas.dataset.error = 'true';
+    };
+
+    image.onload = () => {
+      rectWidth = image.naturalWidth / rows;
+      rectHeight = image.naturalHeight / cols;
+      if (!rectWidth || !rectHeight) return;
+      createPeeps();
+      ready = true;
+      canvas.dataset.error = 'false';
+      resize();
+      if (intersecting) start();
+    };
+    image.onerror = handleImageError;
+    image.src = src;
+
+    intersection.observe(stage);
+    document.addEventListener('visibilitychange', handleVisibility);
+
+    const resizeObserver = new ResizeObserver(resize);
+    resizeObserver.observe(stage);
 
     return () => {
-      window.removeEventListener('resize', resize);
-      if (frame) window.cancelAnimationFrame(frame);
+      stop();
+      resizeObserver.disconnect();
+      intersection.disconnect();
+      document.removeEventListener('visibilitychange', handleVisibility);
+      image.onload = null;
+      image.onerror = null;
     };
-  }, []);
+  }, [cols, rows, src]);
 
-  return <canvas ref={canvasRef} className="canvas-crowd" aria-hidden="true" />;
+  return (
+    <div ref={stageRef} className="canvas-crowd-wrap" aria-hidden="true">
+      <canvas ref={canvasRef} className="canvas-crowd" />
+    </div>
+  );
 }
