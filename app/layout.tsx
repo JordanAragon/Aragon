@@ -22,7 +22,12 @@ const calBootstrap = `(function (C, A, L) {
     if (!cal.loaded) {
       cal.ns = {};
       cal.q = cal.q || [];
-      d.head.appendChild(d.createElement('script')).src = A;
+      const script = d.createElement('script');
+      script.src = A;
+      script.async = true;
+      script.dataset.calScript = 'aragon';
+      script.addEventListener('load', function () { script.dataset.calLoaded = 'true'; });
+      d.head.appendChild(script);
       cal.loaded = true;
     }
     if (ar[0] === L) {
