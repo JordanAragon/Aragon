@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { IconBox, icons } from './icons';
 import CanvasCrowd from './skiper/canvas-crowd';
+import ProgressiveBlur from './skiper/progressive-blur';
 import TextScrollTitle from './skiper/text-scroll-title';
 
 const problems = [
@@ -81,7 +82,11 @@ export function ContextSection() {
       <div className="page-shell context-grid">
         <div className="context-visual">
           <Image src="/projects/infrastructure-context.svg" alt="Mapa conceptual de una infraestructura personal con hardware, servicios y red privada" fill sizes="(max-width: 900px) 100vw, 58vw" />
-          <CanvasCrowd />
+          <div className="context-crowd-layer" aria-hidden="true">
+            <CanvasCrowd src="/images/peeps/aragon-crowd-sprite.svg" rows={15} cols={7} />
+            <ProgressiveBlur position="top" backgroundColor="var(--bg)" height={96} blurAmount={7} />
+            <ProgressiveBlur position="bottom" backgroundColor="var(--bg)" height={152} blurAmount={11} />
+          </div>
           <div className="context-overlay" />
           <span className="context-stamp">CONTEXTO / 04</span>
           <span className="context-coordinates">HARDWARE · NETWORK · SOFTWARE · SYSTEMS</span>
