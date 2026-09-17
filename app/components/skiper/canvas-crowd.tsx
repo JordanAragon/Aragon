@@ -9,6 +9,8 @@ type Props = {
   cols?: number;
 };
 
+type TweenHandle = { kill: () => void };
+
 type Peep = {
   frame: number;
   x: number;
@@ -18,8 +20,8 @@ type Peep = {
   scaleX: 1 | -1;
   startX: number;
   endX: number;
-  walk: { kill: () => void } | null;
-  bob: { kill: () => void } | null;
+  walk: TweenHandle | null;
+  bob: TweenHandle | null;
 };
 
 const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
@@ -49,8 +51,8 @@ export default function CanvasCrowd({ src, rows = 15, cols = 7 }: Props) {
     let dpr = 1;
     let rectWidth = 0;
     let rectHeight = 0;
-    let maxActive = 5;
-    let spawnTimer: { kill: () => void } | null = null;
+    let targetActive = 12;
+    let spawnTimer: TweenHandle | null = null;
 
     const allPeeps: Peep[] = [];
     const availablePeeps: Peep[] = [];
@@ -91,12 +93,12 @@ export default function CanvasCrowd({ src, rows = 15, cols = 7 }: Props) {
       killPeepTweens(peep);
 
       const compact = width < 640;
-      const scaleMin = compact ? 0.32 : 0.38;
-      const scaleMax = compact ? 0.46 : 0.58;
-      const travelPadding = rectWidth * 0.55;
+      const scaleMin = compact ? 0.38 : 0.44;
+      const scaleMax = compact ? 0.52 : 0.68;
+      const travelPadding = Math.max(rectWidth * 0.52, width * 0.12);
       const direction: 1 | -1 = Math.random() > 0.5 ? 1 : -1;
       const scale = scaleMin + Math.random() * (scaleMax - scaleMin);
-      const anchorY = height * (0.76 + Math.random() * 0.19);
+      const anchorY = height * (0.72 + Math.random() * 0.24);
 
       peep.scale = scale;
       peep.scaleX = direction === 1 ? 1 : -1;
@@ -121,16 +123,6 @@ export default function CanvasCrowd({ src, rows = 15, cols = 7 }: Props) {
         resetPeep(peep);
         availablePeeps.push(peep);
       }
-
-      if (reducedMotion) {
-        const count = clamp(Math.round(width / 115), 3, 6);
-        for (let i = 0; i < count && availablePeeps.length; i += 1) {
-          const peep = availablePeeps.splice(Math.floor(Math.random() * availablePeeps.length), 1)[0];
-          peep.x = ((i + 1) / (count + 1)) * width + (Math.random() - 0.5) * 22;
-          peep.y = height * (0.82 + Math.random() * 0.1);
-          activePeeps.push(peep);
-        }
-      }
     };
 
     const render = () => {
@@ -148,7 +140,7 @@ export default function CanvasCrowd({ src, rows = 15, cols = 7 }: Props) {
         const drawHeight = rectHeight * peep.scale;
 
         context.save();
-        context.globalAlpha = 0.42;
+        context.globalAlpha = 0.7;
         context.translate(peep.x, peep.y - drawHeight);
         context.scale(peep.scaleX, 1);
         context.drawImage(
@@ -166,62 +158,91 @@ export default function CanvasCrowd({ src, rows = 15, cols = 7 }: Props) {
       }
     };
 
-    const scheduleSpawn = () => {
-      if (!running || reducedMotion || spawnTimer) return;
+    const activatePeep = (peep: Peep, progress = Math.random()) => {
+      const distance = Math.abs(peep.endX - peep.startX);
+      const totalDuration = clamp(distance / (70 + Math.random() * 42), 9, 18);
+      const clampedProgress = clamp(progress, 0, 0.98);
+      const remainingDuration = Math.max(2.5, totalDuration * (1 - clampedProgress));
+      const bobHeight = Math.max(2.5, rectHeight * peep.scale * 0.045);
 
-      const delay = 0.7 + Math.random() * 1.2;
+      peep.x = peep.startX + (peep.endX - peep.startX) * clampedProgress;
+      peep.y = peep.anchorY;
+      activePeeps.push(peep);
+
+      peep.bob = gsap.to(peep, {
+        y: peep.anchorY - bobHeight,
+        duration: 0.24 + Math.random() * 0.08,
+        ease: 'sine.inOut',
+        repeat: -1,
+        yoyo: true,
+      });
+
+      peep.walk = gsap.to(peep, {
+        x: peep.endX,
+        duration: remainingDuration,
+        ease: 'none',
+        onComplete: () => {
+          const activeIndex = activePeeps.indexOf(peep);
+          if (activeIndex >= 0) activePeeps.splice(activeIndex, 1);
+          killPeepTweens(peep);
+          resetPeep(peep);
+          availablePeeps.push(peep);
+          scheduleSpawn();
+        },
+      });
+    };
+
+    const fillCrowd = () => {
+      const count = Math.min(targetActive, availablePeeps.length);
+      for (let i = 0; i < count; i += 1) {
+        const index = Math.floor(Math.random() * availablePeeps.length);
+        const peep = availablePeeps.splice(index, 1)[0];
+        activatePeep(peep, 0.06 + Math.random() * 0.88);
+      }
+    };
+
+    const scheduleSpawn = () => {
+      if (!running || reducedMotion || spawnTimer || activePeeps.length >= targetActive) return;
+
+      const delay = 0.16 + Math.random() * 0.48;
       spawnTimer = gsap.delayedCall(delay, () => {
         spawnTimer = null;
-        if (!running || availablePeeps.length === 0 || activePeeps.length >= maxActive) {
+        if (!running || availablePeeps.length === 0 || activePeeps.length >= targetActive) {
           scheduleSpawn();
           return;
         }
 
         const index = Math.floor(Math.random() * availablePeeps.length);
         const peep = availablePeeps.splice(index, 1)[0];
-        const distance = Math.abs(peep.endX - peep.startX);
-        const duration = clamp(distance / (90 + Math.random() * 45), 7.5, 15);
-        const bobHeight = Math.max(2, rectHeight * peep.scale * 0.035);
-
-        peep.x = peep.startX;
-        peep.y = peep.anchorY;
-        activePeeps.push(peep);
-
-        peep.bob = gsap.to(peep, {
-          y: peep.anchorY - bobHeight,
-          duration: 0.24,
-          ease: 'sine.inOut',
-          repeat: -1,
-          yoyo: true,
-        });
-
-        peep.walk = gsap.to(peep, {
-          x: peep.endX,
-          duration,
-          ease: 'none',
-          onComplete: () => {
-            const activeIndex = activePeeps.indexOf(peep);
-            if (activeIndex >= 0) activePeeps.splice(activeIndex, 1);
-            killPeepTweens(peep);
-            resetPeep(peep);
-            availablePeeps.push(peep);
-            scheduleSpawn();
-          },
-        });
-
+        activatePeep(peep, 0);
         scheduleSpawn();
       });
+    };
+
+    const placeStaticCrowd = () => {
+      const count = clamp(Math.round(width / 72), 4, 8);
+      for (let i = 0; i < count && availablePeeps.length; i += 1) {
+        const peep = availablePeeps.splice(Math.floor(Math.random() * availablePeeps.length), 1)[0];
+        const progress = (i + 1) / (count + 1);
+        peep.x = progress * width;
+        peep.y = peep.anchorY;
+        activePeeps.push(peep);
+      }
     };
 
     const start = () => {
       if (!ready || running || !intersecting || !pageVisible) return;
       running = true;
       resetCrowd();
+
       if (reducedMotion) {
+        placeStaticCrowd();
         render();
         return;
       }
+
       gsap.ticker.add(render);
+      fillCrowd();
       scheduleSpawn();
     };
 
@@ -250,10 +271,19 @@ export default function CanvasCrowd({ src, rows = 15, cols = 7 }: Props) {
 
       rectWidth = image.naturalWidth / rows;
       rectHeight = image.naturalHeight / cols;
-      maxActive = clamp(Math.round(width / (width < 640 ? 118 : 150)), 4, 10);
+      const compact = width < 640;
+      targetActive = clamp(
+        Math.round(width / (compact ? 30 : 29)),
+        compact ? 8 : 16,
+        compact ? 14 : 36,
+      );
 
       if (!ready || !rectWidth || !rectHeight) return;
       resetCrowd();
+      if (running) {
+        if (reducedMotion) placeStaticCrowd();
+        else fillCrowd();
+      }
       render();
       if (running && !reducedMotion) scheduleSpawn();
     };
@@ -264,7 +294,7 @@ export default function CanvasCrowd({ src, rows = 15, cols = 7 }: Props) {
         if (intersecting) start();
         else stop();
       },
-      { rootMargin: '240px 0px', threshold: 0.01 },
+      { rootMargin: '280px 0px', threshold: 0.01 },
     );
 
     const handleVisibility = () => {
