@@ -310,6 +310,41 @@ section[id] {
   min-height: 44px;
 }
 
+.status-page {
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  padding: 40px 24px;
+  background: var(--bg);
+  color: var(--ink);
+}
+
+.status-page-inner {
+  width: min(760px, 100%);
+}
+
+.status-page h1 {
+  max-width: 12ch;
+  margin: 20px 0 18px;
+  font: 900 clamp(56px, 9vw, 110px)/.84 var(--display);
+  letter-spacing: -.09em;
+}
+
+.status-page p {
+  max-width: 52ch;
+  margin: 0 0 28px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.status-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 18px;
+}
+
 :focus-visible {
   outline: 2px solid var(--ink);
   outline-offset: 6px;
@@ -440,6 +475,14 @@ section[id] {
 
   .cal-inline {
     min-height: 598px;
+  }
+
+  .status-page {
+    padding: 32px 18px;
+  }
+
+  .status-page h1 {
+    max-width: 10ch;
   }
 }
 
@@ -573,7 +616,8 @@ section[id] {
   .glass-panel,
   .icon-box,
   .story-backdrop,
-  .calendar-shell {
+  .calendar-shell,
+  .status-page {
     forced-color-adjust: auto;
   }
 }
