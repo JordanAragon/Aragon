@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import './polish.css';
 
 const siteUrl = 'https://jordanaragon.vercel.app';
 
