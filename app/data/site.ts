@@ -4,7 +4,7 @@ export const site = {
   title: 'Aragon | Software · Digital · Technology',
   description:
     'Aragon es el espacio de Jordan Aragon para diseñar y desarrollar experiencias digitales, software y sistemas alrededor de problemas reales.',
-  fallbackUrl: 'https://aragon-two.vercel.app',
+  fallbackUrl: 'https://aragon-jordanaragons-projects.vercel.app',
   calLink: 'jordan-david-micolta-aragon-cognqx/30min',
 };
 
