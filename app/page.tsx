@@ -50,33 +50,71 @@ function IconBox({ children, className = '' }: { children: React.ReactNode; clas
 
 function CalBooking() {
   const calRef = useRef<HTMLDivElement>(null);
+  const [calLoaded, setCalLoaded] = useState(false);
+  const [calFailed, setCalFailed] = useState(false);
 
   useEffect(() => {
     let disposed = false;
-    const setupCal = () => {
-      if (disposed || !calRef.current) return;
-      const win = window as Window & { Cal?: ((...args: unknown[]) => void) & { ns?: Record<string, (...args: unknown[]) => void> } };
-      if (!win.Cal) return;
-      win.Cal('init', CAL_NAMESPACE, { origin: 'https://app.cal.com' });
-      win.Cal.ns?.[CAL_NAMESPACE]?.('inline', { elementOrSelector: calRef.current, calLink: CAL_LINK, config: { layout: 'month_view', theme: 'dark' } });
-      win.Cal.ns?.[CAL_NAMESPACE]?.('ui', { theme: 'dark', styles: { branding: { brandColor: '#f6f6f2' } }, layout: 'month_view' });
-    };
-    const existing = document.querySelector<HTMLScriptElement>('script[data-cal-script="aragon"]');
-    if (existing) {
-      if (existing.dataset.calLoaded === 'true') setupCal();
-      else existing.addEventListener('load', setupCal, { once: true });
-      return () => { disposed = true; existing.removeEventListener('load', setupCal); };
-    }
     const script = document.createElement('script');
     script.src = 'https://app.cal.com/embed/embed.js';
     script.async = true;
-    script.dataset.calScript = 'aragon';
-    script.onload = () => { script.dataset.calLoaded = 'true'; setupCal(); };
+    script.dataset.calScript = 'aragon-inline';
+
+    const setup = () => {
+      if (disposed || !calRef.current) return;
+      const win = window as Window & {
+        Cal?: ((...args: unknown[]) => void) & {
+          ns?: Record<string, (...args: unknown[]) => void>;
+        };
+      };
+      if (!win.Cal) {
+        setCalFailed(true);
+        return;
+      }
+
+      win.Cal('init', CAL_NAMESPACE, { origin: 'https://app.cal.com' });
+      const namespace = win.Cal.ns?.[CAL_NAMESPACE];
+      if (!namespace) {
+        setCalFailed(true);
+        return;
+      }
+
+      namespace('inline', {
+        elementOrSelector: calRef.current,
+        calLink: CAL_LINK,
+        config: { layout: 'month_view', theme: 'dark' },
+      });
+      namespace('ui', {
+        theme: 'dark',
+        styles: { branding: { brandColor: '#f6f6f2' } },
+        layout: 'month_view',
+      });
+      setCalLoaded(true);
+    };
+
+    script.addEventListener('load', setup, { once: true });
+    script.addEventListener('error', () => setCalFailed(true), { once: true });
     document.head.appendChild(script);
-    return () => { disposed = true; };
+
+    return () => {
+      disposed = true;
+      script.removeEventListener('load', setup);
+    };
   }, []);
 
-  return <div ref={calRef} className="cal-inline" aria-label="Calendario para agendar una reunión" />;
+  return (
+    <div className="cal-booking-shell">
+      <div ref={calRef} className="cal-inline" aria-label="Calendario para agendar una reunión" aria-busy={!calLoaded && !calFailed} />
+      {!calLoaded && !calFailed && <p className="cal-status" role="status">Cargando agenda…</p>}
+      {calFailed && (
+        <div className="cal-fallback" role="alert">
+          <strong>La agenda no pudo cargarse aquí.</strong>
+          <span>La reserva sigue disponible directamente en Cal.com.</span>
+          <a href={`https://cal.com/${CAL_LINK}`} target="_blank" rel="noreferrer">Abrir Cal.com {icons.arrow}</a>
+        </div>
+      )}
+    </div>
+  );
 }
 
 export default function Home() {
@@ -102,7 +140,8 @@ export default function Home() {
   const progress = useSpring(scrollYProgress, { stiffness: 70, damping: 24, mass: 0.25 });
 
   useEffect(() => {
-    const timer = window.setTimeout(() => setLoading(false), 1750);
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const timer = window.setTimeout(() => setLoading(false), reduced ? 80 : 1750);
     return () => window.clearTimeout(timer);
   }, []);
 
@@ -118,7 +157,14 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    const unsubscribe = workProgress.on('change', (value) => setActiveProject(Math.min(projects.length - 1, Math.floor(value * projects.length))));
+    let previous = -1;
+    const unsubscribe = workProgress.on('change', (value) => {
+      const next = Math.min(projects.length - 1, Math.floor(value * projects.length));
+      if (next !== previous) {
+        previous = next;
+        setActiveProject(next);
+      }
+    });
     return () => unsubscribe();
   }, [workProgress]);
 
@@ -134,21 +180,21 @@ export default function Home() {
   }, []);
 
   const handleMove = (event: React.MouseEvent<HTMLElement>) => {
-    if (window.matchMedia('(pointer: coarse)').matches) return;
+    if (window.matchMedia('(pointer: coarse)').matches || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     mx.set((event.clientX / window.innerWidth - 0.5) * 18);
     my.set((event.clientY / window.innerHeight - 0.5) * 18);
   };
 
-  const navItems = [['capacidades', 'capacidad'], ['trabajo', 'trabajo'], ['metodo', 'método'], ['contacto', 'agenda']];
+  const navItems = [['capacidades', 'capacidades'], ['trabajo', 'trabajo'], ['metodo', 'método'], ['contacto', 'agenda']];
 
   return (
     <>
       <AnimatePresence>
-        {loading && <motion.div className="entry-loader" initial={{ opacity: 1 }} animate={{ opacity: 1 }} exit={{ clipPath: 'inset(0% 0% 100% 0%)' }} transition={{ duration: 1.05, ease: [0.76, 0, 0.24, 1] }} aria-label="Cargando Aragon"><div className="loader-inner"><span className="loader-kicker">ARAGON / DIGITAL STUDIO</span><div className="loader-word" aria-hidden="true">{'ARAGON'.split('').map((letter, index) => <motion.span key={letter + index} initial={{ opacity: 0, y: 34, filter: 'blur(12px)' }} animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }} transition={{ duration: 0.55, delay: index * 0.11, ease: [0.16, 1, 0.3, 1] }}>{letter}</motion.span>)}</div><div className="loader-bottom"><span>INITIALIZING EXPERIENCE</span><span>001</span></div><motion.div className="loader-bar" initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} transition={{ duration: 1.65, ease: [0.76, 0, 0.24, 1] }} /></div></motion.div>}
+        {loading && <motion.div className="entry-loader" initial={{ opacity: 1 }} animate={{ opacity: 1 }} exit={{ clipPath: 'inset(0% 0% 100% 0%)' }} transition={{ duration: 1.05, ease: [0.76, 0, 0.24, 1] }} role="status" aria-label="Cargando Aragon"><div className="loader-inner"><span className="loader-kicker">ARAGON / DIGITAL STUDIO</span><div className="loader-word" aria-hidden="true">{'ARAGON'.split('').map((letter, index) => <motion.span key={letter + index} initial={{ opacity: 0, y: 34, filter: 'blur(12px)' }} animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }} transition={{ duration: 0.55, delay: index * 0.11, ease: [0.16, 1, 0.3, 1] }}>{letter}</motion.span>)}</div><div className="loader-bottom"><span>INITIALIZING EXPERIENCE</span><span>001</span></div><motion.div className="loader-bar" initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} transition={{ duration: 1.65, ease: [0.76, 0, 0.24, 1] }} /></div></motion.div>}
       </AnimatePresence>
 
       <main className="site-root" onMouseMove={handleMove}>
-        <motion.div className="scroll-progress" style={{ scaleX: progress }} />
+        <motion.div className="scroll-progress" style={{ scaleX: progress }} aria-hidden="true" />
         <div className="noise" aria-hidden="true" />
         <a className="skip-link" href="#contenido">Saltar al contenido</a>
 
@@ -157,13 +203,13 @@ export default function Home() {
         <AnimatePresence>{menu && <motion.nav id="mobile-nav" className="mobile-nav glass-panel" initial={{ opacity: 0, y: -18 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -18 }} aria-label="Menú móvil"><div className="mobile-nav-head"><span>ARAGON / MENU</span><span>00{Math.max(1, navItems.findIndex(([id]) => id === active) + 1)}</span></div>{navItems.map(([id, label], index) => <a key={id} href={`#${id}`} onClick={() => setMenu(false)}><span>{label}</span><span>0{index + 1}</span></a>)}<a href={`https://cal.com/${CAL_LINK}`} target="_blank" rel="noreferrer" className="mobile-portfolio">Abrir agenda {icons.arrow}</a></motion.nav>}</AnimatePresence>
 
         <div id="contenido">
-          <section id="inicio" ref={heroRef} className="hero"><div className="hero-grid" aria-hidden="true" /><motion.div className="hero-visual" style={{ scale: heroVisualScale, x: mx, y: my }} aria-hidden="true"><div className="hero-visual-ring hero-visual-ring-a" /><div className="hero-visual-ring hero-visual-ring-b" /><div className="hero-visual-word">ARAGON</div><div className="hero-visual-core"><span>ARAGON</span><i /></div><div className="hero-visual-tag tag-a">IDEA</div><div className="hero-visual-tag tag-b">SYSTEM</div><div className="hero-visual-tag tag-c">OUTPUT</div></motion.div><motion.div className="hero-meta page-shell" style={{ opacity: heroOpacity }}><span><i className="status-dot" /> ARAGON / DIGITAL STUDIO</span><span>CALI / COLOMBIA</span><span>2026 / 001</span></motion.div><motion.div className="hero-content page-shell" style={{ y: heroTextY, opacity: heroOpacity }}><div className="hero-topline"><span>IDEA → PROBLEM → SYSTEM</span><span>BUILT WITH INTENT</span></div><motion.h1 style={{ scale: heroScale }} initial={{ opacity: 0, y: 36 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 1.55, ease: [0.16, 1, 0.3, 1] }}>Tu idea<br /><span>ya existe.</span><br /><em>Ahora hagámosla funcionar.</em></motion.h1><motion.div className="hero-ghost" style={{ x: heroGhostX }} aria-hidden="true">ARAGON / 001</motion.div><div className="hero-bottom"><div className="hero-copy"><span className="hero-index">THE PREMISE</span><p>Aragon diseña y desarrolla experiencias digitales, software y sistemas para convertir problemas reales en productos que la gente puede entender y usar.</p></div><a href="#trabajo" className="hero-cta"><span>Ver lo que construimos</span><IconBox>{icons.arrow}</IconBox></a></div></motion.div><div className="hero-side">SCROLL <span /> ↓</div></section>
+          <section id="inicio" ref={heroRef} className="hero" aria-labelledby="hero-title"><div className="hero-grid" aria-hidden="true" /><motion.div className="hero-visual" style={{ scale: heroVisualScale, x: mx, y: my }} aria-hidden="true"><div className="hero-visual-ring hero-visual-ring-a" /><div className="hero-visual-ring hero-visual-ring-b" /><div className="hero-visual-word">ARAGON</div><div className="hero-visual-core"><span>ARAGON</span><i /></div><div className="hero-visual-tag tag-a">IDEA</div><div className="hero-visual-tag tag-b">SYSTEM</div><div className="hero-visual-tag tag-c">OUTPUT</div></motion.div><motion.div className="hero-meta page-shell" style={{ opacity: heroOpacity }}><span><i className="status-dot" /> ARAGON / DIGITAL STUDIO</span><span>CALI / COLOMBIA</span><span>2026 / 001</span></motion.div><motion.div className="hero-content page-shell" style={{ y: heroTextY, opacity: heroOpacity }}><div className="hero-topline"><span>IDEA → PROBLEM → SYSTEM</span><span>BUILT WITH INTENT</span></div><motion.h1 id="hero-title" style={{ scale: heroScale }} initial={{ opacity: 0, y: 36 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 1.55, ease: [0.16, 1, 0.3, 1] }}>Tu idea<br /><span>ya existe.</span><br /><em>Ahora hagámosla funcionar.</em></motion.h1><motion.div className="hero-ghost" style={{ x: heroGhostX }} aria-hidden="true">ARAGON / 001</motion.div><div className="hero-bottom"><div className="hero-copy"><span className="hero-index">THE PREMISE</span><p>Aragon diseña y desarrolla experiencias digitales, software y sistemas para convertir problemas reales en productos que la gente puede entender y usar.</p></div><a href="#trabajo" className="hero-cta"><span>Ver lo que construimos</span><IconBox>{icons.arrow}</IconBox></a></div></motion.div><div className="hero-side" aria-hidden="true">SCROLL <span /> ↓</div></section>
 
           <section id="problema" className="problem section-shell"><div className="page-shell"><div className="problem-intro"><div><span className="section-number">01</span><span className="section-label">EL PROBLEMA</span></div><p>Los problemas digitales rara vez empiezan en el código.</p></div><div className="problem-marquee" aria-hidden="true"><span>WHAT ISN’T WORKING?</span><span>WHAT ISN’T WORKING?</span></div><div className="problem-statement"><h2>Todo empieza con algo que <span>no funciona como debería.</span></h2><p>Una marca que no se entiende. Un proceso que se complica. Un producto que se queda a medias.</p></div><div className="problem-list">{problems.map((problem, index) => <motion.article key={problem.id} className="problem-item" initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.25 }} transition={{ duration: 0.7, delay: index * 0.06 }}><span>{problem.id}</span><div><small>{problem.word}</small><h3>{problem.title}</h3></div><p>{problem.copy}</p><IconBox>{icons.arrow}</IconBox></motion.article>)}</div></div></section>
 
           <section id="capacidades" className="capabilities section-shell"><div className="page-shell"><div className="section-heading"><div><span className="section-number">02</span><span className="section-label">LO QUE CONSTRUIMOS</span></div><h2>No vendemos<br /><span>categorías.</span></h2></div><p className="section-lead">A veces es una web. A veces es un sistema. A veces es un producto entero. Lo importante es qué necesita existir para resolver el problema.</p><div className="capability-grid">{capabilities.map((capability, index) => <motion.article key={capability.id} className="capability-card" whileHover={{ y: -10 }} transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}><div className="capability-top"><span>{capability.id}</span><IconBox>{capability.icon}</IconBox></div><small>{capability.kicker}</small><h3>{capability.title}</h3><p>{capability.copy}</p><span className="capability-index">0{index + 1} / 03</span></motion.article>)}</div></div></section>
 
-          <section id="trabajo" ref={workRef} className="work-story section-shell"><div className="work-stage"><div className="page-shell work-story-head"><div><span className="section-number">03</span><span className="section-label">LAB / FUTURO</span></div><h2>Cuatro ideas.<br /><span>Cuatro sistemas por construir.</span></h2></div><div className="story-viewport page-shell"><motion.div className="story-backdrop" style={{ scale: storyScale, y: storyY, clipPath: storyClip }}>{projects.map((project, index) => <motion.div key={project.id} className="story-layer" animate={{ opacity: activeProject === index ? 1 : 0, scale: activeProject === index ? 1 : 1.045, x: activeProject === index ? 0 : index < activeProject ? -20 : 20 }} transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}><Image src={project.image} alt={`Concepto visual de ${project.title}`} fill sizes="(max-width: 900px) 100vw, 82vw" priority={index === 0} /><div className="story-layer-shade" /></motion.div>)}<div className="story-ui"><span>{projects[activeProject].label}</span><span>{projects[activeProject].id} / 04</span></div></motion.div><div className="story-copy">{projects.map((project, index) => <motion.div key={project.id} className="story-copy-item" animate={{ opacity: activeProject === index ? 1 : 0, y: activeProject === index ? 0 : activeProject > index ? -30 : 30 }} transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}><span className="story-kicker">{project.kicker}</span><h3>{project.title}</h3><p>{project.body}</p><div className="story-tags">{project.tags}</div><a href={project.href}>Hablar de este concepto {icons.arrow}</a></motion.div>)}</div><div className="story-index"><span>SCROLL STORY</span><div>{projects.map((project, index) => <span key={project.id} className={activeProject === index ? 'is-active' : ''}>{project.id}</span>)}</div></div></div></div></section>
+          <section id="trabajo" ref={workRef} className="work-story section-shell"><div className="work-stage"><div className="page-shell work-story-head"><div><span className="section-number">03</span><span className="section-label">LAB / FUTURO</span></div><h2>Cuatro ideas.<br /><span>Cuatro sistemas por construir.</span></h2></div><div className="story-viewport page-shell"><motion.div className="story-backdrop" style={{ scale: storyScale, y: storyY, clipPath: storyClip }}>{projects.map((project, index) => <motion.div key={project.id} className="story-layer" animate={{ opacity: activeProject === index ? 1 : 0, scale: activeProject === index ? 1 : 1.045, x: activeProject === index ? 0 : index < activeProject ? -20 : 20 }} transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }} aria-hidden={activeProject !== index}><Image src={project.image} alt={activeProject === index ? `Concepto visual de ${project.title}` : ''} fill sizes="(max-width: 900px) 100vw, 82vw" priority={index === 0} /><div className="story-layer-shade" /></motion.div>)}<div className="story-ui"><span>{projects[activeProject].label}</span><span>{projects[activeProject].id} / 04</span></div></motion.div><div className="story-copy" aria-live="polite">{projects.map((project, index) => <motion.div key={project.id} className="story-copy-item" animate={{ opacity: activeProject === index ? 1 : 0, y: activeProject === index ? 0 : activeProject > index ? -30 : 30 }} transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }} aria-hidden={activeProject !== index}><span className="story-kicker">{project.kicker}</span><h3>{project.title}</h3><p>{project.body}</p><div className="story-tags">{project.tags}</div><a href={project.href}>Hablar de este concepto {icons.arrow}</a></motion.div>)}</div><div className="story-index" aria-label="Progreso de proyectos"><span>SCROLL STORY</span><div>{projects.map((project, index) => <span key={project.id} className={activeProject === index ? 'is-active' : ''} aria-current={activeProject === index ? 'step' : undefined}>{project.id}</span>)}</div></div></div></div></section>
 
           <section id="contexto" className="context section-shell"><div className="page-shell context-grid"><motion.div className="context-visual" whileInView={{ clipPath: 'inset(0% 0% 0% 0% round 0px)' }} initial={{ clipPath: 'inset(10% 10% 10% 10% round 28px)' }} viewport={{ once: true, amount: 0.25 }} transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}><Image src={aragonServerImage} alt="Infraestructura personal de Aragon" fill sizes="(max-width: 900px) 100vw, 58vw" /><div className="context-overlay"/><span className="context-stamp">CONTEXT / 04</span><span className="context-coordinates">HARDWARE · NETWORK · SOFTWARE · SYSTEMS</span></motion.div><div className="context-copy"><span className="section-number">04</span><span className="section-label">LO QUE HAY DETRÁS</span><h2>No solo diseño <span>la superficie.</span></h2><p>Mi recorrido mezcla soporte técnico, infraestructura, desarrollo web y construcción de productos. Por eso pienso en la interfaz, pero también en lo que tiene que funcionar detrás.</p><div className="context-facts"><div><small>BASE</small><b>Sistemas / Tecnología</b></div><div><small>ENFOQUE</small><b>Producto / Experiencia</b></div><div><small>ORIGEN</small><b>Cali, Colombia</b></div></div><a href="https://jordanaragon.vercel.app" target="_blank" rel="noreferrer" className="under-link">Conocer el recorrido {icons.arrow}</a></div></div></section>
 
