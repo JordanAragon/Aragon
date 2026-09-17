@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from 'react';
 import aidenImage from '../img/aiden.png';
 import aragonServerImage from '../img/aragon-server.png';
 
-const CAL_LINK = process.env.NEXT_PUBLIC_CAL_LINK || 'jordanaragon';
+const CAL_LINK = 'jordan-david-micolta-aragon-cognqx/30min';
 
 const icon = (path: React.ReactNode) => <svg viewBox="0 0 24 24" aria-hidden="true">{path}</svg>;
 const icons = {
