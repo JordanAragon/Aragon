@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import { IconBox, icons } from './icons';
+import ScrollRevealText from './scroll-reveal-text';
 
 const problems = [
   { id: '01', word: 'MARCA', title: 'No se entiende.', copy: 'Una buena idea pierde fuerza cuando nadie entiende qué hace, para quién es o por qué importa.' },
@@ -26,19 +27,19 @@ export function ProblemSection() {
       <div className="page-shell">
         <div className="problem-intro">
           <div><span className="section-number">01</span><span className="section-label">EL PROBLEMA</span></div>
-          <p>Los problemas digitales rara vez empiezan en el código.</p>
+          <ScrollRevealText>Los problemas digitales rara vez empiezan en el código.</ScrollRevealText>
         </div>
         <div className="problem-marquee" aria-hidden="true"><span>¿QUÉ NO ESTÁ FUNCIONANDO?</span><span>¿QUÉ NO ESTÁ FUNCIONANDO?</span></div>
         <div className="problem-statement">
           <h2 id="problem-title">Todo empieza con algo que <span>no funciona como debería.</span></h2>
-          <p>Una marca que no se entiende. Un proceso que se complica. Un producto que se queda a medias.</p>
+          <ScrollRevealText>Una marca que no se entiende. Un proceso que se complica. Un producto que se queda a medias.</ScrollRevealText>
         </div>
         <div className="problem-list">
           {problems.map((problem) => (
             <article key={problem.id} className="problem-item">
               <span>{problem.id}</span>
               <div><small>{problem.word}</small><h3>{problem.title}</h3></div>
-              <p>{problem.copy}</p>
+              <ScrollRevealText>{problem.copy}</ScrollRevealText>
               <IconBox>{icons.arrow}</IconBox>
             </article>
           ))}
@@ -56,14 +57,14 @@ export function CapabilitiesSection() {
           <div><span className="section-number">02</span><span className="section-label">LO QUE CONSTRUYO</span></div>
           <h2 id="capabilities-title">No vendo<br /><span>categorías.</span></h2>
         </div>
-        <p className="section-lead">A veces es una web. A veces es un sistema. A veces es un producto entero. Lo importante es qué necesita existir para resolver el problema.</p>
+        <ScrollRevealText className="section-lead">A veces es una web. A veces es un sistema. A veces es un producto entero. Lo importante es qué necesita existir para resolver el problema.</ScrollRevealText>
         <div className="capability-grid">
           {capabilities.map((capability, index) => (
             <article key={capability.id} className="capability-card">
               <div className="capability-top"><span>{capability.id}</span><IconBox>{capability.icon}</IconBox></div>
               <small>{capability.kicker}</small>
               <h3>{capability.title}</h3>
-              <p>{capability.copy}</p>
+              <ScrollRevealText>{capability.copy}</ScrollRevealText>
               <span className="capability-index">0{index + 1} / 03</span>
             </article>
           ))}
@@ -86,7 +87,7 @@ export function ContextSection() {
         <div className="context-copy">
           <span className="section-number">04</span><span className="section-label">LO QUE HAY DETRÁS</span>
           <h2 id="context-title">No solo diseño <span>la superficie.</span></h2>
-          <p>Mi recorrido mezcla soporte técnico, infraestructura, desarrollo web y construcción de productos. Por eso pienso en la interfaz, pero también en lo que tiene que funcionar detrás.</p>
+          <ScrollRevealText>Mi recorrido mezcla soporte técnico, infraestructura, desarrollo web y construcción de productos. Por eso pienso en la interfaz, pero también en lo que tiene que funcionar detrás.</ScrollRevealText>
           <div className="context-facts">
             <div><small>BASE</small><b>Sistemas / Tecnología</b></div>
             <div><small>ENFOQUE</small><b>Producto / Experiencia</b></div>
@@ -107,14 +108,14 @@ export function MethodSection() {
           <div><span className="section-number">05</span><span className="section-label">MÉTODO</span></div>
           <h2 id="method-title">De la idea<br /><span>a algo que funciona.</span></h2>
         </div>
-        <div className="method-intro"><p>La creatividad no reemplaza el criterio. El código tampoco. El proceso sirve para decidir qué vale la pena construir y qué sobra.</p></div>
+        <div className="method-intro"><ScrollRevealText>La creatividad no reemplaza el criterio. El código tampoco. El proceso sirve para decidir qué vale la pena construir y qué sobra.</ScrollRevealText></div>
         <div className="method-grid">
           {steps.map(([id, title, copy], index) => (
             <div className="method-cell" key={id}>
               <span>{id}</span>
               <div className="method-glyph">{index === 0 ? icons.dot : index === 1 ? icons.spark : index === 2 ? icons.code : icons.plus}</div>
               <h3>{title}</h3>
-              <p>{copy}</p>
+              <ScrollRevealText>{copy}</ScrollRevealText>
             </div>
           ))}
         </div>
