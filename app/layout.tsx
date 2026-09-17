@@ -1,43 +1,36 @@
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import './polish.css';
-
-const siteUrl = 'https://jordanaragon.vercel.app';
-const siteDescription =
-  'Aragon diseña y desarrolla experiencias digitales, software y sistemas para convertir problemas reales en productos que la gente puede entender y usar.';
+import { site, siteUrl } from './data/site';
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: 'Aragon | Software · Digital · Technology',
+    default: site.title,
     template: '%s | Aragon',
   },
-  description: siteDescription,
-  applicationName: 'Aragon',
+  description: site.description,
+  applicationName: site.name,
   category: 'portfolio',
-  authors: [{ name: 'Jordan Aragon', url: siteUrl }],
-  creator: 'Jordan Aragon',
-  publisher: 'Jordan Aragon',
+  authors: [{ name: site.person, url: siteUrl }],
+  creator: site.person,
+  publisher: site.person,
   keywords: ['Aragon', 'Jordan Aragon', 'software', 'desarrollo web', 'productos digitales', 'sistemas', 'UX', 'frontend', 'Cali', 'Colombia'],
   alternates: { canonical: siteUrl },
-  formatDetection: {
-    email: false,
-    address: false,
-    telephone: false,
-  },
+  formatDetection: { email: false, address: false, telephone: false },
   openGraph: {
-    title: 'Aragon | Software · Digital · Technology',
-    description: 'Experiencias digitales, software y sistemas construidos con intención.',
+    title: site.title,
+    description: site.description,
     url: siteUrl,
-    siteName: 'Aragon',
+    siteName: site.name,
     locale: 'es_CO',
     type: 'website',
-    images: [{ url: '/opengraph-image', width: 1200, height: 630, alt: 'Aragon · Software · Digital · Technology' }],
+    images: [{ url: '/opengraph-image', width: 1200, height: 630, alt: 'Aragon · Jordan Aragon · Software · Digital · Technology' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Aragon | Software · Digital · Technology',
-    description: 'Experiencias digitales, software y sistemas construidos con intención.',
+    title: site.title,
+    description: site.description,
     images: ['/opengraph-image'],
   },
   robots: {
@@ -55,71 +48,36 @@ export const viewport: Viewport = {
   colorScheme: 'light',
 };
 
-const person = {
-  '@type': 'Person',
-  name: 'Jordan Aragon',
-  url: siteUrl,
-  jobTitle: 'Software Developer',
-  homeLocation: { '@type': 'Place', name: 'Cali, Colombia' },
-  sameAs: ['https://github.com/JordanAragon', 'https://www.linkedin.com/in/jordanaragon/'],
-};
-
 const structuredData = [
   {
     '@context': 'https://schema.org',
     '@type': 'ProfilePage',
-    name: 'Jordan Aragon · Aragon',
+    name: `${site.person} · ${site.name}`,
     url: siteUrl,
-    mainEntity: person,
+    mainEntity: {
+      '@type': 'Person',
+      name: site.person,
+      url: siteUrl,
+      jobTitle: 'Software Developer',
+      homeLocation: { '@type': 'Place', name: 'Cali, Colombia' },
+      sameAs: ['https://github.com/JordanAragon', 'https://www.linkedin.com/in/jordanaragon/'],
+    },
   },
   {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
-    name: 'Aragon',
+    name: site.name,
     url: siteUrl,
-    description: siteDescription,
+    description: site.description,
   },
 ];
-
-const calBootstrap = `(function (C, A, L) {
-  let p = function (a, ar) { a.q.push(ar); };
-  let d = C.document;
-  C.Cal = C.Cal || function () {
-    let cal = C.Cal;
-    let ar = arguments;
-    if (!cal.loaded) {
-      cal.ns = {};
-      cal.q = cal.q || [];
-      const script = d.createElement('script');
-      script.src = A;
-      script.async = true;
-      d.head.appendChild(script);
-      cal.loaded = true;
-    }
-    if (ar[0] === L) {
-      const api = function () { p(api, arguments); };
-      const namespace = ar[1];
-      api.q = api.q || [];
-      if (typeof namespace === 'string') {
-        cal.ns[namespace] = cal.ns[namespace] || api;
-        p(cal.ns[namespace], ar);
-        p(cal, ['initNamespace', namespace]);
-      } else {
-        p(cal, ar);
-      }
-      return;
-    }
-    p(cal, ar);
-  };
-})(window, 'https://app.cal.com/embed/embed.js', 'init');`;
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="es">
       <body>
         {children}
-        <script dangerouslySetInnerHTML={{ __html: calBootstrap }} />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+        <script id="aragon-structured-data" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
       </body>
     </html>
   );
