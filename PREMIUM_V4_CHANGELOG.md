@@ -18,3 +18,6 @@ Canvas bitmap dimensions are only changed when size/DPR changes. Crowd depth sor
 
 ### Responsive
 Desktop/tablet/mobile use separate placement rules for the hero and crowd stage. Oversized image assets are clipped by their own stage rather than relying on viewport-wide overflow.
+
+### Build fixes
+The V4 progress indicators now use Motion elements for Motion-only `scaleX` styles, which keeps strict TypeScript checks valid under React DOM typings. The malformed `.hero-v4-phase-main` CSS declaration was also repaired so Turbopack can parse `app/premium.css` successfully.
