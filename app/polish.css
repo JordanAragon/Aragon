@@ -29,7 +29,6 @@ section[id] {
   scroll-margin-top: 112px;
 }
 
-/* Header: quieter chrome, stronger navigation hierarchy. */
 .site-header {
   transition: transform .45s var(--aragon-ease), box-shadow .45s var(--aragon-ease), background .35s ease;
 }
@@ -48,7 +47,6 @@ section[id] {
   font-weight: 900;
 }
 
-/* Hero: make the message dominant and the generative object supportive. */
 .hero::after {
   content: "";
   position: absolute;
@@ -91,7 +89,6 @@ section[id] {
   transition: transform .45s var(--aragon-ease), background .35s ease;
 }
 
-/* Narrative rhythm: strengthen the handoff between sections. */
 .problem {
   padding-top: clamp(100px, 11vw, 165px);
   padding-bottom: clamp(100px, 11vw, 165px);
@@ -127,7 +124,6 @@ section[id] {
   transform: translateY(-3px);
 }
 
-/* Project story: less like a card stack, more like a single editorial scene. */
 .work-story {
   isolation: isolate;
 }
@@ -221,7 +217,6 @@ section[id] {
   transform: translateY(-2px);
 }
 
-/* The context section should feel like the evidence behind the promise. */
 .context-visual {
   box-shadow: var(--aragon-shadow);
 }
@@ -239,22 +234,74 @@ section[id] {
   background: rgba(8, 8, 9, .025);
 }
 
-/* Contact: stronger CTA hierarchy without changing the existing language. */
 .calendar-shell {
   box-shadow: var(--aragon-shadow);
   position: relative;
 }
 
-.calendar-shell:has(.cal-inline:empty)::after {
-  content: "CARGANDO AGENDA · CAL.COM";
+.cal-booking-shell {
+  position: relative;
+  width: 100%;
+  min-height: inherit;
+  background: #111112;
+}
+
+.cal-inline {
+  width: 100%;
+  min-height: 658px;
+}
+
+.cal-status {
   position: absolute;
   inset: 50% 0 auto;
+  margin: 0;
   transform: translateY(-50%);
   text-align: center;
   color: #66666d;
   font: 900 9px/1 var(--body);
   letter-spacing: .16em;
+  text-transform: uppercase;
   pointer-events: none;
+}
+
+.cal-fallback {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: 12px;
+  padding: 32px;
+  text-align: center;
+  background: #111112;
+  color: #f6f6f2;
+}
+
+.cal-fallback strong {
+  max-width: 28ch;
+  font: 900 28px/.95 var(--display);
+  letter-spacing: -.06em;
+}
+
+.cal-fallback span {
+  max-width: 42ch;
+  color: #96969d;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.cal-fallback a {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  margin-top: 8px;
+  padding: 0 16px;
+  background: #f6f6f2;
+  color: #080809;
+  font: 900 9px/1 var(--body);
+  letter-spacing: .14em;
+  text-transform: uppercase;
 }
 
 .under-link,
@@ -263,7 +310,6 @@ section[id] {
   min-height: 44px;
 }
 
-/* Accessible focus states remain visible against both surfaces. */
 :focus-visible {
   outline: 2px solid var(--ink);
   outline-offset: 6px;
@@ -275,7 +321,6 @@ section[id] {
   outline-color: #fff;
 }
 
-/* Progressive enhancement: CSS should never rely on hover for essential meaning. */
 @media (hover: none) {
   .capability-card:hover,
   .method-cell:hover,
@@ -284,7 +329,6 @@ section[id] {
   }
 }
 
-/* Mid-size screens: preserve the large typographic character without collisions. */
 @media (max-width: 1100px) {
   .hero h1 {
     max-width: 760px;
@@ -309,7 +353,6 @@ section[id] {
   }
 }
 
-/* Mobile: turn the project scene into a clear media → title → action progression. */
 @media (max-width: 780px) {
   section[id] {
     scroll-margin-top: 86px;
@@ -394,6 +437,10 @@ section[id] {
   .calendar-shell {
     min-height: 600px;
   }
+
+  .cal-inline {
+    min-height: 598px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -456,9 +503,12 @@ section[id] {
     width: 23px;
     height: 23px;
   }
+
+  .cal-fallback strong {
+    font-size: 24px;
+  }
 }
 
-/* Reduced motion: preserve the structure and hierarchy while removing decorative movement. */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto !important;
@@ -499,7 +549,6 @@ section[id] {
   }
 }
 
-/* When scripting is unavailable, never hide the core message behind animation state. */
 @media (scripting: none) {
   .hero h1,
   .problem-item {
