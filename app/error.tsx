@@ -1,5 +1,7 @@
 'use client';
 
+import Link from 'next/link';
+
 export default function GlobalError({ reset }: { error: Error & { digest?: string }; reset: () => void }) {
   return (
     <main className="status-page">
@@ -12,7 +14,7 @@ export default function GlobalError({ reset }: { error: Error & { digest?: strin
             <span>Reintentar</span>
             <span className="icon-box" aria-hidden="true">↻</span>
           </button>
-          <a className="under-link" href="/#inicio">Volver al inicio ↗</a>
+          <Link className="under-link" href="/#inicio">Volver al inicio ↗</Link>
         </div>
       </div>
     </main>
