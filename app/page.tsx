@@ -1,10 +1,11 @@
 import AgendaSection from './components/agenda-section';
+import ContextSkiperSection from './components/context-skiper-section';
 import Hero from './components/hero';
 import SiteHeader from './components/site-header';
 import ScrollProgress from './components/scroll-progress';
 import WorkStory from './components/work-story';
 import Preloader from './components/preloader';
-import { CapabilitiesSection, ContextSection, Footer, MethodSection, ProblemSection } from './components/static-sections';
+import { CapabilitiesSection, Footer, MethodSection, ProblemSection } from './components/static-sections';
 
 export default function Home() {
   return (
@@ -20,7 +21,7 @@ export default function Home() {
           <ProblemSection />
           <CapabilitiesSection />
           <WorkStory />
-          <ContextSection />
+          <ContextSkiperSection />
           <MethodSection />
           <AgendaSection />
           <Footer />
