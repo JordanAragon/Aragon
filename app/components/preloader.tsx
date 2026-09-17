@@ -17,6 +17,7 @@ export default function Preloader() {
   }, []);
 
   useEffect(() => {
+    // Respect reduced motion without triggering a synchronous state update in the effect.
     if (reduced) return undefined;
 
     let raf = 0;
