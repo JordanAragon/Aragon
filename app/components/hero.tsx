@@ -89,20 +89,21 @@ export default function Hero() {
               </div>
             </motion.div>
 
-          <motion.div className="hero-v3-beat hero-v3-beat-two" style={{ opacity: secondOpacity }} aria-hidden="true">
-            <span>02 / THE FRICTION</span>
-            <p>No necesitas otra herramienta.<br /><em>Necesitas que las piezas conversen.</em></p>
-          </motion.div>
+            <motion.div className="hero-v3-beat hero-v3-beat-two" style={{ opacity: secondOpacity }} aria-hidden="true">
+              <span>02 / THE FRICTION</span>
+              <p>No necesitas otra herramienta.<br /><em>Necesitas que las piezas conversen.</em></p>
+            </motion.div>
 
-          <motion.div className="hero-v3-beat hero-v3-beat-three" style={{ opacity: thirdOpacity }} aria-hidden="true">
-            <span>03 / THE BUILD</span>
-            <p>Problema → sistema → experiencia.</p>
-          </motion.div>
+            <motion.div className="hero-v3-beat hero-v3-beat-three" style={{ opacity: thirdOpacity }} aria-hidden="true">
+              <span>03 / THE BUILD</span>
+              <p>Problema → sistema → experiencia.</p>
+            </motion.div>
 
-          <div className="hero-v3-foot">
-            <span>FROM IDEA TO SYSTEM</span>
-            <span className="hero-v3-foot-line"><motion.i style={{ scaleX: lineScale }} /></span>
-            <a href="#problema">KEEP SCROLLING <b>↓</b></a>
+            <div className="hero-v3-foot">
+              <span>FROM IDEA TO SYSTEM</span>
+              <span className="hero-v3-foot-line"><motion.i initial={{ scaleX: 0 }} animate={{ scaleX: lineScale }} /></span>
+              <a href="#problema">KEEP SCROLLING <b>↓</b></a>
+            </div>
           </div>
         </div>
       </div>
