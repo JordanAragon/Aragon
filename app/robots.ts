@@ -1,12 +1,10 @@
 import type { MetadataRoute } from 'next';
+import { siteUrl } from './data/site';
 
 export default function robots(): MetadataRoute.Robots {
   return {
-    rules: {
-      userAgent: '*',
-      allow: '/',
-    },
-    sitemap: 'https://jordanaragon.vercel.app/sitemap.xml',
-    host: 'https://jordanaragon.vercel.app',
+    rules: { userAgent: '*', allow: '/' },
+    sitemap: `${siteUrl}/sitemap.xml`,
+    host: siteUrl,
   };
 }
