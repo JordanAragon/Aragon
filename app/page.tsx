@@ -7,6 +7,7 @@ import aidenImage from '../img/aiden.png';
 import aragonServerImage from '../img/aragon-server.png';
 
 const CAL_LINK = 'jordan-david-micolta-aragon-cognqx/30min';
+const CAL_NAMESPACE = 'aragon30min';
 
 const icon = (path: React.ReactNode) => <svg viewBox="0 0 24 24" aria-hidden="true">{path}</svg>;
 const icons = {
@@ -51,28 +52,55 @@ function CalBooking() {
   const calRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const existing = document.querySelector('script[data-cal-script="aragon"]');
-    const init = () => {
-      const Cal = (window as Window & { Cal?: (...args: unknown[]) => void }).Cal;
-      if (!Cal || !calRef.current) return;
-      Cal('inline', { elementOrSelector: calRef.current, calLink: CAL_LINK });
-      Cal('ui', { styles: { body: { background: '#111112' }, eventTypeListItem: { background: '#111112' } } });
+    let disposed = false;
+
+    const setupCal = () => {
+      if (disposed || !calRef.current) return;
+      const win = window as Window & {
+        Cal?: ((...args: unknown[]) => void) & { ns?: Record<string, (...args: unknown[]) => void>; loaded?: boolean };
+      };
+
+      if (!win.Cal) return;
+      win.Cal('init', CAL_NAMESPACE, { origin: 'https://app.cal.com' });
+      win.Cal.ns?.[CAL_NAMESPACE]?.('inline', {
+        elementOrSelector: calRef.current,
+        calLink: CAL_LINK,
+        config: { layout: 'month_view', theme: 'dark' },
+      });
+      win.Cal.ns?.[CAL_NAMESPACE]?.('ui', {
+        theme: 'dark',
+        styles: { branding: { brandColor: '#f6f6f2' } },
+        hideEventTypeDetails: false,
+        layout: 'month_view',
+      });
     };
 
+    const existing = document.querySelector<HTMLScriptElement>('script[data-cal-script="aragon"]');
     if (existing) {
-      init();
-      return;
+      if (existing.dataset.calLoaded === 'true') setupCal();
+      else existing.addEventListener('load', setupCal, { once: true });
+      return () => {
+        disposed = true;
+        existing.removeEventListener('load', setupCal);
+      };
     }
 
     const script = document.createElement('script');
     script.src = 'https://app.cal.com/embed/embed.js';
     script.async = true;
     script.dataset.calScript = 'aragon';
-    script.onload = init;
+    script.onload = () => {
+      script.dataset.calLoaded = 'true';
+      setupCal();
+    };
     document.head.appendChild(script);
+
+    return () => {
+      disposed = true;
+    };
   }, []);
 
-  return <div id="my-cal-inline" ref={calRef} className="cal-inline" aria-label="Calendario para agendar una reunión" />;
+  return <div ref={calRef} className="cal-inline" aria-label="Calendario para agendar una reunión" />;
 }
 
 export default function Home() {
@@ -149,8 +177,19 @@ export default function Home() {
     <>
       <AnimatePresence>
         {loading && (
-          <motion.div className="entry-loader" initial={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }} aria-label="Cargando Aragon">
-            <div className="loader-inner">
+          <motion.div
+            className="entry-loader"
+            initial={{ opacity: 1, clipPath: 'inset(0% 0% 0% 0%)' }}
+            animate={{ opacity: 1, clipPath: 'inset(0% 0% 0% 0%)' }}
+            exit={{ opacity: 1, clipPath: 'inset(0% 0% 100% 0%)' }}
+            transition={{ duration: 1.05, ease: [0.76, 0, 0.24, 1] }}
+            aria-label="Cargando Aragon"
+          >
+            <motion.div
+              className="loader-inner"
+              exit={{ y: -18, scale: 0.97, opacity: 0.35 }}
+              transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            >
               <span className="loader-kicker">ARAGON / DIGITAL STUDIO</span>
               <div className="loader-word" aria-hidden="true">
                 {'ARAGON'.split('').map((letter, index) => (
@@ -159,7 +198,7 @@ export default function Home() {
               </div>
               <div className="loader-bottom"><span>INITIALIZING EXPERIENCE</span><span>001</span></div>
               <motion.div className="loader-bar" initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} transition={{ duration: 1.65, ease: [0.76, 0, 0.24, 1] }} />
-            </div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
