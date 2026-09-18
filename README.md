@@ -32,7 +32,7 @@ Abrir `http://localhost:3000`.
 
 ## Configuración pública
 
-La URL canónica utiliza `NEXT_PUBLIC_SITE_URL` cuando está disponible. Sin esa variable, el fallback actual apunta al alias público del proyecto `aragon-jordanaragons-projects.vercel.app` hasta que el dominio principal de Aragon quede enlazado al proyecto correcto.
+La URL canónica utiliza `NEXT_PUBLIC_SITE_URL` cuando está disponible. Sin esa variable, el fallback actual apunta al alias público estable `aragon-two.vercel.app` hasta que el dominio principal de Aragon quede enlazado al proyecto correcto.
 
 ## Cal.com
 
