@@ -763,3 +763,12 @@ body.is-preloading{overflow:hidden}
   }
   .hero-v4-stage::after { opacity:.8; }
 }
+
+.footer-social-grid a[aria-label="Instagram"] .icon-box svg,
+.footer-social-grid a[aria-label="Portafolio personal"] .icon-box svg {
+  fill:none;
+  stroke:currentColor;
+  stroke-width:1.45;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
