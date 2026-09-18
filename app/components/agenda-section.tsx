@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { projects } from '../data/projects';
 import { site } from '../data/site';
 import CalBooking from './cal-booking';
+import ContactForm from './contact-form';
 import { IconBox, icons } from './icons';
 import TextScrollTitle from './skiper/text-scroll-title';
 
@@ -16,19 +17,25 @@ export default function AgendaSection() {
       return null;
     }
   });
+  const [contactOpen, setContactOpen] = useState(false);
 
   useEffect(() => {
     const onProject = (event: Event) => {
       const slug = (event as CustomEvent<string>).detail;
       if (slug) setSelectedProject(slug);
     };
+    const onOpenContact = () => setContactOpen(true);
 
     window.addEventListener('aragon:project-selected', onProject);
-    return () => window.removeEventListener('aragon:project-selected', onProject);
+    window.addEventListener('aragon:open-contact', onOpenContact);
+    return () => {
+      window.removeEventListener('aragon:project-selected', onProject);
+      window.removeEventListener('aragon:open-contact', onOpenContact);
+    };
   }, []);
 
   const project = projects.find((item) => item.slug === selectedProject);
-  const emailSubject = encodeURIComponent(project ? `Aragon / ${project.title}` : 'Aragon / Proyecto');
+  const emailSubject = project ? `Aragon / ${project.title}` : 'Aragon / Proyecto';
 
   const clearContext = () => {
     try {
@@ -54,9 +61,12 @@ export default function AgendaSection() {
           />
           <p>{project ? `La conversación parte de ${project.title}, pero el objetivo es entender el problema detrás del concepto y decidir qué tendría sentido construir.` : 'Elige un horario y cuéntame qué necesitas construir. La primera conversación sirve para entender el problema, no para venderte una solución prefabricada.'}</p>
           {project && <button type="button" className="context-reset" onClick={clearContext}>Quitar contexto {icons.plus}</button>}
-          <div className="contact-alt">
-            <span>¿Prefieres escribir primero?</span>
-            <a href={`mailto:${site.contactEmail}?subject=${emailSubject}`}>Escribir por correo <IconBox>{icons.mail}</IconBox></a>
+
+          <div className="contact-actions-row">
+            <button type="button" className="contact-form-trigger" onClick={() => setContactOpen(true)}>
+              Prefiero escribir <IconBox>{icons.mail}</IconBox>
+            </button>
+            <a href={`mailto:${site.contactEmail}?subject=${encodeURIComponent(emailSubject)}`} className="contact-email-link">Email directo ↗</a>
           </div>
           <a href={`https://cal.com/${site.calLink}`} target="_blank" rel="noopener noreferrer" className="under-link">Abrir Cal.com en otra ventana {icons.arrow}</a>
         </div>
@@ -64,6 +74,7 @@ export default function AgendaSection() {
           <CalBooking />
         </div>
       </div>
+      <ContactForm open={contactOpen} onClose={() => setContactOpen(false)} subject={emailSubject} />
     </section>
   );
 }

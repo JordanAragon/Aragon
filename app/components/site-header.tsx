@@ -19,6 +19,11 @@ export default function SiteHeader() {
   const menuRef = useRef<HTMLElement>(null);
   const wasOpen = useRef(false);
 
+  const openContact = () => {
+    setMenuOpen(false);
+    window.dispatchEvent(new Event('aragon:open-contact'));
+  };
+
   useEffect(() => {
     setEntryStarted(document.documentElement.dataset.aragonEntry === 'ready');
     const onEntry = () => setEntryStarted(true);
@@ -99,7 +104,7 @@ export default function SiteHeader() {
               <span>0{index + 1}</span>{label}
             </a>
           ))}
-          <a href="#contacto" className="desktop-nav-cta" tabIndex={entryStarted ? 0 : -1}>Agendar <span>↗</span></a>
+          <a href="#contacto" className="desktop-nav-cta" onClick={openContact} tabIndex={entryStarted ? 0 : -1}>Contacto <span>↗</span></a>
         </nav>
 
         <button ref={triggerRef} type="button" className={`menu-toggle-v2 ${menuOpen ? 'is-open' : ''}`} onClick={() => setMenuOpen((value) => !value)} aria-expanded={menuOpen} aria-controls="mobile-nav-v2" aria-label={menuOpen ? 'Cerrar menú' : 'Abrir menú'} tabIndex={entryStarted ? 0 : -1}>
@@ -116,7 +121,7 @@ export default function SiteHeader() {
               <span>{label}</span><b>0{index + 1}</b>
             </a>
           ))}
-          <a href="#contacto" className="mobile-nav-v2-cta" onClick={() => setMenuOpen(false)} tabIndex={menuOpen && entryStarted ? 0 : -1}>Agendar una conversación ↗</a>
+          <a href="#contacto" className="mobile-nav-v2-cta" onClick={openContact} tabIndex={menuOpen && entryStarted ? 0 : -1}>Contacto ↗</a>
         </nav>
       </div>
     </>

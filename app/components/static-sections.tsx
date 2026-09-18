@@ -1,5 +1,6 @@
 import { IconBox, icons } from './icons';
 import TextScrollTitle from './skiper/text-scroll-title';
+import ContactTrigger from './contact-trigger';
 import { site } from '../data/site';
 
 const problems = [
@@ -100,35 +101,39 @@ export function MethodSection() {
 
 export function Footer() {
   return (
-    <footer className="footer page-shell">
-      <div className="footer-closing">
-        <span className="section-number">08 / CIERRE</span>
-        <h2>Que la idea <em>tenga dónde vivir.</em></h2>
-        <p>Aragon / Software · Digital · Technology</p>
-      </div>
-
-      <div className="footer-social">
-        <span className="footer-social-label">ENCUÉNTRAME</span>
-        <div className="footer-social-grid">
-          {site.socialLinks.map((link) => (
-            <a key={link.label} href={link.href} target="_blank" rel="noopener noreferrer" aria-label={link.label}>
-              <IconBox>{icons[link.icon]}</IconBox>
-              <span>{link.label}</span>
-              <b>↗</b>
-            </a>
-          ))}
-          <a href={site.portfolioUrl} target="_blank" rel="noopener noreferrer" aria-label="Portafolio personal">
-            <IconBox>{icons.globe}</IconBox>
-            <span>Portafolio</span>
-            <b>↗</b>
-          </a>
-          <a href="#inicio" className="footer-top">Top <b>↑</b></a>
+    <footer className="footer">
+      <div className="page-shell footer-inner">
+        <div className="footer-main">
+          <div className="footer-closing">
+            <span className="section-number">08 / CIERRE</span>
+            <h2>Que la idea <em>tenga dónde vivir.</em></h2>
+          </div>
+          <div className="footer-side">
+            <span>ARAGON / SOFTWARE · DIGITAL · TECHNOLOGY</span>
+            <ContactTrigger className="footer-contact-button">Empezar una conversación ↗</ContactTrigger>
+          </div>
         </div>
-      </div>
 
-      <div className="footer-bottom">
-        <span>Motion studies <a href="https://skiper-ui.com/" target="_blank" rel="noopener noreferrer">Skiper UI</a></span>
-        <span>Popayán / Colombia</span>
+        <div className="footer-links">
+          <div className="footer-links-group">
+            {site.socialLinks.map((link) => (
+              <a key={link.label} href={link.href} target="_blank" rel="noopener noreferrer" aria-label={link.label}>
+                <IconBox>{icons[link.icon]}</IconBox>
+                <span>{link.label}</span>
+                <b>↗</b>
+              </a>
+            ))}
+            <a href={site.portfolioUrl} target="_blank" rel="noopener noreferrer" aria-label="Portafolio personal">
+              <IconBox>{icons.globe}</IconBox><span>Portafolio</span><b>↗</b>
+            </a>
+          </div>
+          <a href="#inicio" className="footer-top">Back to top ↑</a>
+        </div>
+
+        <div className="footer-bottom">
+          <span>Canvas crowd / Skiper UI + Open Peeps</span>
+          <span>Popayán / Colombia · 2026</span>
+        </div>
       </div>
     </footer>
   );

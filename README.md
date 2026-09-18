@@ -17,15 +17,16 @@ La homepage mantiene Server Components para el contenido estático y Client Comp
 
 El Hero utiliza una única escena sticky. El preloader dispara el evento de entrada de forma explícita y, a partir de ahí, la identidad de Aragon aparece como elemento dominante antes de revelar el mensaje y la vista de producto. El scroll transforma esa presencia en contenido sin competir con múltiples bloques simultáneos. Las capas no activas no dejan controles enfocables durante la entrada.
 
-La sección de contexto (#contexto) integra una adaptación local de Skiper UI 39 / Crowd Canvas. El renderer usa el sprite local, ciclos de caminata en GSAP, dirección aleatoria por ciclo, movimiento vertical, ordenamiento por profundidad, reutilización de personajes, ResizeObserver, DPR limitado a 2 y pausa cuando la escena no está visible.
+La sección de contexto (#contexto) integra el comportamiento de Skiper UI 39 / Crowd Canvas con la misma sprite sheet Open Peeps de la implementación original (15 filas × 7 columnas), ciclos de caminata en GSAP, dirección aleatoria por ciclo, movimiento vertical, ordenamiento por profundidad, reutilización de personajes y resize responsive. El canvas se mantiene visualmente independiente de los transforms del storytelling para conservar el movimiento original; el scroll controla únicamente la secuencia de los textos.
 
-La multitud no cambia de dirección de forma global por scroll. El scroll controla la composición narrativa de la escena: entrada, escala, desplazamiento, opacidad y salida del grupo. Esto conserva el comportamiento natural del Crowd Canvas mientras conecta el movimiento con la historia de Aragon.
+La referencia de implementación de Skiper indica que el componente utiliza HTML5 Canvas + GSAP y una sprite sheet de personajes; además, la versión gratuita requiere atribución a Skiper UI. La página de Aragon deja esa atribución en el cierre.
+
 
 La sección Lab conserva cuatro conceptos en desarrollo. Las etiquetas de stack indican dirección técnica o de producto propuesta y no deben interpretarse como productos lanzados o clientes reales.
 
 ## Contacto y perfiles
 
-La agenda mantiene Cal.com como vía de conversación directa y añade una alternativa ligera por correo electrónico con asunto contextual cuando se ha seleccionado un concepto.
+La agenda mantiene Cal.com como vía de conversación directa y añade una alternativa de contacto en contexto: los CTA del header, Hero, agenda y footer pueden abrir el mismo formulario superpuesto, corto y accesible. Al enviarlo se prepara un correo con el contexto del proyecto, sin inventar un backend ni un servicio de envío adicional.
 
 El footer centraliza GitHub, LinkedIn, Instagram y el portafolio personal. No se añade un enlace de Facebook sin una URL pública verificada para evitar apuntar a un perfil incorrecto.
 

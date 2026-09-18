@@ -3,7 +3,7 @@
 import { motion, useReducedMotion } from 'motion/react';
 import { useEffect, useState } from 'react';
 
-const ASSETS = ['/img/portafolio.png', '/images/peeps/aragon-crowd-sprite.png'];
+const ASSETS = ['https://s3-us-west-2.amazonaws.com/s.cdpn.io/175711/open-peeps-sheet.png'];
 const word = 'ARAGON';
 
 function preloadAsset(src: string) {

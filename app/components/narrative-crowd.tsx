@@ -4,40 +4,18 @@ import { motion, useReducedMotion, useScroll, useSpring, useTransform } from 'mo
 import { useRef } from 'react';
 import CanvasCrowdExact from './skiper/canvas-crowd-exact';
 
-const SPRITE = '/images/peeps/aragon-crowd-sprite.png';
+const SPRITE = 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/175711/open-peeps-sheet.png';
 
 export default function NarrativeCrowd() {
   const ref = useRef<HTMLElement>(null);
   const reduced = useReducedMotion();
   const raw = useScroll({ target: ref, offset: ['start start', 'end end'] }).scrollYProgress;
-  const progress = useSpring(raw, { stiffness: 68, damping: 26, mass: 0.28 });
+  const progress = useSpring(raw, { stiffness: 70, damping: 27, mass: 0.3 });
 
-  const b1 = useTransform(progress, [0, 0.13, 0.24], [1, 1, 0]);
-  const b2 = useTransform(progress, [0.19, 0.31, 0.45], [0, 1, 0]);
-  const b3 = useTransform(progress, [0.4, 0.54, 0.69], [0, 1, 0]);
-  const b4 = useTransform(progress, [0.64, 0.79, 1], [0, 1, 1]);
-
-  const crowdX = useTransform(
-    progress,
-    [0, 0.24, 0.5, 0.76, 1],
-    ['-6%', reduced ? '-2%' : '3%', reduced ? '1%' : '-4%', reduced ? '1%' : '4%', reduced ? '0%' : '8%'],
-  );
-  const crowdY = useTransform(
-    progress,
-    [0, 0.18, 0.45, 0.72, 1],
-    ['28%', reduced ? '18%' : '10%', reduced ? '6%' : '0%', reduced ? '0%' : '-3%', reduced ? '0%' : '-16%'],
-  );
-  const crowdScale = useTransform(
-    progress,
-    [0, 0.16, 0.42, 0.72, 0.92, 1],
-    [0.84, 0.92, 1.02, 1.08, 1.03, 0.82],
-  );
-  const crowdOpacity = useTransform(
-    progress,
-    [0, 0.1, 0.22, 0.75, 0.92, 1],
-    [0, reduced ? 0.5 : 0.7, 1, 1, 0.65, 0],
-  );
-  const lineX = useTransform(progress, [0, 0.26, 0.58, 0.82, 1], ['0%', '28%', '62%', '86%', '100%']);
+  const b1 = useTransform(progress, [0, 0.12, 0.23], [1, 1, 0]);
+  const b2 = useTransform(progress, [0.19, 0.31, 0.43], [0, 1, 0]);
+  const b3 = useTransform(progress, [0.39, 0.52, 0.65], [0, 1, 0]);
+  const b4 = useTransform(progress, [0.61, 0.76, 1], [0, 1, 1]);
 
   return (
     <section id="contexto" ref={ref} className="crowd-story-v4" aria-labelledby="crowd-title">
@@ -77,21 +55,12 @@ export default function NarrativeCrowd() {
         </div>
 
         <div className="crowd-story-v4-floor" aria-hidden="true">
-          <motion.div
-            className="crowd-story-v4-canvas"
-            style={{ x: crowdX, y: crowdY, scale: crowdScale, opacity: crowdOpacity }}
-          >
-            <CanvasCrowdExact src={SPRITE} rows={15} cols={7} />
-          </motion.div>
+          <CanvasCrowdExact src={SPRITE} rows={15} cols={7} />
           <span className="crowd-story-v4-floor-line" />
         </div>
 
         <div className="page-shell crowd-story-v4-footer" aria-hidden="true">
-          <span>ACTIVITY</span>
-          <i><motion.b style={{ scaleX: lineX, transformOrigin: 'left' }} /></i>
-          <span>FLOW</span>
-          <i />
-          <span>DIRECTION</span>
+          <span>ACTIVITY</span><i /><span>FLOW</span><i /><span>DIRECTION</span>
         </div>
       </div>
     </section>
