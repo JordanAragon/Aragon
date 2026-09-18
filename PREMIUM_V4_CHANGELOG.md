@@ -21,3 +21,6 @@ Desktop/tablet/mobile use separate placement rules for the hero and crowd stage.
 
 ### Build fixes
 The V4 progress indicators now use Motion elements for Motion-only `scaleX` styles, which keeps strict TypeScript checks valid under React DOM typings. The malformed `.hero-v4-phase-main` CSS declaration was also repaired so Turbopack can parse `app/premium.css` successfully.
+
+### Deployment verification
+A post-fix commit is used to verify that the Git integration creates a fresh Vercel production deployment from `main`.
