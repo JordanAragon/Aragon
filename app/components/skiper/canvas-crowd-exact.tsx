@@ -40,6 +40,7 @@ export default function CanvasCrowdExact({ src, rows = 15, cols = 7, className =
 
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
+    const drawingContext: CanvasRenderingContext2D = ctx;
 
     const image = new Image();
     const stage: Stage = { width: 0, height: 0 };
@@ -166,13 +167,13 @@ export default function CanvasCrowdExact({ src, rows = 15, cols = 7, className =
 
     const renderStatic = () => {
       const ratio = getDpr();
-      ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
-      ctx.clearRect(0, 0, stage.width, stage.height);
+      drawingContext.setTransform(ratio, 0, 0, ratio, 0, 0);
+      drawingContext.clearRect(0, 0, stage.width, stage.height);
       crowd.forEach((peep) => {
-        ctx.save();
-        ctx.translate(peep.x, peep.y);
-        ctx.scale(peep.scaleX * peep.scale, peep.scale);
-        ctx.drawImage(
+        drawingContext.save();
+        drawingContext.translate(peep.x, peep.y);
+        drawingContext.scale(peep.scaleX * peep.scale, peep.scale);
+        drawingContext.drawImage(
           image,
           peep.rect[0],
           peep.rect[1],
@@ -183,7 +184,7 @@ export default function CanvasCrowdExact({ src, rows = 15, cols = 7, className =
           peep.rect[2],
           peep.rect[3],
         );
-        ctx.restore();
+        drawingContext.restore();
       });
     };
 
@@ -223,13 +224,13 @@ export default function CanvasCrowdExact({ src, rows = 15, cols = 7, className =
     function render() {
       if (!ready || !visible || reducedMotion) return;
       const ratio = getDpr();
-      ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
-      ctx.clearRect(0, 0, stage.width, stage.height);
+      drawingContext.setTransform(ratio, 0, 0, ratio, 0, 0);
+      drawingContext.clearRect(0, 0, stage.width, stage.height);
       crowd.forEach((peep) => {
-        ctx.save();
-        ctx.translate(peep.x, peep.y);
-        ctx.scale(peep.scaleX * peep.scale, peep.scale);
-        ctx.drawImage(
+        drawingContext.save();
+        drawingContext.translate(peep.x, peep.y);
+        drawingContext.scale(peep.scaleX * peep.scale, peep.scale);
+        drawingContext.drawImage(
           image,
           peep.rect[0],
           peep.rect[1],
@@ -240,7 +241,7 @@ export default function CanvasCrowdExact({ src, rows = 15, cols = 7, className =
           peep.rect[2],
           peep.rect[3],
         );
-        ctx.restore();
+        drawingContext.restore();
       });
     }
 
