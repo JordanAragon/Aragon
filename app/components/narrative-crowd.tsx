@@ -5,7 +5,6 @@ import { useRef } from 'react';
 import CanvasCrowdExact from './skiper/canvas-crowd-exact';
 
 const SPRITE = '/images/peeps/aragon-crowd-sprite.png';
-const SCENE = '/images/peeps/aragon-crowd-scene.png';
 
 export default function NarrativeCrowd() {
   const ref = useRef<HTMLElement>(null);
@@ -17,10 +16,11 @@ export default function NarrativeCrowd() {
   const b2 = useTransform(progress, [0.19, 0.31, 0.45], [0, 1, 0]);
   const b3 = useTransform(progress, [0.4, 0.54, 0.69], [0, 1, 0]);
   const b4 = useTransform(progress, [0.64, 0.79, 1], [0, 1, 1]);
-  const crowdX = useTransform(progress, [0, 0.24, 0.5, 0.76, 1], ['0%', reduced ? '0%' : '-2%', reduced ? '0%' : '2%', reduced ? '0%' : '-1%', reduced ? '0%' : '1%']);
-  const crowdScale = useTransform(progress, [0, 0.22, 0.53, 0.78, 1], [1, 1.03, 1.055, 1.02, 1.08]);
-  const assembled = useTransform(progress, [0.76, 0.9, 1], [0, 0.08, 0.14]);
-  const lineX = useTransform(progress, [0, 1], ['0%', '100%']);
+  const crowdX = useTransform(progress, [0, 0.24, 0.5, 0.76, 1], ['-6%', reduced ? '-2%' : '3%', reduced ? '1%' : '-4%', reduced ? '1%' : '4%', reduced ? '0%' : '8%']);
+  const crowdY = useTransform(progress, [0, 0.18, 0.45, 0.72, 1], ['28%', reduced ? '18%' : '10%', reduced ? '6%' : '0%', reduced ? '0%' : '-3%', reduced ? '0%' : '-16%']);
+  const crowdScale = useTransform(progress, [0, 0.16, 0.42, 0.72, 0.92, 1], [0.84, 0.92, 1.02, 1.08, 1.03, 0.82]);
+  const crowdOpacity = useTransform(progress, [0, 0.1, 0.22, 0.75, 0.92, 1], [0, reduced ? 0.5 : 0.7, 1, 1, 0.65, 0]);
+  const lineX = useTransform(progress, [0, 0.26, 0.58, 0.82, 1], ['0%', '28%', '62%', '86%', '100%']);
 
   return (
     <section id="contexto" ref={ref} className="crowd-story-v4" aria-labelledby="crowd-title">
