@@ -31,8 +31,6 @@ const randomIndex = (array: unknown[]) => randomRange(0, array.length) | 0;
 const removeFromArray = <T,>(array: T[], index: number) => array.splice(index, 1)[0];
 const removeItemFromArray = <T,>(array: T[], item: T) => removeFromArray(array, array.indexOf(item));
 const removeRandomFromArray = <T,>(array: T[]) => removeFromArray(array, randomIndex(array));
-const getRandomFromArray = <T,>(array: T[]) => array[randomIndex(array) | 0];
-
 export default function CanvasCrowdExact({ src, rows = 15, cols = 7, density = 1, className = '' }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -42,6 +40,7 @@ export default function CanvasCrowdExact({ src, rows = 15, cols = 7, density = 1
 
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
+    const drawingContext: CanvasRenderingContext2D = ctx;
 
     const img = document.createElement('img');
     const stage = { width: 0, height: 0 };
@@ -173,11 +172,11 @@ export default function CanvasCrowdExact({ src, rows = 15, cols = 7, density = 1
     };
 
     const render = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.save();
-      ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
-      crowd.forEach((peep) => peep.render(ctx));
-      ctx.restore();
+      drawingContext.clearRect(0, 0, canvas.width, canvas.height);
+      drawingContext.save();
+      drawingContext.scale(window.devicePixelRatio, window.devicePixelRatio);
+      crowd.forEach((peep) => peep.render(drawingContext));
+      drawingContext.restore();
     };
 
     const init = () => {
