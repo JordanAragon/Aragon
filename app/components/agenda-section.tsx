@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { projects } from '../data/projects';
 import { site } from '../data/site';
 import CalBooking from './cal-booking';
-import { icons } from './icons';
+import { IconBox, icons } from './icons';
 import TextScrollTitle from './skiper/text-scroll-title';
 
 export default function AgendaSection() {
@@ -28,6 +28,7 @@ export default function AgendaSection() {
   }, []);
 
   const project = projects.find((item) => item.slug === selectedProject);
+  const emailSubject = encodeURIComponent(project ? `Aragon / ${project.title}` : 'Aragon / Proyecto');
 
   const clearContext = () => {
     try {
@@ -53,6 +54,10 @@ export default function AgendaSection() {
           />
           <p>{project ? `La conversación parte de ${project.title}, pero el objetivo es entender el problema detrás del concepto y decidir qué tendría sentido construir.` : 'Elige un horario y cuéntame qué necesitas construir. La primera conversación sirve para entender el problema, no para venderte una solución prefabricada.'}</p>
           {project && <button type="button" className="context-reset" onClick={clearContext}>Quitar contexto {icons.plus}</button>}
+          <div className="contact-alt">
+            <span>¿Prefieres escribir primero?</span>
+            <a href={`mailto:${site.contactEmail}?subject=${emailSubject}`}>Escribir por correo <IconBox>{icons.mail}</IconBox></a>
+          </div>
           <a href={`https://cal.com/${site.calLink}`} target="_blank" rel="noopener noreferrer" className="under-link">Abrir Cal.com en otra ventana {icons.arrow}</a>
         </div>
         <div className="calendar-shell">

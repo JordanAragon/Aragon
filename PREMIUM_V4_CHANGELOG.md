@@ -1,26 +1,21 @@
-# Aragon Premium V4
+# Aragon Premium V4 / Final Evolution
 
-## What changed
+## Hero
 
-The hero and crowd systems were rebuilt around a single scroll narrative instead of independent decorative animations.
+Una sola escena sticky presenta primero la identidad ARAGON y después revela el mensaje. El wordmark deja de competir con múltiples bloques desde el primer frame y el scroll lo transforma en el encabezado de la historia.
 
-### Hero
-A single sticky 100svh stage now drives the story. The large ARAGON wordmark, product view and headline share one timeline. Three phases are intentionally mutually exclusive so the page cannot show multiple hero stories stacked on top of each other.
+## Crowd
 
-### Crowd
-The main crowd renderer now uses a real 15×7 sprite sheet. Each person is instantiated independently and receives its own scale, depth, vertical offset, direction and GSAP walk timeline. The scroll progress changes the global flow direction at story beats, so the crowd physically turns with the narrative.
+El Crowd Canvas mantiene el comportamiento esencial de Skiper 39: sprite sheet local, personajes independientes, caminatas horizontales, dirección aleatoria, bob vertical, profundidad por posición y reutilización continua. El scroll controla la escena exterior, no la física interna de la multitud.
 
-### Preloader
-The entry sequence preloads the exact local hero/crowd assets used by the page and reveals ARAGON while they resolve.
+## Contacto y cierre
 
-### Performance
-Canvas bitmap dimensions are only changed when size/DPR changes. Crowd depth sorting happens on setup/rebuild, not every animation frame. GSAP timelines are cleaned on unmount.
+Cal.com continúa como ruta de agenda. Se añadió una ruta ligera por correo con asunto contextual. El footer funciona como cierre editorial y centraliza perfiles disponibles y portafolio.
 
-### Responsive
-Desktop/tablet/mobile use separate placement rules for the hero and crowd stage. Oversized image assets are clipped by their own stage rather than relying on viewport-wide overflow.
+## Limpieza
 
-### Build fixes
-The V4 progress indicators now use Motion elements for Motion-only `scaleX` styles, which keeps strict TypeScript checks valid under React DOM typings. The malformed `.hero-v4-phase-main` CSS declaration was also repaired so Turbopack can parse `app/premium.css` successfully.
+Se retiraron estilos legacy audit.css y polish.css, componentes duplicados de Crowd/Context, assets de escena no utilizados y el artefacto tsconfig.tsbuildinfo. No se añadieron dependencias.
 
-### Deployment verification
-A post-fix commit is used to verify that the Git integration creates a fresh Vercel production deployment from `main`.
+## Deployment
+
+La rama de evolución se debe validar en Vercel antes de fusionarla a main. El criterio de aceptación no es solo que compile: debe responder correctamente, no producir errores runtime y mantener navegación, reduced motion, responsive y comportamiento de scroll.

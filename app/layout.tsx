@@ -1,7 +1,5 @@
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
-import './polish.css';
-import './audit.css';
 import './skiper.css';
 import './premium.css';
 import { site, siteUrl } from './data/site';
@@ -63,7 +61,7 @@ const structuredData = [
       url: siteUrl,
       jobTitle: 'Software Developer',
       homeLocation: { '@type': 'Place', name: 'Colombia' },
-      sameAs: ['https://github.com/JordanAragon', 'https://www.linkedin.com/in/jordanaragon/'],
+      sameAs: [...site.socialLinks.map((link) => link.href), site.portfolioUrl],
     },
   },
   {
