@@ -25,7 +25,6 @@ export default function SiteHeader() {
   };
 
   useEffect(() => {
-    setEntryStarted(document.documentElement.dataset.aragonEntry === 'ready');
     const onEntry = () => setEntryStarted(true);
     window.addEventListener('aragon:entry-start', onEntry);
     return () => window.removeEventListener('aragon:entry-start', onEntry);
@@ -85,10 +84,6 @@ export default function SiteHeader() {
       document.body.style.overflow = previous;
     };
   }, [menuOpen]);
-
-  useEffect(() => {
-    if (!entryStarted && menuOpen) setMenuOpen(false);
-  }, [entryStarted, menuOpen]);
 
   return (
     <>
