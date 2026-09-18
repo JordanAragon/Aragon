@@ -20,7 +20,7 @@ export default function ContactForm({ open, onClose, subject = 'Proyecto Aragon'
     const onKey = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         event.preventDefault();
-        onClose();
+        close();
         return;
       }
 
@@ -52,9 +52,11 @@ export default function ContactForm({ open, onClose, subject = 'Proyecto Aragon'
     };
   }, [open, onClose]);
 
-  useEffect(() => {
-    if (!open) setSubmitted(false);
-  }, [open]);
+
+  const close = () => {
+    setSubmitted(false);
+    onClose();
+  };
 
   if (!open) return null;
 
@@ -78,7 +80,7 @@ export default function ContactForm({ open, onClose, subject = 'Proyecto Aragon'
 
   return (
     <div className="contact-form-layer" role="presentation" onMouseDown={(event) => {
-      if (event.target === event.currentTarget) onClose();
+      if (event.target === event.currentTarget) close();
     }}>
       <div
         ref={dialogRef}
@@ -92,7 +94,7 @@ export default function ContactForm({ open, onClose, subject = 'Proyecto Aragon'
             <span>07 / CONTACT</span>
             <small>NO MEETING REQUIRED</small>
           </div>
-          <button type="button" className="contact-form-close" onClick={onClose} aria-label="Cerrar formulario">×</button>
+          <button type="button" className="contact-form-close" onClick={close} aria-label="Cerrar formulario">×</button>
         </div>
 
         {submitted ? (
@@ -100,7 +102,7 @@ export default function ContactForm({ open, onClose, subject = 'Proyecto Aragon'
             <span>MESSAGE / READY</span>
             <h2 id="contact-form-success-title">Tu correo está listo para enviar.</h2>
             <p>La información ya quedó preparada en tu cliente de correo. Puedes revisarla y enviarla cuando quieras.</p>
-            <button type="button" className="contact-form-submit" onClick={onClose}>Cerrar {icons.arrow}</button>
+            <button type="button" className="contact-form-submit" onClick={close}>Cerrar {icons.arrow}</button>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="contact-form">
