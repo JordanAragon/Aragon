@@ -24,7 +24,9 @@ export default function SiteHeader() {
       (entries) => {
         const visible = entries.filter((entry) => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
         if (visible) {
-          const targetId = visible.target.id === 'contexto' ? 'problema' : visible.target.id;\n          setActive(targetId);\n        }
+          const targetId = visible.target.id === 'contexto' ? 'problema' : visible.target.id;
+          setActive(targetId);
+        }
       },
       { rootMargin: '-26% 0px -58% 0px', threshold: [0.05, 0.15, 0.35, 0.6] },
     );
