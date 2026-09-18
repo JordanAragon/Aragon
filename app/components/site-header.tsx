@@ -25,7 +25,9 @@ export default function SiteHeader() {
   };
 
   useEffect(() => {
-    setEntryStarted(document.documentElement.dataset.aragonEntry === 'ready');
+    if (document.documentElement.dataset.aragonEntry === 'ready') {
+      queueMicrotask(() => setEntryStarted(true));
+    }
     const onEntry = () => setEntryStarted(true);
     window.addEventListener('aragon:entry-start', onEntry);
     return () => window.removeEventListener('aragon:entry-start', onEntry);
@@ -65,7 +67,7 @@ export default function SiteHeader() {
         event.preventDefault();
         setMenuOpen(false);
         return;
-      }
+        }
       if (event.key !== 'Tab' || !links?.length) return;
       const first = links[0];
       const last = links[links.length - 1];
@@ -86,9 +88,11 @@ export default function SiteHeader() {
     };
   }, [menuOpen]);
 
-  useEffect(() => {
+  const [prevEntryStarted, setPrevEntryStarted] = useState(entryStarted);
+  if (entryStarted !== prevEntryStarted) {
+    setPrevEntryStarted(entryStarted);
     if (!entryStarted && menuOpen) setMenuOpen(false);
-  }, [entryStarted, menuOpen]);
+  }
 
   return (
     <>

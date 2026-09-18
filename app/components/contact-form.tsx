@@ -52,9 +52,12 @@ export default function ContactForm({ open, onClose, subject = 'Proyecto Aragon'
     };
   }, [open, onClose]);
 
-  useEffect(() => {
+  const [prevOpen, setPrevOpen] = useState(open);
+  if (open !== prevOpen) {
+    setPrevOpen(open);
     if (!open) setSubmitted(false);
-  }, [open]);
+  }
+
 
   if (!open) return null;
 
