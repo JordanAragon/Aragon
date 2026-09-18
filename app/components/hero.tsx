@@ -27,7 +27,6 @@ export default function Hero() {
   const lineProgress = useTransform(progress, [0.04, 0.96], [0, 1]);
 
   useEffect(() => {
-    setEntryStarted(document.documentElement.dataset.aragonEntry === 'ready');
     const onEntry = () => setEntryStarted(true);
     window.addEventListener('aragon:entry-start', onEntry);
     return () => window.removeEventListener('aragon:entry-start', onEntry);
