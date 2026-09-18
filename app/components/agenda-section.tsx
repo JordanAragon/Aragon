@@ -43,7 +43,7 @@ export default function AgendaSection() {
       <div className="contact-scan" aria-hidden="true" />
       <div className="page-shell agenda-grid">
         <div className="agenda-intro">
-          <div className="contact-meta"><span>07 / AGENDA</span><span>ARAGON / 2026</span><span>CALI / COLOMBIA</span></div>
+          <div className="contact-meta"><span>07 / AGENDA</span><span>ARAGON / 2026</span><span>POPAYÁN / COLOMBIA</span></div>
           <span className="contact-kicker">UNA IDEA. UN PROBLEMA. ALGO QUE CONSTRUIR.</span>
           <TextScrollTitle
             id="contact-title"
