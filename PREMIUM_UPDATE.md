@@ -1,20 +1,20 @@
-# Aragon — Premium Storytelling Pass / 2026-09-17
+# Aragon — Premium Storytelling Pass / 2026-09-18
 
 ## Experience pass
-- Hero rebuilt around a pinned editorial stage: premise → friction → build.
-- ARAGON wordmark reveals character-by-character on entry and responds to scroll.
-- Real Aragon product / infrastructure visuals are layered as an art-directed system rather than a single generic card.
-- Preloader rebuilt with letter reveal, progress rail, grid, and shutter transition.
-- Crowd story expanded into a four-beat scroll narrative: assumption → noise → real problem → system.
-- Crowd fallback asset now uses a transparent cutout derived from the supplied reference image so the people remain visible even if Canvas has a rendering issue.
-- Canvas crowd engine now has robust image loading, ResizeObserver, DPR handling, cleanup, and a scene mode.
-- Context section now references the visible crowd scene asset instead of the broken black raster.
-- Header remains fixed/pill-based with active-section state and mobile navigation.
-- Existing project stack, method, agenda, and footer remain intact while the new visual language is layered on top.
 
-## Research direction
-The interaction vocabulary was refined against current Skiper UI and Awwwards references around Canvas crowds, scroll storytelling, preloaders, interactive navigation, hero scroll openers, text reveals, horizontal/stacked project interactions, and process narratives. The references reviewed included Skiper 39, Bright Biotech, Stellare Agency, Aerleum, Oaksun Studio, Alejandro Schintu and related Awwwards elements.
+- Hero reducido a una entrada centrada en identidad antes de revelar información secundaria.
+- Scroll del Hero convertido en transición identidad → mensaje → fricción → construcción.
+- Crowd Canvas integrado como escena narrativa, no como adorno aislado.
+- Dirección aleatoria de personajes restaurada por ciclo para conservar el comportamiento esencial de Skiper 39.
+- Movimiento del usuario aplicado sobre la escena completa mediante escala, desplazamiento y opacidad.
+- Preloader limitado a los dos assets críticos para la entrada: visual principal y sprite de multitud.
+- Footer ampliado con cierre narrativo, perfiles y portafolio.
+- Agenda ampliada con una ruta alternativa de contacto por correo.
+- Estilos legacy audit.css y polish.css retirados después de migrar sus reglas aún necesarias.
+- Assets antiguos y duplicados de la escena Crowd eliminados.
 
-## Local verification
-- TypeScript/TSX syntax was checked with the installed TypeScript compiler's transpile parser for the edited React files.
-- Full `npm install` / production build could not be completed in this environment because npm registry packages were unavailable from the runtime cache.
+## Reference principles
+
+Skiper UI describe Skiper 39 como un Crowd Canvas basado en HTML5 Canvas y GSAP, con personajes construidos desde una sprite sheet, movimiento de caminata y ajuste al tamaño de pantalla. La implementación local conserva esos principios y evita depender de un asset remoto en runtime.
+
+El criterio visual también sigue una premisa importante de los materiales de Awwwards: el concepto debe preceder al efecto y el movimiento debe servir a una intención clara, en lugar de copiar tendencias de interacción por apariencia.
