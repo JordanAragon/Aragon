@@ -20,7 +20,8 @@ export default function ContactForm({ open, onClose, subject = 'Proyecto Aragon'
     const onKey = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         event.preventDefault();
-        close();
+        setSubmitted(false);
+        onClose();
         return;
       }
 
