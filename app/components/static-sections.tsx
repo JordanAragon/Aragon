@@ -1,5 +1,6 @@
 import { IconBox, icons } from './icons';
 import TextScrollTitle from './skiper/text-scroll-title';
+import { site } from '../data/site';
 
 const problems = [
   { id: '01', word: 'MARCA', title: 'No se entiende.', copy: 'Una buena idea pierde fuerza cuando nadie entiende qué hace, para quién es o por qué importa.' },
@@ -100,9 +101,35 @@ export function MethodSection() {
 export function Footer() {
   return (
     <footer className="footer page-shell">
-      <div className="footer-brand"><span className="brand-mark">A</span><div><strong>ARAGON</strong><small>Jordan Aragon · Software · Digital · Technology</small></div></div>
-      <div className="footer-links"><a href="https://github.com/JordanAragon" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href="https://www.linkedin.com/in/jordanaragon/" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a><a href="#inicio">Top ↑</a></div>
-      <div className="footer-attribution">Motion studies <a href="https://skiper-ui.com/" target="_blank" rel="noopener noreferrer">Skiper UI</a></div>
+      <div className="footer-closing">
+        <span className="section-number">08 / CIERRE</span>
+        <h2>Que la idea <em>tenga dónde vivir.</em></h2>
+        <p>Aragon / Software · Digital · Technology</p>
+      </div>
+
+      <div className="footer-social">
+        <span className="footer-social-label">ENCUÉNTRAME</span>
+        <div className="footer-social-grid">
+          {site.socialLinks.map((link) => (
+            <a key={link.label} href={link.href} target="_blank" rel="noopener noreferrer" aria-label={link.label}>
+              <IconBox>{icons[link.icon]}</IconBox>
+              <span>{link.label}</span>
+              <b>↗</b>
+            </a>
+          ))}
+          <a href={site.portfolioUrl} target="_blank" rel="noopener noreferrer" aria-label="Portafolio personal">
+            <IconBox>{icons.code}</IconBox>
+            <span>Portafolio</span>
+            <b>↗</b>
+          </a>
+          <a href="#inicio" className="footer-top">Top <b>↑</b></a>
+        </div>
+      </div>
+
+      <div className="footer-bottom">
+        <span>Motion studies <a href="https://skiper-ui.com/" target="_blank" rel="noopener noreferrer">Skiper UI</a></span>
+        <span>Popayán / Colombia</span>
+      </div>
     </footer>
   );
 }
