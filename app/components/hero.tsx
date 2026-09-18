@@ -16,18 +16,16 @@ export default function Hero() {
   const progress = useSpring(raw, { stiffness: 100, damping: 30, mass: 0.28 });
 
   // The identity owns the first scene. It only yields once the scroll has created enough visual distance.
-  const wordY = useTransform(progress, [0, 0.18, 0.36, 0.72, 1], [0, 0, reduced ? 0 : -30, reduced ? 0 : -66, reduced ? 0 : -84]);
-  const wordScale = useTransform(progress, [0, 0.18, 0.34, 0.72, 1], [1.02, 1, reduced ? 1 : 0.68, reduced ? 1 : 0.5, reduced ? 1 : 0.46]);
-  const wordOpacity = useTransform(progress, [0, 0.28, 0.52, 0.76, 1], [1, 1, reduced ? 1 : 0.78, reduced ? 1 : 0.24, reduced ? 1 : 0]);
-  const copyOpacity = useTransform(progress, [0.27, 0.38, 0.7, 1], [0, 1, 1, 0.88]);
-  const copyY = useTransform(progress, [0.27, 0.4, 0.9], [reduced ? 0 : 72, 0, reduced ? 0 : -14]);
-  const copyScale = useTransform(progress, [0.27, 0.42, 0.9], [0.985, 1, reduced ? 1 : 0.985]);
+  const wordY = useTransform(progress, [0, 0.10, 0.20, 0.32, 1], [0, 0, reduced ? 0 : -18, reduced ? 0 : -34, reduced ? 0 : -44]);
+  const wordScale = useTransform(progress, [0, 0.12, 0.22, 0.34, 1], [1.02, 1, reduced ? 1 : 0.76, reduced ? 1 : 0.46, reduced ? 1 : 0.38]);
+  const wordOpacity = useTransform(progress, [0, 0.10, 0.20, 0.32, 0.42], [1, 1, reduced ? 1 : 0.55, reduced ? 1 : 0.08, 0]);
+  const copyOpacity = useTransform(progress, [0.16, 0.27, 0.35, 0.78], [0, 0, 1, 1]);
+  const copyY = useTransform(progress, [0.18, 0.35, 0.84], [reduced ? 0 : 120, 0, reduced ? 0 : -10]);
+  const copyScale = useTransform(progress, [0.18, 0.36, 0.84], [0.965, 1, reduced ? 1 : 0.985]);
   const lineProgress = useTransform(progress, [0.02, 0.96], [0, 1]);
 
   useEffect(() => {
-    if (document.documentElement.dataset.aragonEntry === 'ready') {
-      queueMicrotask(() => setEntryStarted(true));
-    }
+    setEntryStarted(document.documentElement.dataset.aragonEntry === 'ready');
     const onEntry = () => setEntryStarted(true);
     window.addEventListener('aragon:entry-start', onEntry);
     return () => window.removeEventListener('aragon:entry-start', onEntry);

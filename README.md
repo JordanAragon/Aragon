@@ -55,3 +55,6 @@ No se añaden dependencias nuevas para el pass de experiencia.
 Cada cambio relevante debe pasar npm run build, que ejecuta ESLint, TypeScript y el build de Next.js. La validación final debe incluir navegación, scroll storytelling, preloader, reduced motion, teclado, responsive, agenda Cal.com y la ruta de correo alternativa.
 
 La implementación actual requiere verificación visual real en navegador para revisar composición y microinteracciones en desktop y mobile.
+## V7 — Cinematic hierarchy pass
+
+The current iteration keeps the Skiper UI 39 / Open Peeps crowd behavior while tuning the active population for a clearer editorial composition. The hero now uses a sequential identity-to-message reveal so the ARAGON wordmark yields before the main statement becomes dominant. The crowd narrative alternates text placement left/right between beats and adds a restrained readability veil around the copy. The footer is intentionally compressed into a studio-style colophon rather than a large sitemap, and the existing contact scene remains an inline overlay rather than a separate page.

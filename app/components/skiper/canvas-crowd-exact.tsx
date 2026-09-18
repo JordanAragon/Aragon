@@ -7,6 +7,7 @@ type Props = {
   src: string;
   rows?: number;
   cols?: number;
+  density?: number;
   className?: string;
 };
 
@@ -32,7 +33,7 @@ const removeItemFromArray = <T,>(array: T[], item: T) => removeFromArray(array, 
 const removeRandomFromArray = <T,>(array: T[]) => removeFromArray(array, randomIndex(array));
 const getRandomFromArray = <T,>(array: T[]) => array[randomIndex(array) | 0];
 
-export default function CanvasCrowdExact({ src, rows = 15, cols = 7, className = '' }: Props) {
+export default function CanvasCrowdExact({ src, rows = 15, cols = 7, density = 1, className = '' }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -149,6 +150,11 @@ export default function CanvasCrowdExact({ src, rows = 15, cols = 7, className =
     };
 
     const initCrowd = () => {
+      const clampedDensity = Math.min(1, Math.max(0.35, density));
+      const activeCount = Math.max(1, Math.round(allPeeps.length * clampedDensity));
+      const shuffled = [...allPeeps].sort(() => Math.random() - 0.5);
+      availablePeeps.push(...shuffled.slice(0, activeCount));
+
       while (availablePeeps.length) {
         addPeepToCrowd()?.walk?.progress(Math.random());
       }
@@ -163,7 +169,6 @@ export default function CanvasCrowdExact({ src, rows = 15, cols = 7, className =
       crowd.forEach((peep) => peep.walk?.kill());
       crowd.length = 0;
       availablePeeps.length = 0;
-      availablePeeps.push(...allPeeps);
       if (initialized) initCrowd();
     };
 
@@ -198,7 +203,7 @@ export default function CanvasCrowdExact({ src, rows = 15, cols = 7, className =
       img.onload = null;
       img.src = '';
     };
-  }, [src, rows, cols]);
+  }, [src, rows, cols, density]);
 
   return <canvas ref={canvasRef} className={`canvas-crowd ${className}`.trim()} aria-hidden="true" />;
 }

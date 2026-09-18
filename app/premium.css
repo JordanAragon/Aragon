@@ -2869,3 +2869,294 @@ body.is-preloading {
     animation: none !important;
   }
 }
+
+/* V7 — cinematic hierarchy, balanced crowd, alternating editorial beats, compact colophon. */
+
+.hero-v4 {
+  min-height: 132svh;
+}
+
+.hero-v4-brandline {
+  z-index: 9;
+}
+
+.hero-v4-brandline-track span {
+  font-size: clamp(96px, 16.5vw, 250px);
+}
+
+.hero-v4-content {
+  top: 48%;
+  max-width: 1120px;
+  left: 0;
+  right: 0;
+  width: var(--shell);
+  grid-template-columns: minmax(0, 1fr);
+  z-index: 16;
+}
+
+.hero-v4-copy {
+  max-width: 900px;
+}
+
+.hero-v4-copy h1 {
+  max-width: 10.5ch;
+  margin-top: 12px;
+  font-size: clamp(62px, 7.6vw, 112px);
+  line-height: .79;
+  letter-spacing: -.11em;
+}
+
+.hero-v4-copy p {
+  max-width: 47ch;
+  margin-top: 26px;
+  font-size: 13px;
+}
+
+.hero-v4-actions {
+  margin-top: 24px;
+}
+
+.hero-v4-footer {
+  bottom: 24px;
+}
+
+/* The crowd remains the Skiper/Open Peeps scene; only its active population is tuned for legibility. */
+.crowd-story-v4 {
+  min-height: 340svh;
+}
+
+.crowd-story-v4-copy {
+  padding-top: clamp(102px, 12vh, 142px);
+  z-index: 24;
+}
+
+.crowd-story-v4-beat,
+.crowd-story-v4-beat:nth-child(2),
+.crowd-story-v4-beat:nth-child(3),
+.crowd-story-v4-beat-final {
+  width: min(58vw, 790px);
+  max-width: 790px;
+  left: 0;
+  right: auto;
+  top: clamp(118px, 14vh, 150px);
+  text-align: left;
+}
+
+.crowd-story-v4-beat:nth-child(2),
+.crowd-story-v4-beat-final {
+  left: auto;
+  right: 0;
+  text-align: right;
+}
+
+.crowd-story-v4-beat:nth-child(3) {
+  left: 0;
+  right: auto;
+  text-align: left;
+}
+
+.crowd-story-v4-beat h2 {
+  max-width: 760px;
+  margin-top: 14px;
+  font-size: clamp(58px, 6.2vw, 96px);
+  line-height: .82;
+  letter-spacing: -.105em;
+}
+
+.crowd-story-v4-beat p {
+  max-width: 38ch;
+  margin-top: 20px;
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+.crowd-story-v4-beat-final a {
+  margin-top: 20px;
+}
+
+.crowd-story-v4-floor .canvas-crowd {
+  height: 90vh !important;
+  width: 100% !important;
+}
+
+/* Keep the people from visually leaking into the copy's reading zone without boxing the text. */
+.crowd-story-v4-beat::before {
+  content: '';
+  position: absolute;
+  inset: -20px -28px -26px;
+  z-index: -1;
+  background: radial-gradient(ellipse at center, rgba(239,238,233,.92) 0%, rgba(239,238,233,.72) 46%, rgba(239,238,233,0) 78%);
+  filter: blur(10px);
+  pointer-events: none;
+}
+
+/* Compact editorial footer: closure, action and social rail. */
+.footer {
+  background: #080809;
+}
+
+.footer-inner {
+  padding-top: 54px;
+  padding-bottom: 18px;
+}
+
+.footer-main {
+  grid-template-columns: minmax(0, 1fr) 220px;
+  gap: 48px;
+  align-items: end;
+}
+
+.footer-closing h2 {
+  max-width: 610px;
+  font-size: clamp(48px, 5.6vw, 78px);
+  line-height: .84;
+  letter-spacing: -.085em;
+}
+
+.footer-side {
+  gap: 12px;
+  max-width: 220px;
+}
+
+.footer-links {
+  margin-top: 34px;
+  padding-top: 11px;
+}
+
+.footer-links-group {
+  gap: 7px 16px;
+}
+
+.footer-links-group > a {
+  min-height: 28px;
+  font-size: 6.5px;
+  letter-spacing: .13em;
+}
+
+.footer-links-group .icon-box {
+  width: 23px;
+  height: 23px;
+}
+
+.footer-bottom {
+  margin-top: 10px;
+  padding-top: 9px;
+}
+
+@media (max-width: 1100px) {
+  .hero-v4-content {
+    width: calc(100vw - 48px);
+  }
+
+  .crowd-story-v4-beat,
+  .crowd-story-v4-beat:nth-child(2),
+  .crowd-story-v4-beat:nth-child(3),
+  .crowd-story-v4-beat-final {
+    width: min(62vw, 700px);
+  }
+}
+
+@media (max-width: 780px) {
+  .hero-v4 {
+    min-height: 128svh;
+  }
+
+  .hero-v4-content {
+    top: 47%;
+    width: calc(100vw - 32px);
+  }
+
+  .hero-v4-brandline-track span {
+    font-size: 20vw;
+  }
+
+  .hero-v4-copy h1 {
+    max-width: 10.6ch;
+    font-size: clamp(46px, 11.3vw, 70px);
+  }
+
+  .crowd-story-v4 {
+    min-height: 330svh;
+  }
+
+  .crowd-story-v4-copy {
+    padding-top: 104px;
+  }
+
+  .crowd-story-v4-beat,
+  .crowd-story-v4-beat:nth-child(2),
+  .crowd-story-v4-beat:nth-child(3),
+  .crowd-story-v4-beat-final {
+    width: 78%;
+    max-width: 520px;
+    top: 106px;
+    padding-inline: 0;
+  }
+
+  .crowd-story-v4-beat:nth-child(2),
+  .crowd-story-v4-beat-final {
+    right: 0;
+    left: auto;
+    text-align: right;
+  }
+
+  .crowd-story-v4-beat h2 {
+    max-width: 9.4ch;
+    font-size: clamp(44px, 10vw, 70px);
+  }
+
+  .crowd-story-v4-floor .canvas-crowd {
+    height: 84vh !important;
+  }
+
+  .footer-inner {
+    padding-top: 42px;
+  }
+
+  .footer-main {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .footer-side {
+    max-width: 300px;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+  }
+}
+
+@media (max-width: 520px) {
+  .hero-v4 {
+    min-height: 124svh;
+  }
+
+  .hero-v4-content {
+    top: 49%;
+  }
+
+  .hero-v4-copy h1 {
+    max-width: 10ch;
+    font-size: clamp(42px, 12.4vw, 61px);
+  }
+
+  .crowd-story-v4 {
+    min-height: 320svh;
+  }
+
+  .crowd-story-v4-beat,
+  .crowd-story-v4-beat:nth-child(2),
+  .crowd-story-v4-beat:nth-child(3),
+  .crowd-story-v4-beat-final {
+    width: 86%;
+    top: 96px;
+  }
+
+  .crowd-story-v4-beat h2 {
+    font-size: clamp(42px, 11.1vw, 62px);
+  }
+
+  .footer-side {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}

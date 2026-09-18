@@ -5,10 +5,8 @@ export default defineConfig([
   ...nextVitals,
   globalIgnores([
     '.next/**',
-    'node_modules/**',
     'out/**',
     'build/**',
     'next-env.d.ts',
   ]),
 ]);
-
