@@ -118,7 +118,7 @@ export function Footer() {
             </a>
           ))}
           <a href={site.portfolioUrl} target="_blank" rel="noopener noreferrer" aria-label="Portafolio personal">
-            <IconBox>{icons.code}</IconBox>
+            <IconBox>{icons.globe}</IconBox>
             <span>Portafolio</span>
             <b>↗</b>
           </a>

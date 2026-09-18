@@ -11,6 +11,7 @@ export default function CursorOrbit() {
 
   useEffect(() => {
     if (!window.matchMedia('(pointer: fine)').matches) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const move = (event: PointerEvent) => {
       x.set(event.clientX);
       y.set(event.clientY);

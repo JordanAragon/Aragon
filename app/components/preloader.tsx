@@ -3,10 +3,7 @@
 import { motion, useReducedMotion } from 'motion/react';
 import { useEffect, useState } from 'react';
 
-const ASSETS = [
-  '/img/portafolio.png',
-  '/images/peeps/aragon-crowd-sprite.png',
-];
+const ASSETS = ['/img/portafolio.png', '/images/peeps/aragon-crowd-sprite.png'];
 const word = 'ARAGON';
 
 function preloadAsset(src: string) {
@@ -36,7 +33,9 @@ export default function Preloader() {
       if (done) return;
       done = true;
       setProgress(1);
-      const exitTimer = window.setTimeout(() => setLeaving(true), reduced ? 80 : 110);
+      document.documentElement.dataset.aragonEntry = 'ready';
+      window.dispatchEvent(new Event('aragon:entry-start'));
+      const exitTimer = window.setTimeout(() => setLeaving(true), reduced ? 80 : 120);
       timers.add(exitTimer);
     };
 
@@ -77,7 +76,12 @@ export default function Preloader() {
       initial={{ opacity: 1 }}
       animate={{ opacity: leaving ? 0 : 1 }}
       transition={{ duration: reduced ? 0.28 : 0.48, ease: [0.76, 0, 0.24, 1] }}
-      onAnimationComplete={() => { if (leaving) { document.body.classList.remove('is-preloading'); setVisible(false); } }}
+      onAnimationComplete={() => {
+        if (leaving) {
+          document.body.classList.remove('is-preloading');
+          setVisible(false);
+        }
+      }}
       aria-hidden="true"
     >
       <div className="preloader-v4-grid" />

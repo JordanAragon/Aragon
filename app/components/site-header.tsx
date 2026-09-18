@@ -11,10 +11,20 @@ const navItems = [
 
 export default function SiteHeader() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [entryStarted, setEntryStarted] = useState(() => (
+    typeof document !== 'undefined' && document.documentElement.dataset.aragonEntry === 'ready'
+  ));
   const [active, setActive] = useState('inicio');
   const triggerRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLElement>(null);
   const wasOpen = useRef(false);
+
+  useEffect(() => {
+    setEntryStarted(document.documentElement.dataset.aragonEntry === 'ready');
+    const onEntry = () => setEntryStarted(true);
+    window.addEventListener('aragon:entry-start', onEntry);
+    return () => window.removeEventListener('aragon:entry-start', onEntry);
+  }, []);
 
   useEffect(() => {
     const sections = ['inicio', 'problema', 'contexto', 'capacidades', 'trabajo', 'metodo', 'contacto']
@@ -71,24 +81,28 @@ export default function SiteHeader() {
     };
   }, [menuOpen]);
 
+  useEffect(() => {
+    if (!entryStarted && menuOpen) setMenuOpen(false);
+  }, [entryStarted, menuOpen]);
+
   return (
     <>
-      <header className="site-header-v2" data-scrolled={active !== 'inicio' || undefined}>
-        <a href="#inicio" className="brand-v2" onClick={() => setMenuOpen(false)} aria-label="Aragon, inicio">
+      <header className="site-header-v2" data-scrolled={active !== 'inicio' || undefined} data-ready={entryStarted || undefined}>
+        <a href="#inicio" className="brand-v2" onClick={() => setMenuOpen(false)} aria-label="Aragon, inicio" tabIndex={entryStarted ? 0 : -1}>
           <span className="brand-v2-mark">A</span>
           <span><strong>ARAGON</strong><small>SOFTWARE / DIGITAL</small></span>
         </a>
 
         <nav className="desktop-nav-v2" aria-label="Principal">
           {navItems.map(([id, label], index) => (
-            <a key={id} href={`#${id}`} className={active === id ? 'is-active' : undefined} aria-current={active === id ? 'location' : undefined}>
+            <a key={id} href={`#${id}`} className={active === id ? 'is-active' : undefined} aria-current={active === id ? 'location' : undefined} tabIndex={entryStarted ? 0 : -1}>
               <span>0{index + 1}</span>{label}
             </a>
           ))}
-          <a href="#contacto" className="desktop-nav-cta">Agendar <span>↗</span></a>
+          <a href="#contacto" className="desktop-nav-cta" tabIndex={entryStarted ? 0 : -1}>Agendar <span>↗</span></a>
         </nav>
 
-        <button ref={triggerRef} type="button" className={`menu-toggle-v2 ${menuOpen ? 'is-open' : ''}`} onClick={() => setMenuOpen((value) => !value)} aria-expanded={menuOpen} aria-controls="mobile-nav-v2" aria-label={menuOpen ? 'Cerrar menú' : 'Abrir menú'}>
+        <button ref={triggerRef} type="button" className={`menu-toggle-v2 ${menuOpen ? 'is-open' : ''}`} onClick={() => setMenuOpen((value) => !value)} aria-expanded={menuOpen} aria-controls="mobile-nav-v2" aria-label={menuOpen ? 'Cerrar menú' : 'Abrir menú'} tabIndex={entryStarted ? 0 : -1}>
           <span />
           <span />
         </button>
@@ -98,11 +112,11 @@ export default function SiteHeader() {
         <nav id="mobile-nav-v2" ref={menuRef} className="mobile-nav-v2" aria-label="Menú móvil" aria-hidden={!menuOpen}>
           <div className="mobile-nav-v2-head"><span>ARAGON / MENU</span><span>INDEX {active.toUpperCase()}</span></div>
           {navItems.map(([id, label], index) => (
-            <a key={id} href={`#${id}`} onClick={() => setMenuOpen(false)} tabIndex={menuOpen ? 0 : -1}>
+            <a key={id} href={`#${id}`} onClick={() => setMenuOpen(false)} tabIndex={menuOpen && entryStarted ? 0 : -1}>
               <span>{label}</span><b>0{index + 1}</b>
             </a>
           ))}
-          <a href="#contacto" className="mobile-nav-v2-cta" onClick={() => setMenuOpen(false)} tabIndex={menuOpen ? 0 : -1}>Agendar una conversación ↗</a>
+          <a href="#contacto" className="mobile-nav-v2-cta" onClick={() => setMenuOpen(false)} tabIndex={menuOpen && entryStarted ? 0 : -1}>Agendar una conversación ↗</a>
         </nav>
       </div>
     </>

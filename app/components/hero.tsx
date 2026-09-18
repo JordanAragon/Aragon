@@ -10,39 +10,34 @@ const word = 'ARAGON'.split('');
 export default function Hero() {
   const ref = useRef<HTMLElement>(null);
   const reduced = useReducedMotion();
+  const [entryStarted, setEntryStarted] = useState(() => (
+    typeof document !== 'undefined' && document.documentElement.dataset.aragonEntry === 'ready'
+  ));
   const raw = useScroll({ target: ref, offset: ['start start', 'end end'] }).scrollYProgress;
-  const progress = useSpring(raw, { stiffness: 85, damping: 30, mass: 0.25 });
+  const progress = useSpring(raw, { stiffness: 96, damping: 30, mass: 0.3 });
 
-  const wordY = useTransform(progress, [0, 0.2, 0.42, 1], [0, reduced ? 0 : -34, reduced ? 0 : -112, reduced ? 0 : -164]);
-  const wordScale = useTransform(progress, [0, 0.2, 0.42, 1], [1.04, reduced ? 1 : 0.9, reduced ? 1 : 0.62, reduced ? 1 : 0.48]);
-  const visualY = useTransform(progress, [0, 0.35, 0.72, 1], [22, reduced ? 0 : -8, reduced ? 0 : -54, reduced ? 0 : -92]);
-  const visualScale = useTransform(progress, [0, 0.4, 0.78, 1], [0.92, reduced ? 0.96 : 1, reduced ? 1.04 : 1.12, reduced ? 0.98 : 1.16]);
-  const visualRotate = useTransform(progress, [0, 0.4, 1], [1.6, reduced ? 0 : -1, reduced ? 0 : -3]);
-  const heroCopyOpacity = useTransform(progress, [0.12, 0.24, 0.36, 0.48], [0, 1, 1, 0]);
-  const bridgeOpacity = useTransform(progress, [0.24, 0.34, 0.57, 0.68], [0, 1, 1, 0]);
-  const bridgeY = useTransform(progress, [0.24, 0.36, 0.68], [38, 0, -22]);
-  const finalOpacity = useTransform(progress, [0.6, 0.74, 1], [0, 1, 1]);
-  const finalY = useTransform(progress, [0.62, 0.76, 1], [28, 0, reduced ? 0 : -10]);
-  const showcaseOpacity = useTransform(progress, [0.16, 0.3, 0.52, 0.7], [0, 0.92, 0.82, 0]);
-  const lineProgress = useTransform(progress, [0, 1], [0, 1]);
-  const [phase, setPhase] = useState<-1 | 0 | 1 | 2>(-1);
+  const wordY = useTransform(progress, [0, 0.26, 0.58, 1], [0, reduced ? 0 : -10, reduced ? 0 : -60, reduced ? 0 : -92]);
+  const wordScale = useTransform(progress, [0, 0.22, 0.58, 1], [1.02, 1, reduced ? 1 : 0.66, reduced ? 1 : 0.52]);
+  const wordOpacity = useTransform(progress, [0, 0.42, 0.72, 1], [1, 1, reduced ? 1 : 0.42, reduced ? 1 : 0.08]);
+  const copyOpacity = useTransform(progress, [0.1, 0.22, 0.66, 0.9], [0, 1, 1, 0.9]);
+  const copyY = useTransform(progress, [0.08, 0.24, 0.9], [36, 0, reduced ? 0 : -8]);
+  const showcaseOpacity = useTransform(progress, [0.16, 0.3, 0.82, 1], [0, 0.96, 0.96, 0.58]);
+  const showcaseY = useTransform(progress, [0.16, 0.38, 1], [48, 0, reduced ? 0 : -24]);
+  const showcaseScale = useTransform(progress, [0.16, 0.4, 1], [0.92, 1, reduced ? 1 : 1.035]);
+  const lineProgress = useTransform(progress, [0.04, 0.96], [0, 1]);
 
   useEffect(() => {
-    const syncPhase = (value: number) => {
-      const next: -1 | 0 | 1 | 2 = value < 0.24 ? -1 : value < 0.38 ? 0 : value < 0.7 ? 1 : 2;
-      setPhase((current) => current === next ? current : next);
-    };
-
-    syncPhase(progress.get());
-    return progress.on('change', syncPhase);
-  }, [progress]);
+    setEntryStarted(document.documentElement.dataset.aragonEntry === 'ready');
+    const onEntry = () => setEntryStarted(true);
+    window.addEventListener('aragon:entry-start', onEntry);
+    return () => window.removeEventListener('aragon:entry-start', onEntry);
+  }, []);
 
   return (
     <section id="inicio" ref={ref} className="hero-v4" aria-labelledby="hero-title">
       <div className="hero-v4-stage">
         <div className="hero-v4-grid" aria-hidden="true" />
         <div className="hero-v4-orbit hero-v4-orbit-a" aria-hidden="true" />
-        <div className="hero-v4-orbit hero-v4-orbit-b" aria-hidden="true" />
         <div className="page-shell hero-v4-shell">
           <div className="hero-v4-topline">
             <span><i /> ARAGON / 2026</span>
@@ -50,39 +45,44 @@ export default function Hero() {
             <span>COLOMBIA / WORLDWIDE</span>
           </div>
 
-          <div className="hero-v4-brandline" aria-label="Aragon">
-            <motion.div className="hero-v4-brandline-track" style={{ y: wordY, scale: wordScale }}>
+          <motion.div
+            className="hero-v4-brandline"
+            style={{ y: wordY, scale: wordScale, opacity: wordOpacity }}
+            initial={{ opacity: 0, scale: 0.94, y: 22 }}
+            animate={entryStarted ? { opacity: 1 } : { opacity: 0 }}
+            transition={{ duration: reduced ? 0.25 : 0.7, ease: [0.16, 1, 0.3, 1] }}
+            aria-label="Aragon"
+          >
+            <div className="hero-v4-brandline-track">
               {word.map((letter, index) => (
                 <motion.span
                   key={`${letter}-${index}`}
-                  initial={{ opacity: 0, y: 44, rotateX: 62 }}
-                  animate={{ opacity: 1, y: 0, rotateX: 0 }}
-                  transition={{ delay: 0.12 + index * 0.075, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+                  initial={{ opacity: 0, y: 34, rotateX: 52 }}
+                  animate={entryStarted ? { opacity: 1, y: 0, rotateX: 0 } : { opacity: 0, y: 34, rotateX: 52 }}
+                  transition={{ delay: entryStarted ? 0.05 + index * 0.055 : 0, duration: reduced ? 0.2 : 0.58, ease: [0.16, 1, 0.3, 1] }}
                 >
                   {letter}
                 </motion.span>
               ))}
               <b className="hero-v4-caret" aria-hidden="true" />
-            </motion.div>
-          </div>
+            </div>
+          </motion.div>
 
-          <motion.div className="hero-v4-phase hero-v4-phase-main" style={{ opacity: heroCopyOpacity }} >
+          <motion.div className="hero-v4-content" style={{ opacity: copyOpacity, y: copyY }}>
             <div className="hero-v4-copy">
               <span className="hero-v4-kicker">01 / FROM IDEA TO SYSTEM</span>
               <h1 id="hero-title">Lo complejo puede <em>sentirse simple.</em></h1>
-              <p>
-                Diseño y desarrollo experiencias digitales, software y sistemas que conectan lo que hoy está disperso.
-              </p>
+              <p>Diseño y desarrollo experiencias digitales, software y sistemas alrededor de problemas reales.</p>
               <div className="hero-v4-actions">
-                <a href="#trabajo" className="hero-v4-primary" tabIndex={phase === 0 ? 0 : -1}>Explorar el trabajo <IconBox>{icons.arrow}</IconBox></a>
-                <a href="#contacto" className="hero-v4-text-link" tabIndex={phase === 0 ? 0 : -1}>Contar un problema ↗</a>
+                <a href="#trabajo" className="hero-v4-primary" tabIndex={entryStarted ? 0 : -1}>Explorar el trabajo <IconBox>{icons.arrow}</IconBox></a>
+                <a href="#contacto" className="hero-v4-text-link" tabIndex={entryStarted ? 0 : -1}>Contar un problema ↗</a>
               </div>
             </div>
 
-            <motion.figure className="hero-v4-showcase" style={{ y: visualY, scale: visualScale, rotate: visualRotate, opacity: showcaseOpacity }}>
+            <motion.figure className="hero-v4-showcase" style={{ opacity: showcaseOpacity, y: showcaseY, scale: showcaseScale }}>
               <div className="hero-v4-showcase-top"><span>ARAGON / PRODUCT VIEW</span><span>SCROLL / 01</span></div>
               <div className="hero-v4-showcase-image">
-                <Image src="/img/portafolio.png" alt="Interfaces y sistemas digitales de Aragon" fill priority sizes="(max-width: 1000px) 94vw, 62vw" />
+                <Image src="/img/portafolio.png" alt="Interfaces y sistemas digitales de Aragon" fill priority sizes="(max-width: 1000px) 92vw, 59vw" />
                 <span className="hero-v4-tag hero-v4-tag-a">WEB / PRODUCT</span>
                 <span className="hero-v4-tag hero-v4-tag-b">SYSTEM / DATA</span>
               </div>
@@ -90,20 +90,10 @@ export default function Hero() {
             </motion.figure>
           </motion.div>
 
-          <motion.div className="hero-v4-phase hero-v4-phase-bridge" style={{ opacity: bridgeOpacity, y: bridgeY }} aria-hidden={phase !== 1}>
-            <span className="hero-v4-kicker">02 / THE FRICTION</span>
-            <div className="hero-v4-bridge-copy"><p>El problema casi nunca es que falte otra herramienta.</p><strong>Es que las piezas <em>no conversan.</em></strong></div>
-            <div className="hero-v4-bridge-rail"><span>TOOLS</span><i /><span>DATA</span><i /><span>PEOPLE</span><i /><span>PRODUCT</span></div>
-          </motion.div>
-
-          <motion.div className="hero-v4-phase hero-v4-phase-final" style={{ opacity: finalOpacity, y: finalY }} aria-hidden={phase !== 2}>
-            <span className="hero-v4-kicker">03 / THE BUILD</span>
-            <div className="hero-v4-final-wrap">
-              <p>Una sola dirección.</p>
-              <h2>Un sistema que <em>se entiende.</em></h2>
-              <a href="#capacidades" className="hero-v4-underline" tabIndex={phase === 2 ? 0 : -1}>Ver cómo se construye ↗</a>
-            </div>
-          </motion.div>
+          <div className="hero-v4-note" aria-hidden="true">
+            <span>ONE DIRECTION / MANY PIECES</span>
+            <span>THE WORK STARTS WITH THE PROBLEM.</span>
+          </div>
 
           <div className="hero-v4-footer">
             <span>FROM IDEA TO SYSTEM</span>

@@ -31,12 +31,7 @@ type Peep = {
 const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
 const randomRange = (min: number, max: number) => min + Math.random() * (max - min);
 
-export default function CanvasCrowdExact({
-  src,
-  rows = 15,
-  cols = 7,
-  className = '',
-}: Props) {
+export default function CanvasCrowdExact({ src, rows = 15, cols = 7, className = '' }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -55,11 +50,24 @@ export default function CanvasCrowdExact({
     let ready = false;
     let visible = true;
     let reducedMotion = false;
+    let tickerAttached = false;
     let lastWidth = 0;
     let lastHeight = 0;
     let lastDpr = 0;
 
     const getDpr = () => Math.min(window.devicePixelRatio || 1, 2);
+
+    const attachTicker = () => {
+      if (tickerAttached || reducedMotion) return;
+      tickerAttached = true;
+      gsap.ticker.add(render);
+    };
+
+    const detachTicker = () => {
+      if (!tickerAttached) return;
+      tickerAttached = false;
+      gsap.ticker.remove(render);
+    };
 
     const syncCanvasSize = () => {
       const width = Math.max(1, Math.round(canvas.clientWidth));
@@ -81,22 +89,18 @@ export default function CanvasCrowdExact({
       return true;
     };
 
-    const createPeep = (rect: [number, number, number, number]): Peep => {
-      const peep: Peep = {
-        image,
-        rect,
-        width: rect[2],
-        height: rect[3],
-        scale: 1,
-        x: 0,
-        y: 0,
-        anchorY: 0,
-        scaleX: 1,
-        walk: null,
-      };
-
-      return peep;
-    };
+    const createPeep = (rect: [number, number, number, number]): Peep => ({
+      image,
+      rect,
+      width: rect[2],
+      height: rect[3],
+      scale: 1,
+      x: 0,
+      y: 0,
+      anchorY: 0,
+      scaleX: 1,
+      walk: null,
+    });
 
     const resetPeep = (peep: Peep) => {
       const direction: 1 | -1 = Math.random() > 0.5 ? 1 : -1;
@@ -104,7 +108,7 @@ export default function CanvasCrowdExact({
       const responsiveScale = clamp(stage.height / 860, 0.62, 1.08);
       const scale = clamp(responsiveScale * randomRange(0.72, 1.1) * (0.78 + depth * 0.22), 0.54, 1.14);
       const offsetY = 96 - 230 * gsap.parseEase('power2.in')(Math.random());
-      const startY = stage.height - peep.height * scale + offsetY;
+      const startY = stage.height - peep.rect[3] * scale + offsetY;
 
       peep.scale = scale;
       peep.width = peep.rect[2] * scale;
@@ -112,66 +116,49 @@ export default function CanvasCrowdExact({
       peep.y = startY;
       peep.anchorY = startY;
       peep.scaleX = direction;
-
-      if (direction === 1) {
-        peep.x = -peep.width - randomRange(0, stage.width * 0.28);
-      } else {
-        peep.x = stage.width + randomRange(0, stage.width * 0.28);
-      }
+      peep.x = direction === 1
+        ? -peep.width - randomRange(0, stage.width * 0.28)
+        : stage.width + randomRange(0, stage.width * 0.28);
 
       return {
-        startX: peep.x,
         startY,
-        endX: direction === 1 ? stage.width + peep.width : -peep.width,
+        endX: direction === 1 ? stage.width : 0,
       };
-    };
-
-    const startWalk = (peep: Peep) => {
-      const props = resetPeep(peep);
-      const xDuration = randomRange(8.8, 12.2);
-      const yDuration = 0.25;
-
-      peep.walk?.kill();
-
-      const timeline = gsap.timeline({
-        onComplete: () => {
-          removePeepFromCrowd(peep);
-          addPeepToCrowd();
-        },
-      });
-
-      timeline.timeScale(randomRange(0.72, 1.28));
-      timeline.to(peep, { x: props.endX, duration: xDuration, ease: 'none' }, 0);
-      timeline.to(
-        peep,
-        {
-          y: props.startY - randomRange(6, 10),
-          duration: yDuration,
-          repeat: Math.max(8, Math.round(xDuration / yDuration) - 1),
-          yoyo: true,
-          ease: 'sine.inOut',
-        },
-        0,
-      );
-
-      peep.walk = timeline;
-
-      if (!visible || reducedMotion) timeline.pause();
-      return peep;
     };
 
     const removePeepFromCrowd = (peep: Peep) => {
       const index = crowd.indexOf(peep);
       if (index >= 0) crowd.splice(index, 1);
-      availablePeeps.push(peep);
+      if (!availablePeeps.includes(peep)) availablePeeps.push(peep);
     };
 
     const addPeepToCrowd = () => {
       if (!availablePeeps.length) return null;
-
       const index = Math.floor(Math.random() * availablePeeps.length);
       const peep = availablePeeps.splice(index, 1)[0];
-      startWalk(peep);
+      const props = resetPeep(peep);
+      const xDuration = randomRange(8.8, 12.2);
+
+      peep.walk?.kill();
+      const timeline = gsap.timeline({
+        onComplete: () => {
+          removePeepFromCrowd(peep);
+          if (ready && visible && !reducedMotion) addPeepToCrowd();
+        },
+      });
+
+      timeline.timeScale(randomRange(0.72, 1.28));
+      timeline.to(peep, { x: props.endX, duration: xDuration, ease: 'none' }, 0);
+      timeline.to(peep, {
+        y: props.startY - randomRange(6, 10),
+        duration: 0.25,
+        repeat: Math.max(8, Math.round(xDuration / 0.25) - 1),
+        yoyo: true,
+        ease: 'sine.inOut',
+      }, 0);
+
+      peep.walk = timeline;
+      if (!visible || reducedMotion) timeline.pause();
       crowd.push(peep);
       crowd.sort((a, b) => a.anchorY - b.anchorY);
       return peep;
@@ -181,7 +168,6 @@ export default function CanvasCrowdExact({
       const ratio = getDpr();
       ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
       ctx.clearRect(0, 0, stage.width, stage.height);
-
       crowd.forEach((peep) => {
         ctx.save();
         ctx.translate(peep.x, peep.y);
@@ -192,7 +178,7 @@ export default function CanvasCrowdExact({
           peep.rect[1],
           peep.rect[2],
           peep.rect[3],
-          0,
+          peep.scaleX === -1 ? -peep.rect[2] : 0,
           0,
           peep.rect[2],
           peep.rect[3],
@@ -234,13 +220,11 @@ export default function CanvasCrowdExact({
       }
     };
 
-    const render = () => {
+    function render() {
       if (!ready || !visible || reducedMotion) return;
-
       const ratio = getDpr();
       ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
       ctx.clearRect(0, 0, stage.width, stage.height);
-
       crowd.forEach((peep) => {
         ctx.save();
         ctx.translate(peep.x, peep.y);
@@ -251,53 +235,48 @@ export default function CanvasCrowdExact({
           peep.rect[1],
           peep.rect[2],
           peep.rect[3],
-          0,
+          peep.scaleX === -1 ? -peep.rect[2] : 0,
           0,
           peep.rect[2],
           peep.rect[3],
         );
         ctx.restore();
       });
-    };
+    }
 
     const handleResize = () => {
       const changed = syncCanvasSize();
       if (ready && changed) resetCrowd();
     };
 
+    const handleImageError = () => {
+      canvas.dataset.error = 'true';
+      detachTicker();
+    };
+
     const init = () => {
       if (ready || !image.naturalWidth || !image.naturalHeight) return;
-
       ready = true;
+      canvas.dataset.error = 'false';
       reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       syncCanvasSize();
 
       const rectWidth = image.naturalWidth / rows;
       const rectHeight = image.naturalHeight / cols;
-
       allPeeps.length = 0;
-
       for (let index = 0; index < rows * cols; index += 1) {
         const column = index % rows;
         const row = Math.floor(index / rows);
-        allPeeps.push(
-          createPeep([
-            column * rectWidth,
-            row * rectHeight,
-            rectWidth,
-            rectHeight,
-          ]),
-        );
+        allPeeps.push(createPeep([column * rectWidth, row * rectHeight, rectWidth, rectHeight]));
       }
 
       resetCrowd();
-
-      if (!reducedMotion) gsap.ticker.add(render);
+      if (visible && !reducedMotion) attachTicker();
     };
 
     image.onload = init;
+    image.onerror = handleImageError;
     image.src = src;
-
     if (image.complete && image.naturalWidth) init();
 
     const resizeObserver = new ResizeObserver(handleResize);
@@ -308,7 +287,11 @@ export default function CanvasCrowdExact({
       (entries) => {
         visible = entries.some((entry) => entry.isIntersecting);
         crowd.forEach((peep) => peep.walk?.paused(!visible));
-
+        if (visible && !reducedMotion) {
+          attachTicker();
+        } else {
+          detachTicker();
+        }
         if (visible && reducedMotion) renderStatic();
       },
       { threshold: 0.02 },
@@ -319,12 +302,13 @@ export default function CanvasCrowdExact({
       resizeObserver.disconnect();
       visibilityObserver.disconnect();
       window.removeEventListener('resize', handleResize);
-      gsap.ticker.remove(render);
+      detachTicker();
       allPeeps.forEach((peep) => peep.walk?.kill());
       allPeeps.length = 0;
       crowd.length = 0;
       availablePeeps.length = 0;
       image.onload = null;
+      image.onerror = null;
       image.src = '';
     };
   }, [src, rows, cols]);

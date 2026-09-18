@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
-import './skiper.css';
 import './premium.css';
 import { site, siteUrl } from './data/site';
 

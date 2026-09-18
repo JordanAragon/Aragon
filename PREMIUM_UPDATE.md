@@ -13,6 +13,15 @@
 - Estilos legacy audit.css y polish.css retirados después de migrar sus reglas aún necesarias.
 - Assets antiguos y duplicados de la escena Crowd eliminados.
 
+## Hardening posterior
+
+- La entrada inicial ahora se sincroniza mediante el evento `aragon:entry-start`, compartido entre preloader, Hero y header.
+- El Crowd Canvas desconecta realmente el GSAP ticker cuando sale de viewport, además de pausar sus timelines.
+- Se corrigió el anclaje de personajes invertidos para que sus recorridos hacia la izquierda respeten el borde del escenario.
+- Se eliminó la hoja `app/skiper.css` y se consolidaron las reglas que siguen en uso.
+- Se detectó y eliminó CSS accidentalmente incrustado al final de `app/data/projects.ts`, que impedía el parseo TypeScript.
+- Se retiraron archivos `.DS_Store` y se añadió un icono específico de globo para el portafolio personal.
+
 ## Reference principles
 
 Skiper UI describe Skiper 39 como un Crowd Canvas basado en HTML5 Canvas y GSAP, con personajes construidos desde una sprite sheet, movimiento de caminata y ajuste al tamaño de pantalla. La implementación local conserva esos principios y evita depender de un asset remoto en runtime.

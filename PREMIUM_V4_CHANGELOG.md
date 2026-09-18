@@ -19,3 +19,10 @@ Se retiraron estilos legacy audit.css y polish.css, componentes duplicados de Cr
 ## Deployment
 
 La rama de evolución se debe validar en Vercel antes de fusionarla a main. El criterio de aceptación no es solo que compile: debe responder correctamente, no producir errores runtime y mantener navegación, reduced motion, responsive y comportamiento de scroll.
+## Post-audit hardening
+
+- Preloader, Hero y navegación comparten una señal explícita de entrada para evitar que el header aparezca antes de tiempo y para sincronizar la identidad inicial.
+- Crowd Canvas limita el coste fuera de viewport retirando el ticker de GSAP, mantiene DPR máximo de 2 y corrige el render simétrico de personajes que caminan hacia la izquierda.
+- La capa CSS quedó consolidada sin `app/skiper.css`; las reglas realmente usadas siguen en los estilos principales.
+- Se corrigió una contaminación previa de `app/data/projects.ts` que contenía un bloque CSS después del array de proyectos y rompía TypeScript.
+- Se eliminaron artefactos `.DS_Store` del proyecto.

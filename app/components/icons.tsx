@@ -30,6 +30,7 @@ export const icons = {
   linkedin: icon(
     <path d="M6.5 8.5A1.5 1.5 0 1 0 6.5 5.5a1.5 1.5 0 0 0 0 3ZM5 10h3v9H5v-9Zm5 0h2.9v1.23h.04c.4-.76 1.38-1.56 2.84-1.56 3.03 0 3.59 2 3.59 4.61V19h-3v-4.2c0-1-.02-2.28-1.39-2.28-1.39 0-1.6 1.08-1.6 2.21V19h-3v-9Z" />,
   ),
+  globe: icon(<><circle cx="12" cy="12" r="9" /><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18" /></>),
   instagram: icon(
     <>
       <rect x="3.5" y="3.5" width="17" height="17" rx="4" />
