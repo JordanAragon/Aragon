@@ -20,7 +20,6 @@ export default function SiteHeader() {
   const wasOpen = useRef(false);
 
   useEffect(() => {
-    setEntryStarted(document.documentElement.dataset.aragonEntry === 'ready');
     const onEntry = () => setEntryStarted(true);
     window.addEventListener('aragon:entry-start', onEntry);
     return () => window.removeEventListener('aragon:entry-start', onEntry);
@@ -81,9 +80,6 @@ export default function SiteHeader() {
     };
   }, [menuOpen]);
 
-  useEffect(() => {
-    if (!entryStarted && menuOpen) setMenuOpen(false);
-  }, [entryStarted, menuOpen]);
 
   return (
     <>
