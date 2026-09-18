@@ -23,7 +23,8 @@ export default function SiteHeader() {
     const observer = new IntersectionObserver(
       (entries) => {
         const visible = entries.filter((entry) => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-        if (visible) {\n          const targetId = visible.target.id === 'contexto' ? 'problema' : visible.target.id;\n          setActive(targetId);\n        }
+        if (visible) {
+          const targetId = visible.target.id === 'contexto' ? 'problema' : visible.target.id;\n          setActive(targetId);\n        }
       },
       { rootMargin: '-26% 0px -58% 0px', threshold: [0.05, 0.15, 0.35, 0.6] },
     );
