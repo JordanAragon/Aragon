@@ -49,7 +49,7 @@ export const projects: Project[] = [
     slug: 'atelier',
     title: 'Atelier',
     status: 'CONCEPTO / EN DESARROLLO',
-    image: '/projects/cali-commerce.svg',
+    image: '/projects/atelier.svg',
     kicker: 'COMERCIO PRIVADO QUE SE SIENTE COMO UNA EXPERIENCIA EDITORIAL.',
     body: 'Una plataforma premium para marcas y clubes de compra con drops limitados, perfiles privados, catálogo curado y una experiencia de checkout más cuidada.',
     stack: 'Next.js · WooCommerce · UX · Commerce',
