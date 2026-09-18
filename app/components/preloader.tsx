@@ -5,8 +5,6 @@ import { useEffect, useState } from 'react';
 
 const ASSETS = [
   '/img/portafolio.png',
-  '/img/aiden.png',
-  '/img/aragon-server.png',
   '/images/peeps/aragon-crowd-sprite.png',
 ];
 const word = 'ARAGON';
@@ -32,7 +30,7 @@ export default function Preloader() {
     const timers = new Set<number>();
     let done = false;
     const start = performance.now();
-    const minimum = reduced ? 260 : 720;
+    const minimum = reduced ? 220 : 560;
 
     const finish = () => {
       if (done) return;
