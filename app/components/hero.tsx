@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { motion, useReducedMotion, useScroll, useSpring, useTransform } from 'motion/react';
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { IconBox, icons } from './icons';
 
 const word = 'ARAGON'.split('');
@@ -24,6 +24,17 @@ export default function Hero() {
   const finalOpacity = useTransform(progress, [0.6, 0.74, 1], [0, 1, 1]);
   const finalY = useTransform(progress, [0.6, 0.76, 1], [28, 0, reduced ? 0 : -10]);
   const lineProgress = useTransform(progress, [0, 1], [0, 1]);
+  const [phase, setPhase] = useState<0 | 1 | 2>(0);
+
+  useEffect(() => {
+    const syncPhase = (value: number) => {
+      const next: 0 | 1 | 2 = value < 0.34 ? 0 : value < 0.68 ? 1 : 2;
+      setPhase((current) => current === next ? current : next);
+    };
+
+    syncPhase(progress.get());
+    return progress.on('change', syncPhase);
+  }, [progress]);
 
   return (
     <section id="inicio" ref={ref} className="hero-v4" aria-labelledby="hero-title">
@@ -54,7 +65,7 @@ export default function Hero() {
             </motion.div>
           </div>
 
-          <motion.div className="hero-v4-phase hero-v4-phase-main" style={{ opacity: heroCopyOpacity }}>
+          <motion.div className="hero-v4-phase hero-v4-phase-main" style={{ opacity: heroCopyOpacity }} aria-hidden={phase !== 0}>
             <div className="hero-v4-copy">
               <span className="hero-v4-kicker">01 / FROM IDEA TO SYSTEM</span>
               <h1 id="hero-title">Lo complejo puede <em>sentirse simple.</em></h1>
@@ -62,8 +73,8 @@ export default function Hero() {
                 Diseño y desarrollo experiencias digitales, software y sistemas que conectan lo que hoy está disperso.
               </p>
               <div className="hero-v4-actions">
-                <a href="#trabajo" className="hero-v4-primary">Explorar el trabajo <IconBox>{icons.arrow}</IconBox></a>
-                <a href="#contacto" className="hero-v4-text-link">Contar un problema ↗</a>
+                <a href="#trabajo" className="hero-v4-primary" tabIndex={phase === 0 ? 0 : -1}>Explorar el trabajo <IconBox>{icons.arrow}</IconBox></a>
+                <a href="#contacto" className="hero-v4-text-link" tabIndex={phase === 0 ? 0 : -1}>Contar un problema ↗</a>
               </div>
             </div>
 
@@ -78,18 +89,18 @@ export default function Hero() {
             </motion.figure>
           </motion.div>
 
-          <motion.div className="hero-v4-phase hero-v4-phase-bridge" style={{ opacity: bridgeOpacity, y: bridgeY }} aria-hidden="true">
+          <motion.div className="hero-v4-phase hero-v4-phase-bridge" style={{ opacity: bridgeOpacity, y: bridgeY }} aria-hidden={phase !== 1}>
             <span className="hero-v4-kicker">02 / THE FRICTION</span>
             <div className="hero-v4-bridge-copy"><p>El problema casi nunca es que falte otra herramienta.</p><strong>Es que las piezas <em>no conversan.</em></strong></div>
             <div className="hero-v4-bridge-rail"><span>TOOLS</span><i /><span>DATA</span><i /><span>PEOPLE</span><i /><span>PRODUCT</span></div>
           </motion.div>
 
-          <motion.div className="hero-v4-phase hero-v4-phase-final" style={{ opacity: finalOpacity, y: finalY }} aria-hidden="true">
+          <motion.div className="hero-v4-phase hero-v4-phase-final" style={{ opacity: finalOpacity, y: finalY }} aria-hidden={phase !== 2}>
             <span className="hero-v4-kicker">03 / THE BUILD</span>
             <div className="hero-v4-final-wrap">
               <p>Una sola dirección.</p>
               <h2>Un sistema que <em>se entiende.</em></h2>
-              <a href="#capacidades" className="hero-v4-underline">Ver cómo se construye ↗</a>
+              <a href="#capacidades" className="hero-v4-underline" tabIndex={phase === 2 ? 0 : -1}>Ver cómo se construye ↗</a>
             </div>
           </motion.div>
 
