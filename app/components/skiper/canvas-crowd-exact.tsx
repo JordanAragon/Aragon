@@ -162,12 +162,12 @@ export default function CanvasCrowdExact({ src, rows = 15, cols = 7, className =
       if (ready || !image.naturalWidth || !image.naturalHeight) return;
       ready = true;
       resizeCanvas();
-      const rectWidth = image.naturalWidth / rows;
-      const rectHeight = image.naturalHeight / cols;
+      const rectWidth = image.naturalWidth / cols;
+      const rectHeight = image.naturalHeight / rows;
       peeps.length = 0;
       for (let index = 0; index < rows * cols; index += 1) {
-        const row = Math.floor(index / rows);
-        const col = index % rows;
+        const row = Math.floor(index / cols);
+        const col = index % cols;
         peeps.push({
           image,
           rect: [col * rectWidth, row * rectHeight, rectWidth, rectHeight],
