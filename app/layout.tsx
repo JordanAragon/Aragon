@@ -62,7 +62,6 @@ const structuredData = [
       url: site.portfolioUrl,
       sameAs: [site.portfolioUrl, ...site.socialLinks.map((link) => link.href)],
     },
-    sameAs: site.socialLinks.map((link) => link.href),
   },
   {
     '@context': 'https://schema.org',
