@@ -58,3 +58,5 @@ La implementación actual requiere verificación visual real en navegador para r
 ## V7 — Stable baseline
 
 This commit preserves the V7 cinematic hierarchy pass as the deployment baseline. Future visual changes should be incremental and should not replace the established homepage architecture without explicit review.
+
+V8 rebuild validated through a dedicated preview before production promotion.
