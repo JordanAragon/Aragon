@@ -1,4 +1,3 @@
-import { IconBox, icons } from './icons';
 import TextScrollTitle from './skiper/text-scroll-title';
 
 const capabilities = [
@@ -46,16 +45,15 @@ export default function WhatWeBuild() {
                 <h3>{capability.title}</h3>
                 <p>{capability.lead}</p>
               </div>
-              <ul aria-label={`Qué incluye ${capability.title.toLowerCase()}`}>
+              <ul aria-label={'Qué incluye ' + capability.title.toLowerCase()}>
                 {capability.items.map((item) => <li key={item}>{item}</li>)}
               </ul>
-              <IconBox className="v8-build-arrow">{icons.arrow}</IconBox>
             </article>
           ))}
         </div>
 
         <div className="v8-build-stack">
-          <span>UX</span><i /> <span>FRONTEND</span><i /> <span>BACKEND</span><i /> <span>AI</span><i /> <span>AUTOMATION</span><i /> <span>INFRASTRUCTURE</span>
+          <span>UX</span><i /><span>FRONTEND</span><i /><span>BACKEND</span><i /><span>AI</span><i /><span>AUTOMATION</span><i /><span>INFRASTRUCTURE</span>
         </div>
       </div>
     </section>
