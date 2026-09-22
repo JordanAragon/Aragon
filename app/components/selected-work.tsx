@@ -1,7 +1,6 @@
 'use client';
 
 import { motion, useReducedMotion, useScroll, useSpring } from 'motion/react';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useRef } from 'react';
 import { work } from '../data/work';
@@ -30,28 +29,18 @@ export default function SelectedWork() {
         </div>
 
         <div className="v8-work-list">
-          {work.map((item, index) => (
+          {work.map((item) => (
             <article className="v8-work-item" key={item.slug}>
               <div className="v8-work-index">
                 <span>{item.number}</span>
                 <small>{item.status}</small>
               </div>
 
-              <div className="v8-work-visual">
-                <div className="v8-work-visual-grid" aria-hidden="true" />
-                {index === 0 ? (
-                  <div className="v8-work-screen v8-work-screen-aiden" aria-hidden="true">
-                    <span>AiDEN</span>
-                    <b>OPERACIÓN / VIVERO</b>
-                    <div><i /><i /><i /></div>
-                  </div>
-                ) : (
-                  <div className="v8-work-screen v8-work-screen-server" aria-hidden="true">
-                    <span>ARAGON SERVER</span>
-                    <b>SELF-HOSTED / PRIVATE</b>
-                    <div><i /><i /><i /><i /></div>
-                  </div>
-                )}
+              <div className="v8-work-visual" aria-hidden="true">
+                <div className="v8-work-visual-grid" />
+                <span className="v8-work-visual-word">{item.title}</span>
+                <span className="v8-work-visual-type">{item.type}</span>
+                <span className="v8-work-visual-line" />
               </div>
 
               <div className="v8-work-copy">
@@ -66,7 +55,7 @@ export default function SelectedWork() {
                   {item.proof.map((fact) => <li key={fact}>{fact}</li>)}
                 </ul>
                 <div className="v8-work-actions">
-                  <Link href={`/work/${item.slug}`}>Ver el caso <span>↗</span></Link>
+                  <Link href={'/work/' + item.slug}>Ver el caso <span>↗</span></Link>
                   {item.href && <a href={item.href} target="_blank" rel="noopener noreferrer">Repositorio ↗</a>}
                 </div>
               </div>
