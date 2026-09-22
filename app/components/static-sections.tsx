@@ -73,7 +73,7 @@ export function Footer() {
         <div className="footer-main v8-footer-main">
           <div className="footer-closing">
             <span className="section-number">09 / CIERRE</span>
-            <h2>Let's build something <em>useful.</em></h2>
+            <h2>Let&apos;s build something <em>useful.</em></h2>
           </div>
           <div className="footer-side">
             <span>ARAGON / SOFTWARE &amp; TECHNOLOGY STUDIO</span>
