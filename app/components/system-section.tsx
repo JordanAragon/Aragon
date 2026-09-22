@@ -1,6 +1,6 @@
 'use client';
 
-import { motion, useReducedMotion, useScroll, useSpring, useTransform } from 'motion/react';
+import { motion, useScroll, useSpring, useTransform } from 'motion/react';
 import { useRef } from 'react';
 import CanvasCrowdExact from './skiper/canvas-crowd-exact';
 
@@ -8,7 +8,6 @@ const SPRITE = 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/175711/open-peeps-s
 
 export default function SystemSection() {
   const ref = useRef<HTMLElement>(null);
-  const reduced = useReducedMotion();
   const raw = useScroll({ target: ref, offset: ['start start', 'end end'] }).scrollYProgress;
   const progress = useSpring(raw, { stiffness: 75, damping: 28, mass: 0.28 });
 
@@ -18,31 +17,11 @@ export default function SystemSection() {
   const beatFour = useTransform(progress, [0.69, 0.84, 1], [0, 1, 1]);
 
   const beats = [
-    {
-      index: '01 / PROBLEM',
-      title: 'Más herramientas no siempre crean más claridad.',
-      copy: 'Cuando cada pieza resuelve sólo una parte, la operación empieza a fragmentarse.',
-      style: beatOne,
-    },
-    {
-      index: '02 / ACTIVITY',
-      title: 'Todo empieza a moverse por su lado.',
-      copy: 'Personas, procesos, productos y datos acumulan actividad sin compartir necesariamente una dirección.',
-      style: beatTwo,
-    },
-    {
-      index: '03 / DIRECTION',
-      title: 'El trabajo está en conectar las piezas.',
-      copy: 'Diseño, producto y tecnología dejan de ser capas separadas cuando responden al mismo problema.',
-      style: beatThree,
-    },
-    {
-      index: '04 / SYSTEM',
-      title: 'Aragon construye sistemas donde las piezas trabajan juntas.',
-      copy: 'La interfaz importa. La arquitectura también. La suma es lo que hace que una solución pueda crecer.',
-      style: beatFour,
-    },
-  ];
+    ['01 / PROBLEM', 'Más herramientas no siempre crean más claridad.', 'Cuando cada pieza resuelve sólo una parte, la operación empieza a fragmentarse.', beatOne],
+    ['02 / ACTIVITY', 'Todo empieza a moverse por su lado.', 'Personas, procesos, productos y datos acumulan actividad sin compartir necesariamente una dirección.', beatTwo],
+    ['03 / DIRECTION', 'El trabajo está en conectar las piezas.', 'Diseño, producto y tecnología dejan de ser capas separadas cuando responden al mismo problema.', beatThree],
+    ['04 / SYSTEM', 'Aragon construye sistemas donde las piezas trabajan juntas.', 'La interfaz importa. La arquitectura también. La suma es lo que hace que una solución pueda crecer.', beatFour],
+  ] as const;
 
   return (
     <section id="sistema" ref={ref} className="v8-system section-shell" aria-labelledby="system-title">
@@ -53,15 +32,15 @@ export default function SystemSection() {
         </div>
 
         <div className="v8-system-copy page-shell">
-          {beats.map((beat, index) => (
+          {beats.map(([label, title, copy, style], index) => (
             <motion.article
-              key={beat.index}
-              style={{ opacity: beat.style }}
-              className={`v8-system-beat ${index % 2 ? 'is-right' : 'is-left'}`}
+              key={label}
+              style={{ opacity: style }}
+              className={'v8-system-beat ' + (index % 2 ? 'is-right' : 'is-left')}
             >
-              <span>{beat.index}</span>
-              <h2 id={index === 0 ? 'system-title' : undefined}>{beat.title}</h2>
-              <p>{beat.copy}</p>
+              <span>{label}</span>
+              <h2 id={index === 0 ? 'system-title' : undefined}>{title}</h2>
+              <p>{copy}</p>
             </motion.article>
           ))}
         </div>
