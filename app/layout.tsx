@@ -11,11 +11,11 @@ export const metadata: Metadata = {
   },
   description: site.description,
   applicationName: site.name,
-  category: 'portfolio',
-  authors: [{ name: site.person, url: siteUrl }],
-  creator: site.person,
-  publisher: site.person,
-  keywords: ['Aragon', 'Jordan Aragon', 'software', 'desarrollo web', 'productos digitales', 'sistemas', 'UX', 'frontend', 'Colombia'],
+  category: 'technology',
+  authors: [{ name: site.name, url: siteUrl }],
+  creator: site.name,
+  publisher: site.name,
+  keywords: ['Aragon', 'software studio', 'technology studio', 'desarrollo web', 'productos digitales', 'sistemas', 'UX', 'frontend', 'Colombia'],
   alternates: { canonical: siteUrl },
   formatDetection: { email: false, address: false, telephone: false },
   openGraph: {
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     siteName: site.name,
     locale: 'es_CO',
     type: 'website',
-    images: [{ url: '/opengraph-image', width: 1200, height: 630, alt: 'Aragon · Jordan Aragon · Software · Digital · Technology' }],
+    images: [{ url: '/opengraph-image', width: 1200, height: 630, alt: 'Aragon · Software & Technology Studio · Colombia' }],
   },
   twitter: {
     card: 'summary_large_image',
@@ -51,17 +51,18 @@ export const viewport: Viewport = {
 const structuredData = [
   {
     '@context': 'https://schema.org',
-    '@type': 'ProfilePage',
-    name: `${site.person} · ${site.name}`,
+    '@type': 'Organization',
+    name: site.name,
     url: siteUrl,
-    mainEntity: {
+    description: site.description,
+    founder: {
       '@type': 'Person',
       name: site.person,
-      url: siteUrl,
-      jobTitle: 'Software Developer',
-      homeLocation: { '@type': 'Place', name: 'Colombia' },
-      sameAs: [...site.socialLinks.map((link) => link.href), site.portfolioUrl],
+      jobTitle: 'Founder · Software Developer · Builder',
+      url: site.portfolioUrl,
+      sameAs: [site.portfolioUrl, ...site.socialLinks.map((link) => link.href)],
     },
+    sameAs: site.socialLinks.map((link) => link.href),
   },
   {
     '@context': 'https://schema.org',
@@ -69,6 +70,7 @@ const structuredData = [
     name: site.name,
     url: siteUrl,
     description: site.description,
+    publisher: { '@type': 'Organization', name: site.name, url: siteUrl },
   },
 ];
 
