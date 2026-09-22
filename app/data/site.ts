@@ -10,7 +10,7 @@ export const site = {
   title: 'Aragon | Software & Technology Studio',
   description:
     'Aragon es un estudio de software y tecnología que diseña y construye experiencias digitales, productos y sistemas para problemas reales.',
-  fallbackUrl: 'https://aragon-two.vercel.app',
+  fallbackUrl: 'https://aragons.vercel.app',
   calLink: 'jordan-david-micolta-aragon-cognqx/30min',
   contactEmail: 'jordandavidaragon@outlook.com',
   portfolioUrl: 'https://jordanaragon.vercel.app/',
