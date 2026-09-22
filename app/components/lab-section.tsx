@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { projects } from '../data/projects';
 import TextScrollTitle from './skiper/text-scroll-title';
 
@@ -16,15 +15,14 @@ export default function LabSection() {
 
         <div className="v8-lab-list">
           {projects.map((project) => (
-            <Link href={`#lab-${project.slug}`} className="v8-lab-row" key={project.slug} id={`lab-${project.slug}`}>
+            <article className="v8-lab-row" key={project.slug} id={`lab-${project.slug}`}>
               <span>{project.id}</span>
               <div>
                 <h3>{project.title}</h3>
                 <p>{project.body}</p>
               </div>
               <strong>{project.stackLabel}</strong>
-              <span className="v8-lab-arrow">↗</span>
-            </Link>
+              </article>
           ))}
         </div>
       </div>
