@@ -21,7 +21,6 @@ La sección de contexto (#contexto) integra el comportamiento de Skiper UI 39 / 
 
 La referencia de implementación de Skiper indica que el componente utiliza HTML5 Canvas + GSAP y una sprite sheet de personajes; además, la versión gratuita requiere atribución a Skiper UI. La página de Aragon deja esa atribución en el cierre.
 
-
 La sección Lab conserva cuatro conceptos en desarrollo. Las etiquetas de stack indican dirección técnica o de producto propuesta y no deben interpretarse como productos lanzados o clientes reales.
 
 ## Contacto y perfiles
@@ -55,6 +54,7 @@ No se añaden dependencias nuevas para el pass de experiencia.
 Cada cambio relevante debe pasar npm run build, que ejecuta ESLint, TypeScript y el build de Next.js. La validación final debe incluir navegación, scroll storytelling, preloader, reduced motion, teclado, responsive, agenda Cal.com y la ruta de correo alternativa.
 
 La implementación actual requiere verificación visual real en navegador para revisar composición y microinteracciones en desktop y mobile.
-## V7 — Cinematic hierarchy pass
 
-The current iteration keeps the Skiper UI 39 / Open Peeps crowd behavior while tuning the active population for a clearer editorial composition. The hero now uses a sequential identity-to-message reveal so the ARAGON wordmark yields before the main statement becomes dominant. The crowd narrative alternates text placement left/right between beats and adds a restrained readability veil around the copy. The footer is intentionally compressed into a studio-style colophon rather than a large sitemap, and the existing contact scene remains an inline overlay rather than a separate page.
+## V7 — Stable baseline
+
+This commit preserves the V7 cinematic hierarchy pass as the deployment baseline. Future visual changes should be incremental and should not replace the established homepage architecture without explicit review.
