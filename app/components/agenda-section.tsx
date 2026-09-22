@@ -51,8 +51,8 @@ export default function AgendaSection() {
       <div className="contact-scan" aria-hidden="true" />
       <div className="page-shell agenda-grid">
         <div className="agenda-intro">
-          <div className="contact-meta"><span>07 / AGENDA</span><span>ARAGON / 2026</span><span>POPAYÁN / COLOMBIA</span></div>
-          <span className="contact-kicker">UNA IDEA. UN PROBLEMA. ALGO QUE CONSTRUIR.</span>
+          <div className="contact-meta"><span>09 / CONTACT</span><span>ARAGON / 2026</span><span>CALI / COLOMBIA</span></div>
+          <span className="contact-kicker">YOU SAW THE PROBLEM. YOU SAW THE SYSTEM. NOW LET\'S TALK.</span>
           <TextScrollTitle
             id="contact-title"
             segments={project
