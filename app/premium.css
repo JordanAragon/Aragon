@@ -4497,3 +4497,15 @@ body.is-preloading {
     grid-column: 1;
   }
 }
+
+
+/* V8 header hard reset: remove inherited capsule treatment. */
+.v8-header {
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+}
+.v8-header::before,
+.v8-header::after {
+  display: none !important;
+}
