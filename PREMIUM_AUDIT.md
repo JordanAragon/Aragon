@@ -1,37 +1,65 @@
-# Aragon — Premium UX / Motion Audit
+# Aragon — V8 UX / Narrative / Content Audit
 
-## Estado actual
+## Current state
 
-La iteración anterior resolvió problemas de concurrencia visual en el Hero, sustituyó la escena raster estática por un Crowd Canvas y corrigió el resize del bitmap del Canvas.
+Aragon V8 reorganizes the homepage around a studio-first narrative:
 
-La revisión actual mantiene esas decisiones y corrige varias inconsistencias adicionales:
+01 — Hero / identity
+02 — Problem / what is failing
+03 — System / how the pieces connect
+04 — What We Build / what Aragon can build
+05 — Selected Work / evidence
+06 — Process / how the studio works
+07 — About Aragon / founder relationship
+08 — Lab / current explorations
+09 — Contact / action
 
-### Hero
-- La identidad ARAGON funciona como escena inicial dominante.
-- El contenido narrativo aparece después, evitando competir con el wordmark desde el primer frame.
-- La vista de producto entra como apoyo visual y no como protagonista simultáneo.
-- Las fases de contenido siguen siendo mutuamente excluyentes para interacción y lectura.
-- Los enlaces de fases no activas se retiran del orden de tabulación.
+The primary entity is Aragon. Jordan David Aragon appears as founder, software developer and builder, with his personal portfolio remaining separate.
 
-### Crowd Canvas
-- Se conserva el sprite local 15 × 7 utilizado por la adaptación de Skiper 39.
-- Cada personaje recibe una dirección aleatoria al iniciar cada ciclo.
-- Se mantiene el movimiento horizontal continuo y el bob vertical.
-- Los personajes se reutilizan al completar el recorrido.
-- La profundidad se ordena mediante anchorY.
-- ResizeObserver y DPR limitado a 2 evitan redimensionamientos innecesarios del backing store.
-- IntersectionObserver pausa las caminatas cuando el Canvas queda fuera de viewport.
-- prefers-reduced-motion reemplaza el movimiento continuo por una composición estática.
-- El scroll ya no fuerza una única dirección global. La relación narrativa se construye mediante composición, escala, desplazamiento y opacidad de la escena.
+## Content decisions
 
-### Storytelling
-La escena de multitud se entiende como actividad y flujo: primero aparece como movimiento disperso, luego ocupa más espacio mientras el texto introduce la fricción y finalmente se retira mientras la narrativa pasa de movimiento a dirección. La metáfora permanece visual y no intenta atribuir identidades literales a los personajes.
+- The Hero now defines Aragon explicitly as a Software & Technology Studio.
+- Problem remains before technology so the positioning starts from context instead of a tool list.
+- The former long Crowd narrative is now a shorter System section with four beats: Problem → Activity → Direction → System.
+- Capabilities use the stable concepts Presencia / Sistema / Producto but expose concrete deliverables.
+- Selected Work contains real built or operated systems available to describe without inventing commercial outcomes.
+- Lab is reserved for concepts, prototypes and explorations.
+- About connects Aragon and Jordan without collapsing the two brands.
+- Contact is framed as the consequence of the previous sections.
 
-### Limpieza
-Se eliminaron componentes y assets heredados que ya no participan en la homepage, además de los estilos audit.css y polish.css, cuyos pocos estilos todavía necesarios fueron absorbidos por la capa premium.
+## Visual direction
 
-### Contacto
-La agenda conserva Cal.com y añade una segunda vía por correo. El footer ahora actúa como cierre narrativo y centraliza perfiles reales disponibles.
+The V8 visual system intentionally reduces card-like UI and relies more on typography, whitespace, rules, scale, image fields and composition.
 
-### Restricciones
-No se añadieron dependencias nuevas. El stack sigue siendo Next.js + React + Motion + GSAP + CSS propio.
+The retained motion hierarchy is:
+
+- Primary: hero transitions, system storytelling, project transitions.
+- Secondary: hover, image and cursor details.
+- Tertiary: microfeedback.
+
+Motion should not compete with the information hierarchy.
+
+## Crowd Canvas
+
+The Crowd Canvas continues to use the Skiper/Open Peeps sprite sheet through the existing external asset reference. V8 reduces the scroll budget substantially so the canvas functions as narrative support rather than the dominant content block.
+
+The current implementation uses a resize event and does not claim ResizeObserver, DPR capping or automatic viewport pausing in this document.
+
+## Work and case studies
+
+Selected Work currently documents:
+
+- AiDEN — a real nursery operations system built with React/Vite/Tailwind and operational data flows.
+- Aragon Server — a real self-hosted infrastructure environment operated with Linux, Docker and private services.
+
+The case-study route lives under `/work/[slug]`. Case pages document context, system, stack and status while deliberately avoiding unverifiable commercial metrics.
+
+## Contact
+
+Cal.com remains the scheduling path. The inline form prepares a mailto message in the visitor's email client and does not imply a server-side email backend.
+
+## QA
+
+The release gate is `npm run build`, which runs ESLint, TypeScript and Next.js build. Final experience QA should cover navigation, scroll storytelling, preloader, reduced motion, keyboard behavior, responsive layouts, Cal.com, contact form and work case routes.
+
+Visual browser verification is still required for final desktop and mobile composition because static repository inspection cannot prove every interaction state.
