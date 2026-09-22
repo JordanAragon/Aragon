@@ -52,7 +52,7 @@ export default function AgendaSection() {
       <div className="page-shell agenda-grid">
         <div className="agenda-intro">
           <div className="contact-meta"><span>09 / CONTACT</span><span>ARAGON / 2026</span><span>CALI / COLOMBIA</span></div>
-          <span className="contact-kicker">YOU SAW THE PROBLEM. YOU SAW THE SYSTEM. NOW LET\'S TALK.</span>
+          <span className="contact-kicker">YOU SAW THE PROBLEM. YOU SAW THE SYSTEM. NOW LET&apos;S TALK.</span>
           <TextScrollTitle
             id="contact-title"
             segments={project
