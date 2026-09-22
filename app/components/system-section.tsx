@@ -1,6 +1,6 @@
 'use client';
 
-import { motion, useScroll, useSpring, useTransform } from 'motion/react';
+import { motion, useReducedMotion, useScroll, useSpring, useTransform } from 'motion/react';
 import { useRef } from 'react';
 import CanvasCrowdExact from './skiper/canvas-crowd-exact';
 
@@ -8,6 +8,7 @@ const SPRITE = 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/175711/open-peeps-s
 
 export default function SystemSection() {
   const ref = useRef<HTMLElement>(null);
+  const reduced = useReducedMotion();
   const raw = useScroll({ target: ref, offset: ['start start', 'end end'] }).scrollYProgress;
   const progress = useSpring(raw, { stiffness: 75, damping: 28, mass: 0.28 });
 
@@ -35,7 +36,7 @@ export default function SystemSection() {
           {beats.map(([label, title, copy, style], index) => (
             <motion.article
               key={label}
-              style={{ opacity: style }}
+              style={{ opacity: reduced ? (index === 3 ? 1 : 0) : style }}
               className={'v8-system-beat ' + (index % 2 ? 'is-right' : 'is-left')}
             >
               <span>{label}</span>
