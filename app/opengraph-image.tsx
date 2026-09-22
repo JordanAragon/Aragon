@@ -1,6 +1,7 @@
 import { ImageResponse } from 'next/og';
+import { site } from './data/site';
 
-export const alt = 'Aragon · Software · Digital · Technology';
+export const alt = 'Aragon · Software & Technology Studio';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
@@ -22,7 +23,7 @@ export default function Image() {
         }}
       >
         <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 18, letterSpacing: 4, fontWeight: 800 }}>
-          <span>ARAGON / DIGITAL STUDIO</span>
+          <span>ARAGON / SOFTWARE &amp; TECHNOLOGY STUDIO</span>
           <span>2026 / 001</span>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
@@ -32,7 +33,7 @@ export default function Image() {
           </div>
         </div>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', fontSize: 18, color: '#6d6d73', fontWeight: 700 }}>
-          <span>CALI / COLOMBIA</span>
+          <span>{site.location.toUpperCase()}</span>
           <span>IDEA → PROBLEM → SYSTEM</span>
         </div>
       </div>
