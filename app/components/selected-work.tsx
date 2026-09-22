@@ -1,6 +1,6 @@
 'use client';
 
-import { motion, useReducedMotion, useScroll, useSpring } from 'motion/react';
+import { motion, useScroll, useSpring } from 'motion/react';
 import Link from 'next/link';
 import { useRef } from 'react';
 import { work } from '../data/work';
@@ -8,7 +8,6 @@ import TextScrollTitle from './skiper/text-scroll-title';
 
 export default function SelectedWork() {
   const ref = useRef<HTMLElement>(null);
-  const reduced = useReducedMotion();
   const scroll = useScroll({ target: ref, offset: ['start start', 'end end'] }).scrollYProgress;
   const progress = useSpring(scroll, { stiffness: 80, damping: 28, mass: 0.3 });
 
