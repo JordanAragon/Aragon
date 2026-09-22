@@ -4509,3 +4509,88 @@ body.is-preloading {
 .v8-header::after {
   display: none !important;
 }
+
+
+/* V8 crowd correction: restore the original spatial weight and return the scene to paper. */
+.v8-system {
+  min-height: 340svh;
+  background: var(--premium-paper);
+  color: var(--premium-black);
+  border-top: 0;
+  border-bottom: 1px solid rgba(8, 8, 9, .12);
+}
+
+.v8-system-sticky {
+  background: var(--premium-paper);
+}
+
+.v8-system-meta,
+.v8-system-meta .section-number,
+.v8-system-meta .section-label {
+  color: #77777d;
+}
+
+.v8-system-meta > span:last-child {
+  color: #8a8a90;
+}
+
+.v8-system-beat > span {
+  color: #77777d;
+}
+
+.v8-system-beat h2 {
+  color: var(--premium-black);
+}
+
+.v8-system-beat p {
+  color: #66666c;
+}
+
+.v8-system-beat::before {
+  background: radial-gradient(
+    ellipse at center,
+    rgba(244, 244, 240, .96) 0%,
+    rgba(244, 244, 240, .76) 45%,
+    rgba(244, 244, 240, 0) 78%
+  );
+  filter: blur(10px);
+}
+
+.v8-system-floor {
+  inset: 18% 0 0;
+}
+
+.v8-system-floor .canvas-crowd {
+  height: 90vh !important;
+  opacity: 1 !important;
+  filter: none !important;
+  mix-blend-mode: multiply;
+}
+
+.v8-system-footer {
+  color: #77777d;
+}
+
+.v8-system-footer i {
+  background: #b3b3b8;
+}
+
+@media (max-width: 780px) {
+  .v8-system {
+    min-height: 330svh;
+  }
+
+  .v8-system-floor .canvas-crowd {
+    height: 84vh !important;
+  }
+}
+
+@media (max-width: 520px) {
+  .v8-system {
+    min-height: 320svh;
+  }
+
+  .v8-system-floor .canvas-crowd {
+    height: 84vh !important;
+  }
+}

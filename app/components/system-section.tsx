@@ -47,7 +47,7 @@ export default function SystemSection() {
         </div>
 
         <div className="v8-system-floor" aria-hidden="true">
-          <CanvasCrowdExact src={SPRITE} rows={15} cols={7} density={0.56} />
+          <CanvasCrowdExact src={SPRITE} rows={15} cols={7} density={0.68} />
         </div>
 
         <div className="v8-system-footer page-shell" aria-hidden="true">
