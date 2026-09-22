@@ -26,7 +26,7 @@ export default function AboutSection() {
             <span>FOUNDED / BUILT BY</span>
             <h3>Jordan David Aragon</h3>
             <p>Founder · Software Developer · Builder</p>
-            <Link href={site.portfolioUrl} target="_blank">Explore Jordan <span>↗</span></Link>
+            <Link href={site.portfolioUrl} target="_blank" rel="noopener noreferrer">Explore Jordan <span>↗</span></Link>
           </div>
         </div>
       </div>
