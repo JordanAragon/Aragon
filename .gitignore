@@ -39,3 +39,6 @@ graphify-out/
 .claude/skills/impeccable/
 .claude/settings.local.json
 .claude/agents/impeccable-*.md
+
+# Playwright CLI: capturas, snapshots y trazas locales
+.playwright-cli/

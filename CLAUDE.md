@@ -14,3 +14,12 @@ Rules:
 - No hay `DESIGN.md` todavía. El rediseño se hace con el skill `impeccable` (flujo de trabajo nuevo: `shape`/`craft`), y la nueva dirección visual se aprueba con David antes de escribir `DESIGN.md`.
 - `ui-ux-pro-max` es solo consulta (guías del stack, paletas y tipografías como punto de partida). No ejecutes `--persist`.
 - `PRODUCT.md` solo cambia con hechos confirmados por David.
+
+## Verificación
+
+- Servidor de desarrollo: `npm run dev` → http://localhost:3000
+- Todo cambio de UI se verifica en el navegador con el skill `playwright-cli` antes de darlo por terminado: abrir la página, revisar 375, 768 y 1440 px (`resize`), sin errores en consola, y una captura por ancho.
+- Para recorrer o verificar la app usa `playwright-cli` (`snapshot` y `find` en vez de leer el DOM completo). Para tareas largas, usa una sesión propia: `-s=<proyecto>`.
+- No uses `--persistent` ni guardes estado de sesión (`state-save`) con cuentas reales; las salidas van a `.playwright-cli/` (ignorado por Git).
+- Flujos clave: preloader y hero, scroll narrativo, formulario de contacto superpuesto, agenda (Cal.com) y página de un caso (`/work/<slug>`).
+- Mientras dure el rediseño, las capturas sirven como referencia del prototipo, no como estado a conservar.
