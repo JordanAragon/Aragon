@@ -38,3 +38,4 @@ graphify-out/
 # Skill de Impeccable instalado localmente (se instala con `npx impeccable install`; no se versiona)
 .claude/skills/impeccable/
 .claude/settings.local.json
+.claude/agents/impeccable-*.md
