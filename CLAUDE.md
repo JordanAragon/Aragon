@@ -10,7 +10,7 @@ Rules:
 
 ## Diseño
 
-- La identidad visual está en `design-system/aragon/MASTER.md`. Léelo antes de cualquier trabajo de UI; si existe `design-system/aragon/pages/<página>.md`, sus reglas tienen prioridad.
-- Prioridad: este MASTER, luego las preferencias de diseño de David (brain David-AI) y al final el skill `ui-ux-pro-max`.
-- `ui-ux-pro-max` se usa aquí solo como checklist de UX y accesibilidad y como guía del stack. No apliques sus paletas, tipografías ni estilos, y no ejecutes `--persist` ni `--force` sobre este MASTER.
-- Si un cambio visual contradice el MASTER, propónlo a David y actualiza el MASTER en el mismo cambio.
+- **Rediseño total previsto** (David, 2026-10-04): el sitio actual es un prototipo. Su apariencia no es vinculante; úsala como referencia y antirreferencia, no como identidad que preservar. Producto: `PRODUCT.md` (raíz).
+- No hay `DESIGN.md` todavía. El rediseño se hace con el skill `impeccable` (flujo de trabajo nuevo: `shape`/`craft`), y la nueva dirección visual se aprueba con David antes de escribir `DESIGN.md`.
+- `ui-ux-pro-max` es solo consulta (guías del stack, paletas y tipografías como punto de partida). No ejecutes `--persist`.
+- `PRODUCT.md` solo cambia con hechos confirmados por David.
