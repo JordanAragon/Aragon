@@ -33,6 +33,10 @@ Abierto: qué hace distinto a Aragon frente a otros estudios o desarrolladores i
 - Sin backend propio para el contacto.
 - Si se usan componentes de Skiper UI en su versión gratuita, requieren atribución.
 
+## Design Inputs
+
+Para el rediseño: referencias del catálogo [awesome-design-md](https://github.com/VoltAgent/awesome-design-md), con la selección y la regla de uso en el brain de David (`knowledge/diseno/referencias-design-md.md` en `JordanAragon/David-AI`). Se combinan 2 o 3 para componer una dirección propia con `/impeccable shape`; ninguna se copia como identidad.
+
 ## Brand Commitments
 
 Nombre Aragon. Distinto de Aragon-Server (homelab) y de Aragon-Finance (otro proyecto personal).
