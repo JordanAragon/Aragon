@@ -23,3 +23,7 @@ Rules:
 - No uses `--persistent` ni guardes estado de sesión (`state-save`) con cuentas reales; las salidas van a `.playwright-cli/` (ignorado por Git).
 - Flujos clave: preloader y hero, scroll narrativo, formulario de contacto superpuesto, agenda (Cal.com) y página de un caso (`/work/<slug>`).
 - Mientras dure el rediseño, las capturas sirven como referencia del prototipo, no como estado a conservar.
+
+## Skills
+
+- Antes de cualquier tarea, revisa **todo** el conjunto de skills disponibles: las instaladas en este repo, las del brain David-AI (`JordanAragon/David-AI`, carpeta `skills/`) y las de la cuenta. Usa las más adecuadas para la tarea y di cuáles vas a usar. No te limites a las que menciona este archivo. Regla de David (2026-10-06).
