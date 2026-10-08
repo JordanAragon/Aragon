@@ -40,6 +40,7 @@ export default function CanvasCrowdExact({ src, rows = 15, cols = 7, density = 0
 
     const context = canvas.getContext('2d');
     if (!context) return;
+    const drawingContext: CanvasRenderingContext2D = context;
 
     const image = document.createElement('img');
     const stage = { width: 0, height: 0, dpr: 1 };
@@ -139,12 +140,12 @@ export default function CanvasCrowdExact({ src, rows = 15, cols = 7, density = 0
 
     function render() {
       if (!active || !stage.width || !stage.height) return;
-      context.clearRect(0, 0, stage.width, stage.height);
-      crowd.forEach((peep) => peep.render(context));
+      drawingContext.clearRect(0, 0, stage.width, stage.height);
+      crowd.forEach((peep) => peep.render(drawingContext));
     }
 
     const drawStatic = () => {
-      context.clearRect(0, 0, stage.width, stage.height);
+      drawingContext.clearRect(0, 0, stage.width, stage.height);
       crowd.forEach((peep, index) => {
         const spread = stage.width / Math.max(2, crowd.length - 1);
         peep.x = index * spread;
@@ -186,7 +187,7 @@ export default function CanvasCrowdExact({ src, rows = 15, cols = 7, density = 0
       stage.dpr = dpr;
       canvas.width = Math.round(width * dpr);
       canvas.height = Math.round(height * dpr);
-      context.setTransform(dpr, 0, 0, dpr, 0, 0);
+      drawingContext.setTransform(dpr, 0, 0, dpr, 0, 0);
 
       if (initialized) initCrowd();
     };
