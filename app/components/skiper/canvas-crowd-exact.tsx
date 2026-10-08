@@ -27,182 +27,244 @@ type Peep = {
 };
 
 const randomRange = (min: number, max: number) => min + Math.random() * (max - min);
-const randomIndex = (array: unknown[]) => randomRange(0, array.length) | 0;
-const removeFromArray = <T,>(array: T[], index: number) => array.splice(index, 1)[0];
-const removeItemFromArray = <T,>(array: T[], item: T) => removeFromArray(array, array.indexOf(item));
-const removeRandomFromArray = <T,>(array: T[]) => removeFromArray(array, randomIndex(array));
-export default function CanvasCrowdExact({ src, rows = 15, cols = 7, density = 1, className = '' }: Props) {
+const randomIndex = (items: unknown[]) => Math.floor(Math.random() * items.length);
+const removeFromArray = <T,>(items: T[], index: number) => items.splice(index, 1)[0];
+const removeRandomFromArray = <T,>(items: T[]) => removeFromArray(items, randomIndex(items));
+
+export default function CanvasCrowdExact({ src, rows = 15, cols = 7, density = 0.68, className = '' }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-    const drawingContext: CanvasRenderingContext2D = ctx;
+    const context = canvas.getContext('2d');
+    if (!context) return;
 
-    const img = document.createElement('img');
-    const stage = { width: 0, height: 0 };
+    const image = document.createElement('img');
+    const stage = { width: 0, height: 0, dpr: 1 };
     const allPeeps: Peep[] = [];
     const availablePeeps: Peep[] = [];
     const crowd: Peep[] = [];
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
     let initialized = false;
+    let active = false;
+    let tickerAttached = false;
+    let resizeObserver: ResizeObserver | null = null;
+    let visibilityObserver: IntersectionObserver | null = null;
 
-    const createPeep = ({ image, rect }: { image: HTMLImageElement; rect: [number, number, number, number] }): Peep => {
-      const peep: Peep = {
-        image,
+    const setTicker = (enabled: boolean) => {
+      if (enabled && !tickerAttached) {
+        gsap.ticker.add(render);
+        tickerAttached = true;
+      } else if (!enabled && tickerAttached) {
+        gsap.ticker.remove(render);
+        tickerAttached = false;
+      }
+    };
+
+    const createPeep = ({ image: source, rect }: { image: HTMLImageElement; rect: [number, number, number, number] }): Peep => {
+      const peep = {
+        image: source,
         rect,
         width: rect[2],
         height: rect[3],
-        drawArgs: [image, ...rect, 0, 0, rect[2], rect[3]],
+        drawArgs: [source, ...rect, 0, 0, rect[2], rect[3]] as Peep['drawArgs'],
         x: 0,
         y: 0,
         anchorY: 0,
-        scaleX: 1,
+        scaleX: 1 as 1 | -1,
         walk: null,
-        setRect: (nextRect) => {
+        setRect(nextRect: [number, number, number, number]) {
           peep.rect = nextRect;
           peep.width = nextRect[2];
           peep.height = nextRect[3];
           peep.drawArgs = [peep.image, ...nextRect, 0, 0, peep.width, peep.height];
         },
-        render: (renderCtx) => {
-          renderCtx.save();
-          renderCtx.translate(peep.x, peep.y);
-          renderCtx.scale(peep.scaleX, 1);
-          renderCtx.drawImage(...peep.drawArgs);
-          renderCtx.restore();
+        render(renderContext: CanvasRenderingContext2D) {
+          renderContext.save();
+          renderContext.translate(peep.x, peep.y);
+          renderContext.scale(peep.scaleX, 1);
+          renderContext.drawImage(...peep.drawArgs);
+          renderContext.restore();
         },
-      };
+      } as Peep;
 
       return peep;
     };
 
     const resetPeep = (peep: Peep) => {
       const direction: 1 | -1 = Math.random() > 0.5 ? 1 : -1;
-      const offsetY = 100 - 250 * gsap.parseEase('power2.in')(Math.random());
-      const startY = stage.height - peep.height + offsetY;
+      const depth = 100 - 250 * gsap.parseEase('power2.in')(Math.random());
+      const startY = stage.height - peep.height + depth;
       const startX = direction === 1 ? -peep.width : stage.width + peep.width;
-      const endX = direction === 1 ? stage.width : 0;
-
+      const endX = direction === 1 ? stage.width + peep.width : -peep.width;
       peep.scaleX = direction;
       peep.x = startX;
       peep.y = startY;
       peep.anchorY = startY;
-
-      return { startX, startY, endX };
+      return { startY, endX };
     };
 
-    const normalWalk = (peep: Peep, props: ReturnType<typeof resetPeep>) => {
-      const xDuration = 10;
+    const startWalk = (peep: Peep) => {
+      const props = resetPeep(peep);
+      const xDuration = randomRange(9, 14);
       const yDuration = 0.25;
-      const timeline = gsap.timeline();
-
-      timeline.timeScale(randomRange(0.5, 1.5));
-      timeline.to(peep, { duration: xDuration, x: props.endX, ease: 'none' }, 0);
-      timeline.to(peep, {
-        duration: yDuration,
-        repeat: xDuration / yDuration,
-        yoyo: true,
-        y: props.startY - 10,
-      }, 0);
-
-      return timeline;
-    };
-
-    const removePeepFromCrowd = (peep: Peep) => {
-      removeItemFromArray(crowd, peep);
-      availablePeeps.push(peep);
-    };
-
-    const addPeepToCrowd = () => {
-      if (!availablePeeps.length) return null;
-
-      const peep = removeRandomFromArray(availablePeeps);
-      const walk = normalWalk(peep, resetPeep(peep)).eventCallback('onComplete', () => {
-        removePeepFromCrowd(peep);
-        addPeepToCrowd();
+      const timeline = gsap.timeline({
+        onComplete: () => {
+          availablePeeps.push(peep);
+          crowd.splice(crowd.indexOf(peep), 1);
+          if (active && !reducedMotion.matches) addPeep();
+        },
       });
 
-      peep.walk = walk;
-      crowd.push(peep);
-      crowd.sort((a, b) => a.anchorY - b.anchorY);
-      return peep;
+      timeline.timeScale(randomRange(0.7, 1.15));
+      timeline.to(peep, { duration: xDuration, x: props.endX, ease: 'none' }, 0);
+      timeline.to(
+        peep,
+        { duration: yDuration, repeat: Math.round(xDuration / yDuration), yoyo: true, y: props.startY - 8, ease: 'sine.inOut' },
+        0,
+      );
+      peep.walk = timeline;
+      timeline.progress(Math.random());
     };
 
-    const createPeeps = () => {
-      const rectWidth = img.naturalWidth / rows;
-      const rectHeight = img.naturalHeight / cols;
+    const addPeep = () => {
+      if (!availablePeeps.length) return;
+      const peep = removeRandomFromArray(availablePeeps);
+      crowd.push(peep);
+      crowd.sort((a, b) => a.anchorY - b.anchorY);
+      startWalk(peep);
+    };
 
-      for (let index = 0; index < rows * cols; index += 1) {
-        allPeeps.push(createPeep({
-          image: img,
-          rect: [
-            (index % rows) * rectWidth,
-            Math.floor(index / rows) * rectHeight,
-            rectWidth,
-            rectHeight,
-          ],
-        }));
-      }
+    function render() {
+      if (!active || !stage.width || !stage.height) return;
+      context.clearRect(0, 0, stage.width, stage.height);
+      crowd.forEach((peep) => peep.render(context));
+    }
+
+    const drawStatic = () => {
+      context.clearRect(0, 0, stage.width, stage.height);
+      crowd.forEach((peep, index) => {
+        const spread = stage.width / Math.max(2, crowd.length - 1);
+        peep.x = index * spread;
+        peep.y = stage.height - peep.height - (index % 4) * 6;
+        peep.anchorY = peep.y;
+        peep.scaleX = index % 2 ? -1 : 1;
+        peep.render(context);
+      });
     };
 
     const initCrowd = () => {
-      const clampedDensity = Math.min(1, Math.max(0.35, density));
-      const activeCount = Math.max(1, Math.round(allPeeps.length * clampedDensity));
-      const shuffled = [...allPeeps].sort(() => Math.random() - 0.5);
-      availablePeeps.push(...shuffled.slice(0, activeCount));
+      availablePeeps.length = 0;
+      crowd.forEach((peep) => peep.walk?.kill());
+      crowd.length = 0;
 
-      while (availablePeeps.length) {
-        addPeepToCrowd()?.walk?.progress(Math.random());
+      const count = Math.max(12, Math.round(allPeeps.length * Math.min(1, Math.max(0.35, density))));
+      const shuffled = [...allPeeps].sort(() => Math.random() - 0.5);
+      availablePeeps.push(...shuffled.slice(0, count));
+
+      if (reducedMotion.matches) {
+        crowd.push(...availablePeeps.splice(0));
+        crowd.sort((a, b) => a.anchorY - b.anchorY);
+        drawStatic();
+        return;
       }
+
+      while (availablePeeps.length) addPeep();
     };
 
     const resize = () => {
-      stage.width = canvas.clientWidth;
-      stage.height = canvas.clientHeight;
-      canvas.width = stage.width * window.devicePixelRatio;
-      canvas.height = stage.height * window.devicePixelRatio;
+      const width = Math.max(1, canvas.clientWidth);
+      const height = Math.max(1, canvas.clientHeight);
+      const dpr = Math.min(2, Math.max(1, window.devicePixelRatio || 1));
 
-      crowd.forEach((peep) => peep.walk?.kill());
-      crowd.length = 0;
-      availablePeeps.length = 0;
+      if (width === stage.width && height === stage.height && dpr === stage.dpr) return;
+
+      stage.width = width;
+      stage.height = height;
+      stage.dpr = dpr;
+      canvas.width = Math.round(width * dpr);
+      canvas.height = Math.round(height * dpr);
+      context.setTransform(dpr, 0, 0, dpr, 0, 0);
+
       if (initialized) initCrowd();
     };
 
-    const render = () => {
-      drawingContext.clearRect(0, 0, canvas.width, canvas.height);
-      drawingContext.save();
-      drawingContext.scale(window.devicePixelRatio, window.devicePixelRatio);
-      crowd.forEach((peep) => peep.render(drawingContext));
-      drawingContext.restore();
+    const setActive = (next: boolean) => {
+      active = next;
+      if (reducedMotion.matches) {
+        drawStatic();
+        return;
+      }
+
+      crowd.forEach((peep) => peep.walk?.paused(!active));
+      setTicker(active && !document.hidden);
     };
 
-    const init = () => {
-      if (initialized || !img.naturalWidth || !img.naturalHeight) return;
+    const onVisibility = () => setActive(active);
+
+    const initialize = () => {
+      if (initialized || !image.naturalWidth || !image.naturalHeight) return;
+
+      const frameWidth = image.naturalWidth / rows;
+      const frameHeight = image.naturalHeight / cols;
+
+      for (let index = 0; index < rows * cols; index += 1) {
+        allPeeps.push(createPeep({
+          image,
+          rect: [
+            (index % rows) * frameWidth,
+            Math.floor(index / rows) * frameHeight,
+            frameWidth,
+            frameHeight,
+          ],
+        }));
+      }
+
       initialized = true;
-      createPeeps();
       resize();
-      gsap.ticker.add(render);
+      if (visibilityObserver) setActive(active);
     };
 
-    img.onload = init;
-    img.src = src;
+    const onReducedMotionChange = () => {
+      if (!initialized) return;
+      initCrowd();
+      setActive(active);
+    };
 
-    window.addEventListener('resize', resize);
+    image.onload = initialize;
+    image.onerror = () => { canvas.dataset.error = 'true'; };
+    image.src = src;
+
+    resize();
+    resizeObserver = new ResizeObserver(resize);
+    resizeObserver.observe(canvas);
+
+    visibilityObserver = new IntersectionObserver(
+      (entries) => setActive(entries.some((entry) => entry.isIntersecting)),
+      { rootMargin: '160px 0px' },
+    );
+    visibilityObserver.observe(canvas);
+
+    document.addEventListener('visibilitychange', onVisibility);
+    reducedMotion.addEventListener('change', onReducedMotionChange);
 
     return () => {
-      window.removeEventListener('resize', resize);
-      gsap.ticker.remove(render);
+      resizeObserver?.disconnect();
+      visibilityObserver?.disconnect();
+      document.removeEventListener('visibilitychange', onVisibility);
+      reducedMotion.removeEventListener('change', onReducedMotionChange);
+      setTicker(false);
       allPeeps.forEach((peep) => peep.walk?.kill());
       allPeeps.length = 0;
       availablePeeps.length = 0;
       crowd.length = 0;
-      img.onload = null;
-      img.src = '';
+      image.onload = null;
+      image.onerror = null;
+      image.src = '';
     };
   }, [src, rows, cols, density]);
 
-  return <canvas ref={canvasRef} className={`canvas-crowd ${className}`.trim()} aria-hidden="true" />;
+  return <canvas ref={canvasRef} className={['canvas-crowd', className].filter(Boolean).join(' ')} aria-hidden="true" />;
 }
