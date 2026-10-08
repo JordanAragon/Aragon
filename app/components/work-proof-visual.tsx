@@ -1,5 +1,3 @@
-import type { CSSProperties, ReactNode } from 'react';
-
 type Props = {
   slug: string;
   compact?: boolean;
