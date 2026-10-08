@@ -27,7 +27,7 @@ export default function Preloader() {
     const timers = new Set<number>();
     let done = false;
     const start = performance.now();
-    const minimum = reduced ? 160 : 360;
+    const minimum = reduced ? 220 : 560;
 
     const finish = () => {
       if (done) return;
@@ -35,11 +35,17 @@ export default function Preloader() {
       setProgress(1);
       document.documentElement.dataset.aragonEntry = 'ready';
       window.dispatchEvent(new Event('aragon:entry-start'));
-      const exitTimer = window.setTimeout(() => setLeaving(true), reduced ? 50 : 90);
+      const exitTimer = window.setTimeout(() => setLeaving(true), reduced ? 80 : 120);
       timers.add(exitTimer);
     };
 
-    Promise.all(ASSETS.map(preloadAsset)).then(() => {
+    let loaded = 0;
+    const handleLoaded = () => {
+      loaded += 1;
+      setProgress(Math.max(0.08, loaded / ASSETS.length));
+    };
+
+    Promise.all(ASSETS.map((src) => preloadAsset(src).then(handleLoaded))).then(() => {
       const elapsed = performance.now() - start;
       const wait = Math.max(0, minimum - elapsed);
       const finishTimer = window.setTimeout(finish, wait);
@@ -48,7 +54,7 @@ export default function Preloader() {
 
     const tick = (now: number) => {
       const elapsed = Math.min(1, (now - start) / minimum);
-      setProgress((current) => Math.max(current, Math.min(0.96, 0.18 + elapsed * 0.72)));
+      setProgress((current) => Math.max(current, Math.min(0.98, 0.15 + elapsed * 0.8)));
       if (!done) raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
@@ -62,13 +68,14 @@ export default function Preloader() {
   }, [reduced]);
 
   if (!visible) return null;
+  const pct = Math.round(progress * 100);
 
   return (
     <motion.div
-      className="preloader-v4 v8-preloader"
+      className="preloader-v4"
       initial={{ opacity: 1 }}
       animate={{ opacity: leaving ? 0 : 1 }}
-      transition={{ duration: reduced ? 0.18 : 0.32, ease: [0.76, 0, 0.24, 1] }}
+      transition={{ duration: reduced ? 0.28 : 0.48, ease: [0.76, 0, 0.24, 1] }}
       onAnimationComplete={() => {
         if (leaving) {
           document.body.classList.remove('is-preloading');
@@ -78,21 +85,27 @@ export default function Preloader() {
       aria-hidden="true"
     >
       <div className="preloader-v4-grid" />
+      <div className="preloader-v4-top"><span>ARAGON / ENTRY</span><span>BUILD WITH INTENT</span></div>
+
       <div className="preloader-v4-center">
-        <div className="preloader-v4-mark"><span>A</span><i style={{ transform: 'scaleX(' + progress + ')' }} /></div>
+        <div className="preloader-v4-mark"><span>A</span><i style={{ transform: `scaleX(${progress})` }} /></div>
         <div className="preloader-v4-type">
           {word.split('').map((letter, index) => (
             <motion.span
-              key={letter + '-' + index}
+              key={`${letter}-${index}`}
               initial={{ y: '110%', opacity: 0 }}
               animate={{ y: progress > (index + 1) / (word.length + 1) ? '0%' : '110%', opacity: progress > (index + 1) / (word.length + 1) ? 1 : 0 }}
-              transition={{ duration: reduced ? 0.16 : 0.28, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: 0.48, ease: [0.16, 1, 0.3, 1] }}
             >{letter}</motion.span>
           ))}
+          <b className="preloader-v4-caret" />
         </div>
-        <div className="preloader-v4-meta"><span>ENTRY</span><b>{Math.round(progress * 100)}</b></div>
+        <div className="preloader-v4-meta"><span>SOFTWARE / DIGITAL / TECHNOLOGY</span><b>{String(pct).padStart(3, '0')}</b></div>
         <div className="preloader-v4-bar"><motion.i style={{ scaleX: progress, transformOrigin: 'left' }} /></div>
       </div>
+
+      <div className="preloader-v4-bottom"><span>LOADING ASSETS</span><span>EXPERIENCE / 01</span></div>
+      <motion.div className="preloader-v4-shutter" animate={{ y: leaving ? '0%' : '100%' }} transition={{ duration: reduced ? 0.4 : 0.68, ease: [0.76, 0, 0.24, 1] }} />
     </motion.div>
   );
 }

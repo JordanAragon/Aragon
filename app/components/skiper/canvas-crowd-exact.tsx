@@ -7,7 +7,6 @@ type Props = {
   src: string;
   rows?: number;
   cols?: number;
-  density?: number;
   className?: string;
 };
 
@@ -31,7 +30,9 @@ const randomIndex = (array: unknown[]) => randomRange(0, array.length) | 0;
 const removeFromArray = <T,>(array: T[], index: number) => array.splice(index, 1)[0];
 const removeItemFromArray = <T,>(array: T[], item: T) => removeFromArray(array, array.indexOf(item));
 const removeRandomFromArray = <T,>(array: T[]) => removeFromArray(array, randomIndex(array));
-export default function CanvasCrowdExact({ src, rows = 15, cols = 7, density = 1, className = '' }: Props) {
+const getRandomFromArray = <T,>(array: T[]) => array[randomIndex(array) | 0];
+
+export default function CanvasCrowdExact({ src, rows = 15, cols = 7, className = '' }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -40,7 +41,6 @@ export default function CanvasCrowdExact({ src, rows = 15, cols = 7, density = 1
 
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
-    const drawingContext: CanvasRenderingContext2D = ctx;
 
     const img = document.createElement('img');
     const stage = { width: 0, height: 0 };
@@ -149,11 +149,6 @@ export default function CanvasCrowdExact({ src, rows = 15, cols = 7, density = 1
     };
 
     const initCrowd = () => {
-      const clampedDensity = Math.min(1, Math.max(0.35, density));
-      const activeCount = Math.max(1, Math.round(allPeeps.length * clampedDensity));
-      const shuffled = [...allPeeps].sort(() => Math.random() - 0.5);
-      availablePeeps.push(...shuffled.slice(0, activeCount));
-
       while (availablePeeps.length) {
         addPeepToCrowd()?.walk?.progress(Math.random());
       }
@@ -168,15 +163,16 @@ export default function CanvasCrowdExact({ src, rows = 15, cols = 7, density = 1
       crowd.forEach((peep) => peep.walk?.kill());
       crowd.length = 0;
       availablePeeps.length = 0;
+      availablePeeps.push(...allPeeps);
       if (initialized) initCrowd();
     };
 
     const render = () => {
-      drawingContext.clearRect(0, 0, canvas.width, canvas.height);
-      drawingContext.save();
-      drawingContext.scale(window.devicePixelRatio, window.devicePixelRatio);
-      crowd.forEach((peep) => peep.render(drawingContext));
-      drawingContext.restore();
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.save();
+      ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+      crowd.forEach((peep) => peep.render(ctx));
+      ctx.restore();
     };
 
     const init = () => {
@@ -202,7 +198,7 @@ export default function CanvasCrowdExact({ src, rows = 15, cols = 7, density = 1
       img.onload = null;
       img.src = '';
     };
-  }, [src, rows, cols, density]);
+  }, [src, rows, cols]);
 
   return <canvas ref={canvasRef} className={`canvas-crowd ${className}`.trim()} aria-hidden="true" />;
 }

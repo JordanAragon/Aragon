@@ -53,7 +53,6 @@ export default function ContactForm({ open, onClose, subject = 'Proyecto Aragon'
     };
   }, [open, onClose]);
 
-
   const close = () => {
     setSubmitted(false);
     onClose();
@@ -103,7 +102,7 @@ export default function ContactForm({ open, onClose, subject = 'Proyecto Aragon'
             <span>MESSAGE / READY</span>
             <h2 id="contact-form-success-title">Tu correo está listo para enviar.</h2>
             <p>La información ya quedó preparada en tu cliente de correo. Puedes revisarla y enviarla cuando quieras.</p>
-            <button type="button" className="contact-form-submit" onClick={close}>Cerrar {icons.arrow}</button>
+            <button type="button" className="contact-form-submit" onClick={onClose}>Cerrar {icons.arrow}</button>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="contact-form">

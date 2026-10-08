@@ -55,7 +55,7 @@ export default function NarrativeCrowd() {
         </div>
 
         <div className="crowd-story-v4-floor" aria-hidden="true">
-          <CanvasCrowdExact src={SPRITE} rows={15} cols={7} density={0.68} />
+          <CanvasCrowdExact src={SPRITE} rows={15} cols={7} />
           <span className="crowd-story-v4-floor-line" />
         </div>
 

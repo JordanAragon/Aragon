@@ -1,15 +1,12 @@
-import AboutSection from './components/about-section';
 import AgendaSection from './components/agenda-section';
+import NarrativeCrowd from './components/narrative-crowd';
 import CursorOrbit from './components/cursor-orbit';
 import Hero from './components/hero';
-import LabSection from './components/lab-section';
-import Preloader from './components/preloader';
-import { Footer, MethodSection, ProblemSection } from './components/static-sections';
-import ScrollProgress from './components/scroll-progress';
-import SelectedWork from './components/selected-work';
 import SiteHeader from './components/site-header';
-import SystemSection from './components/system-section';
-import WhatWeBuild from './components/what-we-build';
+import ScrollProgress from './components/scroll-progress';
+import WorkStory from './components/work-story';
+import Preloader from './components/preloader';
+import { CapabilitiesSection, Footer, MethodSection, ProblemSection } from './components/static-sections';
 
 export default function Home() {
   return (
@@ -24,12 +21,10 @@ export default function Home() {
         <div id="contenido">
           <Hero />
           <ProblemSection />
-          <SystemSection />
-          <WhatWeBuild />
-          <SelectedWork />
+          <NarrativeCrowd />
+          <CapabilitiesSection />
+          <WorkStory />
           <MethodSection />
-          <AboutSection />
-          <LabSection />
           <AgendaSection />
           <Footer />
         </div>
