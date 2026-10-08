@@ -13,10 +13,14 @@ type Props = {
 
 export default function ContactForm({ open, onClose, subject = 'Proyecto Aragon' }: Props) {
   const dialogRef = useRef<HTMLDivElement>(null);
+  const returnFocusRef = useRef<HTMLElement | null>(null);
   const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
     if (!open) return undefined;
+
+    returnFocusRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+
     const onKey = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         event.preventDefault();
@@ -31,10 +35,12 @@ export default function ContactForm({ open, onClose, subject = 'Proyecto Aragon'
           'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])',
         ),
       ).filter((element) => !element.hasAttribute('disabled') && element.offsetParent !== null);
+
       if (!focusable.length) return;
 
       const first = focusable[0];
       const last = focusable[focusable.length - 1];
+
       if (event.shiftKey && document.activeElement === first) {
         event.preventDefault();
         last.focus();
@@ -43,16 +49,19 @@ export default function ContactForm({ open, onClose, subject = 'Proyecto Aragon'
         first.focus();
       }
     };
+
     document.addEventListener('keydown', onKey);
-    const previous = document.body.style.overflow;
+    const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
+
     requestAnimationFrame(() => dialogRef.current?.querySelector<HTMLInputElement>('input')?.focus());
+
     return () => {
       document.removeEventListener('keydown', onKey);
-      document.body.style.overflow = previous;
+      document.body.style.overflow = previousOverflow;
+      requestAnimationFrame(() => returnFocusRef.current?.focus());
     };
   }, [open, onClose]);
-
 
   const close = () => {
     setSubmitted(false);
@@ -68,21 +77,19 @@ export default function ContactForm({ open, onClose, subject = 'Proyecto Aragon'
     const email = String(form.get('email') ?? '').trim();
     const project = String(form.get('project') ?? '').trim();
     const message = String(form.get('message') ?? '').trim();
-    const body = [
-      `Nombre: ${name}`,
-      `Email: ${email}`,
-      `Proyecto: ${project}`,
-      '',
-      message,
-    ].join('\n');
+    const body = [`Nombre: ${name}`, `Email: ${email}`, `Proyecto: ${project}`, '', message].join('\n');
     window.location.href = `mailto:${site.contactEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     setSubmitted(true);
   };
 
   return (
-    <div className="contact-form-layer" role="presentation" onMouseDown={(event) => {
-      if (event.target === event.currentTarget) close();
-    }}>
+    <div
+      className="contact-form-layer"
+      role="presentation"
+      onMouseDown={(event) => {
+        if (event.target === event.currentTarget) close();
+      }}
+    >
       <div
         ref={dialogRef}
         className="contact-form-dialog"
@@ -92,7 +99,7 @@ export default function ContactForm({ open, onClose, subject = 'Proyecto Aragon'
       >
         <div className="contact-form-head">
           <div>
-            <span>07 / CONTACT</span>
+            <span>CONTACT / 01</span>
             <small>NO MEETING REQUIRED</small>
           </div>
           <button type="button" className="contact-form-close" onClick={close} aria-label="Cerrar formulario">×</button>
@@ -102,7 +109,7 @@ export default function ContactForm({ open, onClose, subject = 'Proyecto Aragon'
           <div className="contact-form-success">
             <span>MESSAGE / READY</span>
             <h2 id="contact-form-success-title">Tu correo está listo para enviar.</h2>
-            <p>La información ya quedó preparada en tu cliente de correo. Puedes revisarla y enviarla cuando quieras.</p>
+            <p>La información quedó preparada en tu cliente de correo. Puedes revisarla y enviarla cuando quieras.</p>
             <button type="button" className="contact-form-submit" onClick={close}>Cerrar {icons.arrow}</button>
           </div>
         ) : (
@@ -111,12 +118,14 @@ export default function ContactForm({ open, onClose, subject = 'Proyecto Aragon'
               <span>CUÉNTAME QUÉ QUIERES CONSTRUIR.</span>
               <h2 id="contact-form-title">Una idea, un problema o algo que todavía no tiene nombre.</h2>
             </div>
+
             <div className="contact-form-grid">
               <label><span>01 / NOMBRE</span><input required name="name" autoComplete="name" placeholder="Tu nombre" /></label>
               <label><span>02 / EMAIL</span><input required type="email" name="email" autoComplete="email" placeholder="tu@email.com" /></label>
               <label className="full"><span>03 / PROYECTO</span><input name="project" placeholder="Nombre o contexto del proyecto" /></label>
               <label className="full"><span>04 / QUÉ HAY QUE RESOLVER</span><textarea required name="message" rows={5} placeholder="Qué está pasando, qué quieres cambiar y qué debería existir al final." /></label>
             </div>
+
             <div className="contact-form-actions">
               <button type="submit" className="contact-form-submit">Preparar mensaje {icons.arrow}</button>
               <span>Se abrirá tu cliente de correo con el mensaje preparado.</span>
