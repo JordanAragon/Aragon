@@ -15,11 +15,13 @@ export default function Hero() {
   const raw = useScroll({ target: ref, offset: ['start start', 'end end'] }).scrollYProgress;
   const progress = useSpring(raw, { stiffness: 100, damping: 30, mass: 0.28 });
 
-  const wordY = useTransform(progress, [0, 0.12, 0.25, 1], [0, 0, reduced ? 0 : -28, reduced ? 0 : -40]);
-  const wordScale = useTransform(progress, [0, 0.14, 0.30, 1], [1.02, 1, reduced ? 1 : 0.58, reduced ? 1 : 0.45]);
-  const wordOpacity = useTransform(progress, [0, 0.14, 0.28, 0.40], [1, 1, reduced ? 1 : 0.46, 0]);
-  const copyOpacity = useTransform(progress, [0.08, 0.22, 0.34, 0.78], [0, 0, 1, 1]);
-  const copyY = useTransform(progress, [0.10, 0.34, 0.86], [reduced ? 0 : 90, 0, reduced ? 0 : -8]);
+  // The identity owns the first scene. It only yields once the scroll has created enough visual distance.
+  const wordY = useTransform(progress, [0, 0.18, 0.36, 0.72, 1], [0, 0, reduced ? 0 : -30, reduced ? 0 : -66, reduced ? 0 : -84]);
+  const wordScale = useTransform(progress, [0, 0.18, 0.34, 0.72, 1], [1.02, 1, reduced ? 1 : 0.68, reduced ? 1 : 0.5, reduced ? 1 : 0.46]);
+  const wordOpacity = useTransform(progress, [0, 0.28, 0.52, 0.76, 1], [1, 1, reduced ? 1 : 0.78, reduced ? 1 : 0.24, reduced ? 1 : 0]);
+  const copyOpacity = useTransform(progress, [0.27, 0.38, 0.7, 1], [0, 1, 1, 0.88]);
+  const copyY = useTransform(progress, [0.27, 0.4, 0.9], [reduced ? 0 : 72, 0, reduced ? 0 : -14]);
+  const copyScale = useTransform(progress, [0.27, 0.42, 0.9], [0.985, 1, reduced ? 1 : 0.985]);
   const lineProgress = useTransform(progress, [0.02, 0.96], [0, 1]);
 
   useEffect(() => {
@@ -31,30 +33,30 @@ export default function Hero() {
   const openContact = () => window.dispatchEvent(new Event('aragon:open-contact'));
 
   return (
-    <section id="inicio" ref={ref} className="v8-hero" aria-labelledby="hero-title">
-      <div className="v8-hero-stage">
-        <div className="v8-hero-grid" aria-hidden="true" />
-        <div className="page-shell v8-hero-shell">
-          <div className="v8-hero-topline">
+    <section id="inicio" ref={ref} className="hero-v4" aria-labelledby="hero-title">
+      <div className="hero-v4-stage">
+        <div className="hero-v4-grid" aria-hidden="true" />
+        <div className="page-shell hero-v4-shell">
+          <div className="hero-v4-topline">
             <span><i /> ARAGON / 2026</span>
-            <span>CALI / COLOMBIA</span>
+            <span>SOFTWARE · DIGITAL · SYSTEMS</span>
           </div>
 
           <motion.div
-            className="v8-hero-brand"
+            className="hero-v4-brandline"
             style={{ y: wordY, scale: wordScale, opacity: wordOpacity }}
             initial={{ opacity: 0, scale: 0.96, y: 18 }}
             animate={entryStarted ? { opacity: 1 } : { opacity: 0 }}
-            transition={{ duration: reduced ? 0.2 : 0.65, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: reduced ? 0.25 : 0.72, ease: [0.16, 1, 0.3, 1] }}
             aria-label="Aragon"
           >
-            <div className="v8-hero-brand-track">
+            <div className="hero-v4-brandline-track">
               {word.map((letter, index) => (
                 <motion.span
-                  key={letter + '-' + index}
+                  key={`${letter}-${index}`}
                   initial={{ opacity: 0, y: 28, rotateX: 48 }}
                   animate={entryStarted ? { opacity: 1, y: 0, rotateX: 0 } : { opacity: 0, y: 28, rotateX: 48 }}
-                  transition={{ delay: entryStarted ? 0.03 + index * 0.045 : 0, duration: reduced ? 0.16 : 0.5, ease: [0.16, 1, 0.3, 1] }}
+                  transition={{ delay: entryStarted ? 0.04 + index * 0.055 : 0, duration: reduced ? 0.18 : 0.54, ease: [0.16, 1, 0.3, 1] }}
                 >
                   {letter}
                 </motion.span>
@@ -62,20 +64,22 @@ export default function Hero() {
             </div>
           </motion.div>
 
-          <motion.div className="v8-hero-copy" style={{ opacity: copyOpacity, y: copyY }}>
-            <span className="v8-hero-kicker">SOFTWARE &amp; TECHNOLOGY STUDIO</span>
-            <h1 id="hero-title">Diseñamos y construimos <em>lo que necesita existir.</em></h1>
-            <p>Experiencias digitales, productos y sistemas para problemas que necesitan algo más que una plantilla.</p>
-            <div className="v8-hero-actions">
-              <a href="#trabajo" className="v8-primary" tabIndex={entryStarted ? 0 : -1}>Ver trabajo <IconBox>{icons.arrow}</IconBox></a>
-              <button type="button" className="v8-text-link" onClick={openContact} tabIndex={entryStarted ? 0 : -1}>Contar un problema ↗</button>
+          <motion.div className="hero-v4-content" style={{ opacity: copyOpacity, y: copyY, scale: copyScale }}>
+            <div className="hero-v4-copy">
+              <span className="hero-v4-kicker">01 / FROM IDEA TO SYSTEM</span>
+              <h1 id="hero-title">Lo complejo puede <em>sentirse simple.</em></h1>
+              <p>Diseño y desarrollo experiencias digitales, software y sistemas alrededor de problemas reales.</p>
+              <div className="hero-v4-actions">
+                <a href="#trabajo" className="hero-v4-primary" tabIndex={entryStarted ? 0 : -1}>Explorar el trabajo <IconBox>{icons.arrow}</IconBox></a>
+                <button type="button" className="hero-v4-text-link" onClick={openContact} tabIndex={entryStarted ? 0 : -1}>Contar un problema ↗</button>
+              </div>
             </div>
           </motion.div>
 
-          <div className="v8-hero-footer">
-            <span>FROM PROBLEM TO SYSTEM</span>
-            <span className="v8-hero-progress"><motion.i style={{ scaleX: lineProgress, transformOrigin: 'left' }} /></span>
-            <a href="#problema" aria-label="Explorar contenido">↓</a>
+          <div className="hero-v4-footer">
+            <span className="hero-v4-footer-label">SCROLL TO EXPLORE</span>
+            <span className="hero-v4-progress"><motion.i style={{ scaleX: lineProgress, transformOrigin: 'left' }} /></span>
+            <a href="#problema">↓</a>
           </div>
         </div>
       </div>
