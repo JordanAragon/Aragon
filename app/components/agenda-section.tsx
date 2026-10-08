@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -28,6 +29,7 @@ export default function AgendaSection() {
 
     window.addEventListener('aragon:project-selected', onProject);
     window.addEventListener('aragon:open-contact', onOpenContact);
+
     return () => {
       window.removeEventListener('aragon:project-selected', onProject);
       window.removeEventListener('aragon:open-contact', onOpenContact);
@@ -35,7 +37,7 @@ export default function AgendaSection() {
   }, []);
 
   const project = projects.find((item) => item.slug === selectedProject);
-  const emailSubject = project ? `Aragon / ${project.title}` : 'Aragon / Proyecto';
+  const emailSubject = project ? 'Aragon / ' + project.title : 'Aragon / Proyecto';
 
   const clearContext = () => {
     try {
@@ -51,29 +53,54 @@ export default function AgendaSection() {
       <div className="contact-scan" aria-hidden="true" />
       <div className="page-shell agenda-grid">
         <div className="agenda-intro">
-          <div className="contact-meta"><span>09 / CONTACT</span><span>ARAGON / 2026</span><span>CALI / COLOMBIA</span></div>
-          <span className="contact-kicker">YOU SAW THE PROBLEM. YOU SAW THE SYSTEM. NOW LET&apos;S TALK.</span>
+          <div className="contact-meta">
+            <span>09 / CONTACTO</span>
+            <span>ARAGON / 2026</span>
+            <span>CALI / COLOMBIA</span>
+          </div>
+
+          <span className="contact-kicker">
+            VISTE EL PROBLEMA. VISTE EL SISTEMA. AHORA HABLEMOS.
+          </span>
+
           <TextScrollTitle
             id="contact-title"
             segments={project
-              ? ['Hablemos de', { text: `${project.title}.`, className: 'title-muted' }]
+              ? ['Hablemos de', { text: project.title + '.', className: 'title-muted' }]
               : ['Hablemos de', { text: 'lo que sigue.', className: 'title-muted' }]}
           />
-          <p>{project ? `La conversación parte de ${project.title}, pero el objetivo es entender el problema detrás del concepto y decidir qué tendría sentido construir.` : 'Elige un horario y cuéntame qué necesitas construir. La primera conversación sirve para entender el problema, no para venderte una solución prefabricada.'}</p>
-          {project && <button type="button" className="context-reset" onClick={clearContext}>Quitar contexto {icons.plus}</button>}
+
+          <p>
+            {project
+              ? 'La conversación parte de ' + project.title + ', pero el objetivo es entender el problema detrás del concepto y decidir qué tendría sentido construir.'
+              : 'Elige un horario o escribe directamente. La primera conversación sirve para entender el problema, no para vender una solución prefabricada.'}
+          </p>
+
+          {project && (
+            <button type="button" className="context-reset" onClick={clearContext}>
+              Quitar contexto {icons.plus}
+            </button>
+          )}
 
           <div className="contact-actions-row">
             <button type="button" className="contact-form-trigger" onClick={() => setContactOpen(true)}>
               Prefiero escribir <IconBox>{icons.mail}</IconBox>
             </button>
-            <a href={`mailto:${site.contactEmail}?subject=${encodeURIComponent(emailSubject)}`} className="contact-email-link">Email directo ↗</a>
+            <a href={'mailto:' + site.contactEmail + '?subject=' + encodeURIComponent(emailSubject)} className="contact-email-link">
+              Email directo ↗
+            </a>
           </div>
-          <a href={`https://cal.com/${site.calLink}`} target="_blank" rel="noopener noreferrer" className="under-link">Abrir Cal.com en otra ventana {icons.arrow}</a>
+
+          <a href={'https://cal.com/' + site.calLink} target="_blank" rel="noopener noreferrer" className="under-link">
+            Abrir Cal.com en otra ventana {icons.arrow}
+          </a>
         </div>
+
         <div className="calendar-shell">
           <CalBooking />
         </div>
       </div>
+
       <ContactForm open={contactOpen} onClose={() => setContactOpen(false)} subject={emailSubject} />
     </section>
   );

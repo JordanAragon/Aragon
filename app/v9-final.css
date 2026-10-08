@@ -1,0 +1,51 @@
+
+/* V9 final layout corrections: evidence-first work order, safer form geometry and legacy overrides. */
+
+.v8-work-visual {
+  min-height: 0 !important;
+  padding: 0 !important;
+  overflow: visible !important;
+  display: block !important;
+  background: transparent !important;
+  align-items: initial !important;
+}
+
+.case-evidence-wrap {
+  margin-top: clamp(70px, 9vw, 120px);
+}
+
+@media (max-width: 780px) {
+  .v8-work-item {
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  .v8-work-index,
+  .v8-work-copy,
+  .v8-work-visual {
+    width: 100%;
+  }
+
+  .v8-work-index {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .v8-work-copy { order: 2; }
+  .v8-work-visual { order: 1; }
+  .v8-work-index { order: 0; }
+
+  .v8-work-visual .work-evidence {
+    min-height: 430px;
+  }
+
+  .case-evidence-wrap { margin-top: 62px; }
+}
+
+@media (max-width: 520px) {
+  .v8-work-visual .work-evidence {
+    min-height: 410px;
+  }
+}

@@ -1,6 +1,6 @@
+
 import TextScrollTitle from './skiper/text-scroll-title';
 import ContactTrigger from './contact-trigger';
-import { site } from '../data/site';
 
 const problems = [
   { id: '01', word: 'MARCA', title: 'No se entiende.', copy: 'Una buena idea pierde fuerza cuando nadie entiende qué hace, para quién es o por qué importa.' },
@@ -20,19 +20,34 @@ export function ProblemSection() {
     <section id="problema" className="problem section-shell" aria-labelledby="problem-title">
       <div className="page-shell">
         <div className="problem-intro">
-          <div><span className="section-number">02</span><span className="section-label">EL PROBLEMA</span></div>
+          <div>
+            <span className="section-number">02</span>
+            <span className="section-label">EL PROBLEMA</span>
+          </div>
           <p>Los problemas digitales rara vez empiezan en el código.</p>
         </div>
-        <div className="problem-marquee" aria-hidden="true"><span>¿QUÉ NO ESTÁ FUNCIONANDO?</span><span>¿QUÉ NO ESTÁ FUNCIONANDO?</span></div>
+
+        <div className="problem-marquee" aria-hidden="true">
+          <span>¿QUÉ NO ESTÁ FUNCIONANDO?</span>
+          <span>¿QUÉ NO ESTÁ FUNCIONANDO?</span>
+        </div>
+
         <div className="problem-statement">
-          <TextScrollTitle id="problem-title" segments={['Todo empieza con algo que', { text: 'no funciona como debería.', className: 'title-muted' }]} />
+          <TextScrollTitle
+            id="problem-title"
+            segments={['Todo empieza con algo que', { text: 'no funciona como debería.', className: 'title-muted' }]}
+          />
           <p>Una marca que no se entiende. Un proceso que se complica. Un producto que se queda a medias.</p>
         </div>
+
         <div className="problem-list">
           {problems.map((problem) => (
             <article key={problem.id} className="problem-item">
               <span>{problem.id}</span>
-              <div><small>{problem.word}</small><h3>{problem.title}</h3></div>
+              <div>
+                <small>{problem.word}</small>
+                <h3>{problem.title}</h3>
+              </div>
               <p>{problem.copy}</p>
             </article>
           ))}
@@ -47,10 +62,20 @@ export function MethodSection() {
     <section id="metodo" className="method section-shell" aria-labelledby="method-title">
       <div className="page-shell">
         <div className="v8-section-heading">
-          <div><span className="section-number">06</span><span className="section-label">PROCESS</span></div>
-          <TextScrollTitle id="method-title" segments={['Un proceso simple.', { text: 'Sin soluciones prefabricadas.', className: 'title-muted' }]} />
+          <div>
+            <span className="section-number">06</span>
+            <span className="section-label">PROCESO</span>
+          </div>
+          <TextScrollTitle
+            id="method-title"
+            segments={['Un proceso simple.', { text: 'Sin soluciones prefabricadas.', className: 'title-muted' }]}
+          />
         </div>
-        <div className="method-intro"><p>La creatividad no reemplaza el criterio. El código tampoco. El proceso sirve para decidir qué vale la pena construir y qué sobra.</p></div>
+
+        <div className="method-intro">
+          <p>La creatividad no reemplaza el criterio. El código tampoco. El proceso sirve para decidir qué vale la pena construir y qué sobra.</p>
+        </div>
+
         <div className="method-grid v8-method-grid">
           {steps.map(([id, title, copy], index) => (
             <div className="method-cell" key={id}>
@@ -73,26 +98,22 @@ export function Footer() {
         <div className="footer-main v8-footer-main">
           <div className="footer-closing">
             <span className="section-number">09 / CIERRE</span>
-            <h2>Let&apos;s build something <em>useful.</em></h2>
+            <h2>Construyamos algo <em>útil.</em></h2>
           </div>
           <div className="footer-side">
-            <span>ARAGON / SOFTWARE &amp; TECHNOLOGY STUDIO</span>
+            <span>ARAGON / SOFTWARE · TECHNOLOGY · DIGITAL</span>
             <ContactTrigger className="footer-contact-button">Contactar ↗</ContactTrigger>
           </div>
         </div>
 
         <div className="footer-links">
           <div className="footer-links-group">
-            {site.socialLinks.map((link) => (
-              <a key={link.label} href={link.href} target="_blank" rel="noopener noreferrer" aria-label={link.label}>
-                <span className="v8-footer-link-label">{link.label}</span><b>↗</b>
-              </a>
-            ))}
-            <a href={site.portfolioUrl} target="_blank" rel="noopener noreferrer" aria-label="Jordan, portfolio personal">
-              <span className="v8-footer-link-label">Jordan</span><b>↗</b>
-            </a>
+            <a href="https://github.com/JordanAragon" target="_blank" rel="noopener noreferrer">GitHub <b>↗</b></a>
+            <a href="https://www.linkedin.com/in/jordanaragon/" target="_blank" rel="noopener noreferrer">LinkedIn <b>↗</b></a>
+            <a href="https://instagram.com/jordan__aragon" target="_blank" rel="noopener noreferrer">Instagram <b>↗</b></a>
+            <a href="https://jordanaragon.vercel.app/" target="_blank" rel="noopener noreferrer">Jordan <b>↗</b></a>
           </div>
-          <a href="#inicio" className="footer-top">Back to top ↑</a>
+          <a href="#inicio" className="footer-top">Volver arriba ↑</a>
         </div>
 
         <div className="footer-bottom">
