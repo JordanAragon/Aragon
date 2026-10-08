@@ -26,4 +26,4 @@ export const siteUrl = process.env.NEXT_PUBLIC_SITE_URL
   ? process.env.NEXT_PUBLIC_SITE_URL.replace(/\/$/, '')
   : site.fallbackUrl;
 
-export const siteLastModified = '2026-09-21';
+export const siteLastModified = '2026-10-07';
