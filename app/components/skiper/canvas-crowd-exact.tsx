@@ -170,10 +170,11 @@ export default function CanvasCrowdExact({
       if (!available.length) return;
       const peep = available.splice(randomIndex(available), 1)[0];
       const values = resetPeep(peep);
-      peep.walk = reduced ? null : createWalk(peep, values);
+      const walk = reduced ? null : createWalk(peep, values);
+      peep.walk = walk;
       crowd.push(peep);
       crowd.sort((a, b) => a.anchorY - b.anchorY);
-      if (!active && !reduced) peep.walk.pause();
+      if (!active && walk) walk.pause();
     };
 
     const initCrowd = () => {
