@@ -15,26 +15,26 @@ export default function Image() {
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
-          padding: '56px',
-          background: '#f4f4f0',
-          color: '#080809',
-          fontFamily: 'Arial',
-          border: '18px solid #080809',
+          padding: '58px',
+          background: '#f3f0e8',
+          color: '#0b0b0a',
+          fontFamily: 'Georgia',
+          border: '16px solid #0b0b0a',
         }}
       >
-        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 18, letterSpacing: 4, fontWeight: 800 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 18, letterSpacing: 3, fontWeight: 700, fontFamily: 'Arial' }}>
           <span>ARAGON / SOFTWARE &amp; TECHNOLOGY STUDIO</span>
           <span>2026 / 001</span>
         </div>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-          <div style={{ fontSize: 112, lineHeight: 0.82, fontWeight: 900, letterSpacing: -8 }}>ARAGON</div>
-          <div style={{ fontSize: 34, lineHeight: 1.05, color: '#6d6d73', fontWeight: 700 }}>
-            Software · Digital · Technology
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 13 }}>
+          <div style={{ fontSize: 116, lineHeight: 0.78, fontWeight: 800, letterSpacing: -8 }}>ARAGON</div>
+          <div style={{ fontSize: 31, lineHeight: 1.1, color: '#6c6860', fontWeight: 700, fontFamily: 'Arial' }}>
+            Diseño · Software · Sistemas
           </div>
         </div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', fontSize: 18, color: '#6d6d73', fontWeight: 700 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', fontSize: 17, color: '#6c6860', fontWeight: 700, fontFamily: 'Arial' }}>
           <span>{site.location.toUpperCase()}</span>
-          <span>IDEA → PROBLEM → SYSTEM</span>
+          <span>PROBLEM → SYSTEM → WORK</span>
         </div>
       </div>
     ),
