@@ -27,25 +27,20 @@ export default function TextScrollTitle({ as = 'h2', id, className, segments }: 
     const context = gsap.context(() => {
       gsap.fromTo(
         words,
-        {
-          opacity: 0.2,
-          y: 24,
-          rotateX: 16,
-          filter: 'blur(6px)',
-        },
+        { opacity: 0.18, y: 20, rotateX: 12, filter: 'blur(4px)' },
         {
           opacity: 1,
           y: 0,
           rotateX: 0,
           filter: 'blur(0px)',
-          duration: 0.7,
+          duration: 0.65,
           ease: 'power3.out',
-          stagger: 0.035,
+          stagger: 0.028,
           scrollTrigger: {
             trigger: title,
-            start: 'top 88%',
-            end: 'top 42%',
-            scrub: 0.8,
+            start: 'top 90%',
+            end: 'top 56%',
+            scrub: 0.7,
           },
         },
       );
@@ -55,18 +50,17 @@ export default function TextScrollTitle({ as = 'h2', id, className, segments }: 
   }, []);
 
   return (
-    <Tag ref={titleRef} id={id} className={`text-scroll-title ${className ?? ''}`.trim()}>
+    <Tag ref={titleRef} id={id} className={['text-scroll-title', className].filter(Boolean).join(' ')}>
       {segments.flatMap((segment, segmentIndex) => {
         const text = typeof segment === 'string' ? segment : segment.text;
         const toneClass = typeof segment === 'string' ? '' : segment.className ?? '';
         return text.trim().split(/\s+/).map((word, wordIndex) => (
           <span
-            key={`${segmentIndex}-${wordIndex}-${word}`}
+            key={segmentIndex + '-' + wordIndex + '-' + word}
             data-scroll-title-word="true"
-            className={`text-scroll-title-word ${toneClass}`.trim()}
+            className={['text-scroll-title-word', toneClass].filter(Boolean).join(' ')}
           >
-            {word}
-            {' '}
+            {word}{' '}
           </span>
         ));
       })}
