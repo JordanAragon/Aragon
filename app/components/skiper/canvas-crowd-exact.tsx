@@ -48,6 +48,7 @@ export default function CanvasCrowdExact({
 
     const img = document.createElement('img');
     img.decoding = 'async';
+    img.setAttribute('aria-hidden', 'true');
 
     const stage = { width: 0, height: 0, dpr: 1 };
     const allPeeps: Peep[] = [];
@@ -92,22 +93,7 @@ export default function CanvasCrowdExact({
       return peep;
     };
 
-    const pauseCrowd = () => {
-      crowd.forEach((peep) => peep.walk?.pause());
-    };
-
-    const resumeCrowd = () => {
-      crowd.forEach((peep) => peep.walk?.resume());
-    };
-
-    const render = () => {
-      context.setTransform(stage.dpr, 0, 0, stage.dpr, 0, 0);
-      context.clearRect(0, 0, stage.width, stage.height);
-      crowd.forEach((peep) => peep.render(context));
-    };
-
     const stopTicker = () => {
-      pauseCrowd();
       if (!active) return;
       active = false;
       gsap.ticker.remove(render);
@@ -116,7 +102,6 @@ export default function CanvasCrowdExact({
     const startTicker = () => {
       if (!initialized || reduced || active) return;
       if (!document.hidden && canvas.dataset.visible === 'true') {
-        resumeCrowd();
         active = true;
         gsap.ticker.add(render);
       }
@@ -161,7 +146,7 @@ export default function CanvasCrowdExact({
     const removePeep = (peep: Peep) => {
       const index = crowd.indexOf(peep);
       if (index >= 0) crowd.splice(index, 1);
-      peep.walk?.kill();
+      if (peep.walk) peep.walk.kill();
       peep.walk = null;
       if (!available.includes(peep)) available.push(peep);
     };
@@ -170,15 +155,12 @@ export default function CanvasCrowdExact({
       if (!available.length) return;
       const peep = available.splice(randomIndex(available), 1)[0];
       const values = resetPeep(peep);
-      const walk = reduced ? null : createWalk(peep, values);
-      peep.walk = walk;
+      peep.walk = reduced ? null : createWalk(peep, values);
       crowd.push(peep);
       crowd.sort((a, b) => a.anchorY - b.anchorY);
-      if (!active && walk) walk.pause();
     };
 
     const initCrowd = () => {
-      stopTicker();
       available.length = 0;
       crowd.forEach((peep) => peep.walk?.kill());
       crowd.length = 0;
@@ -198,16 +180,11 @@ export default function CanvasCrowdExact({
         crowd.forEach((peep) => {
           peep.scaleX = Math.random() > .5 ? 1 : -1;
           peep.x = randomRange(0, Math.max(0, stage.width - peep.width));
-          peep.y = randomRange(
-            Math.max(0, stage.height - peep.height - 180),
-            Math.max(0, stage.height - peep.height + 20),
-          );
+          peep.y = randomRange(Math.max(0, stage.height - peep.height - 180), Math.max(0, stage.height - peep.height + 20));
           peep.anchorY = peep.y;
         });
         crowd.sort((a, b) => a.anchorY - b.anchorY);
         render();
-      } else {
-        startTicker();
       }
     };
 
@@ -218,7 +195,6 @@ export default function CanvasCrowdExact({
 
       const pixelWidth = Math.round(stage.width * stage.dpr);
       const pixelHeight = Math.round(stage.height * stage.dpr);
-
       if (canvas.width !== pixelWidth || canvas.height !== pixelHeight) {
         canvas.width = pixelWidth;
         canvas.height = pixelHeight;
@@ -226,6 +202,12 @@ export default function CanvasCrowdExact({
 
       if (initialized) initCrowd();
       if (reduced) render();
+    };
+
+    const render = () => {
+      context.setTransform(stage.dpr, 0, 0, stage.dpr, 0, 0);
+      context.clearRect(0, 0, stage.width, stage.height);
+      crowd.forEach((peep) => peep.render(context));
     };
 
     const init = () => {
@@ -245,12 +227,16 @@ export default function CanvasCrowdExact({
 
       initialized = true;
       resize();
+      startTicker();
     };
 
     const setViewportState = (visible: boolean) => {
       canvas.dataset.visible = String(visible);
-      if (visible) startTicker();
-      else stopTicker();
+      if (visible) {
+        startTicker();
+      } else {
+        stopTicker();
+      }
     };
 
     const onVisibility = () => {
@@ -260,6 +246,7 @@ export default function CanvasCrowdExact({
 
     const onMotionPreference = (event: MediaQueryListEvent) => {
       reduced = event.matches;
+      stopTicker();
       initCrowd();
       if (!reduced) startTicker();
     };

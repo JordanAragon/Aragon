@@ -1,6 +1,13 @@
 
 /* V9 final layout corrections: evidence-first work order, safer form geometry and legacy overrides. */
 
+.v8-build,
+.v8-work,
+.v8-about,
+.v8-lab {
+  padding-block: 0 !important;
+}
+
 .v8-work-visual {
   min-height: 0 !important;
   padding: 0 !important;
@@ -8,6 +15,19 @@
   display: block !important;
   background: transparent !important;
   align-items: initial !important;
+}
+
+.evidence-topology {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 34px;
+}
+
+.evidence-topology + .evidence-flow {
+  margin-top: 26px;
 }
 
 .case-evidence-wrap {
@@ -42,6 +62,10 @@
   }
 
   .case-evidence-wrap { margin-top: 62px; }
+
+  .evidence-topology {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 520px) {
