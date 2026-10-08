@@ -1,4 +1,6 @@
 
+'use client';
+
 import { motion, useScroll, useSpring } from 'motion/react';
 import Link from 'next/link';
 import { useRef } from 'react';
