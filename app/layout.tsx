@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
-import './premium.css';
 import { site, siteUrl } from './data/site';
 
 export const metadata: Metadata = {
@@ -44,8 +43,16 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  themeColor: '#f4f4f0',
+  themeColor: '#f3f0e8',
   colorScheme: 'light',
+};
+
+const founder = {
+  '@type': 'Person',
+  name: site.person,
+  jobTitle: 'Founder · Software Developer · Builder',
+  url: site.portfolioUrl,
+  sameAs: [site.portfolioUrl, ...site.socialLinks.map((link) => link.href)],
 };
 
 const structuredData = [
@@ -55,13 +62,7 @@ const structuredData = [
     name: site.name,
     url: siteUrl,
     description: site.description,
-    founder: {
-      '@type': 'Person',
-      name: site.person,
-      jobTitle: 'Founder · Software Developer · Builder',
-      url: site.portfolioUrl,
-      sameAs: [site.portfolioUrl, ...site.socialLinks.map((link) => link.href)],
-    },
+    founder,
   },
   {
     '@context': 'https://schema.org',
@@ -78,7 +79,11 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html lang="es">
       <body>
         {children}
-        <script id="aragon-structured-data" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+        <script
+          id="aragon-structured-data"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        />
       </body>
     </html>
   );
