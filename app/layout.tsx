@@ -11,6 +11,7 @@ import SiteHeader from './components/chrome/site-header';
 import SiteFooter from './components/chrome/site-footer';
 import CommandPalette from './components/chrome/command-palette';
 import Interactions from './components/chrome/interactions';
+import Preloader from './components/chrome/preloader';
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -66,6 +67,14 @@ export const viewport: Viewport = {
   colorScheme: 'dark',
 };
 
+/*
+  Enciende la precarga antes del primer cuadro (app/components/chrome/preloader.tsx):
+  solo en «/», sin ancla y sin movimiento reducido. Marca también que hay JS, para
+  que los revelados al hacer scroll no escondan nada a quien no lo tiene. Si el JS
+  no toma la capa en 8 s, la capa se retira sola: la página nunca queda tapada.
+*/
+const bootScript = `(function(){try{var r=document.documentElement;r.classList.add('js');var l=window.location;if(l.pathname!=='/'||l.hash)return;if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;r.classList.add('is-preloading');if('scrollRestoration' in history)history.scrollRestoration='manual';window.scrollTo(0,0);setTimeout(function(){if(!r.hasAttribute('data-preload-taken')){r.classList.remove('is-preloading');if('scrollRestoration' in history)history.scrollRestoration='auto';}},8000);}catch(e){}})();`;
+
 const structuredData = {
   '@context': 'https://schema.org',
   '@type': 'ProfessionalService',
@@ -88,8 +97,10 @@ const structuredData = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="es-CO" className={`${display.variable} ${sans.variable} ${mono.variable}`}>
+    <html lang="es-CO" className={`${display.variable} ${sans.variable} ${mono.variable}`} suppressHydrationWarning>
       <body>
+        <script dangerouslySetInnerHTML={{ __html: bootScript }} />
+        <Preloader />
         <a className="skip-link" href="#contenido">
           Saltar al contenido
         </a>

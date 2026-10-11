@@ -4,6 +4,7 @@ import { useEffect, useLayoutEffect, useRef } from 'react';
 import type { CSSProperties } from 'react';
 import { ParticleSim } from './sim';
 import { createCanvasRenderer, type FieldRenderer } from './render-canvas';
+import { PRELOAD_CLASS, fieldCount, isPreloading, offerField } from './relay';
 
 export type FieldController = {
   sim: ParticleSim;
@@ -22,6 +23,8 @@ type Props = {
   setup: (sim: ParticleSim) => (width: number, height: number) => void;
   /** Elemento que escucha el cursor (por defecto, el propio lienzo). */
   pointerTarget?: React.RefObject<HTMLElement | null>;
+  /** El campo del hero: si hay precarga, espera a recibir sus piezas antes de arrancar. */
+  relay?: boolean;
   onReady?: (controller: FieldController & { renderer: FieldRenderer['kind'] }) => void;
 };
 
@@ -33,7 +36,7 @@ function supportsGpu() {
   return true;
 }
 
-export default function ParticleCanvas({ className, style, count, seed = 1, color = [1, 1, 1], setup, pointerTarget, onReady }: Props) {
+export default function ParticleCanvas({ className, style, count, seed = 1, color = [1, 1, 1], setup, pointerTarget, relay = false, onReady }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const setupRef = useRef(setup);
   const readyRef = useRef(onReady);
@@ -46,8 +49,7 @@ export default function ParticleCanvas({ className, style, count, seed = 1, colo
     const canvas = canvasRef.current;
     if (!canvas) return undefined;
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const small = window.matchMedia('(max-width: 760px)').matches;
-    const n = Math.round(small ? count * 0.42 : count);
+    const n = fieldCount(count);
     const sim = new ParticleSim(n, seed);
     const layout = setupRef.current(sim);
     let renderer: FieldRenderer = createCanvasRenderer(canvas, color);
@@ -55,6 +57,8 @@ export default function ParticleCanvas({ className, style, count, seed = 1, colo
     let raf = 0;
     let disposed = false;
     let last = performance.now();
+    // Con precarga, el campo queda quieto hasta el relevo (su entrada empieza cuando se ve).
+    let held = relay && !reduced && isPreloading();
 
     const measure = () => {
       const rect = canvas.getBoundingClientRect();
@@ -93,7 +97,7 @@ export default function ParticleCanvas({ className, style, count, seed = 1, colo
     };
 
     const start = () => {
-      if (reduced || disposed || raf) return;
+      if (reduced || disposed || raf || held) return;
       last = performance.now();
       raf = requestAnimationFrame(tick);
     };
@@ -134,6 +138,43 @@ export default function ParticleCanvas({ className, style, count, seed = 1, colo
 
     if (reduced) settle();
     else start();
+
+    let stopOffer = () => {};
+    let classWatch: MutationObserver | null = null;
+    const release = () => {
+      if (!held) return;
+      held = false;
+      stopOffer();
+      classWatch?.disconnect();
+      start();
+    };
+    if (held) {
+      stopOffer = offerField({
+        n,
+        canvas,
+        receive(points, alpha) {
+          if (points) {
+            // Las piezas llegan en coordenadas de la ventana: se pasan a las del lienzo.
+            const rect = canvas.getBoundingClientRect();
+            for (let i = 0; i < n; i++) {
+              sim.x[i] = points[i * 2] - rect.left;
+              sim.y[i] = points[i * 2 + 1] - rect.top;
+            }
+            sim.vx.fill(0);
+            sim.vy.fill(0);
+            sim.alpha.fill(alpha);
+            // Se dibuja ya, en el mismo cuadro en que se retira la precarga.
+            render();
+          }
+          release();
+        },
+      });
+      // Si la precarga se retira sin entregar nada (tardó o falló), el campo arranca igual.
+      classWatch = new MutationObserver(() => {
+        if (!document.documentElement.classList.contains(PRELOAD_CLASS)) release();
+      });
+      classWatch.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+    }
 
     // WebGPU se intenta después del primer cuadro, sin bloquear la página.
     if (!reduced && supportsGpu()) {
@@ -178,6 +219,8 @@ export default function ParticleCanvas({ className, style, count, seed = 1, colo
 
     return () => {
       disposed = true;
+      stopOffer();
+      classWatch?.disconnect();
       if (raf) cancelAnimationFrame(raf);
       resizeObserver.disconnect();
       visibility.disconnect();
@@ -188,7 +231,7 @@ export default function ParticleCanvas({ className, style, count, seed = 1, colo
     };
     // El campo se monta una vez; `setup` se lee por referencia.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [count, seed]);
+  }, [count, seed, relay]);
 
   return <canvas ref={canvasRef} className={className} style={style} aria-hidden="true" data-renderer="canvas" />;
 }

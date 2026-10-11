@@ -265,3 +265,43 @@ select {
     scroll-behavior: auto !important;
   }
 }
+
+/* Revelados al hacer scroll (interactions.tsx). Solo con JS y movimiento: lo demás se ve siempre. */
+@media (prefers-reduced-motion: no-preference) {
+  [data-rv] {
+    transition:
+      opacity 0.9s var(--ease-out) var(--reveal-delay, 0ms),
+      transform 0.9s var(--ease-out) var(--reveal-delay, 0ms),
+      filter 0.9s var(--ease-out) var(--reveal-delay, 0ms);
+  }
+
+  [data-rv='wait'] {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+
+  /* Los titulares suben y se enfocan al llegar (sin recortarlos: el observador necesita verlos). */
+  h2[data-rv='wait'] {
+    transform: translateY(0.4em);
+    filter: blur(6px);
+  }
+
+  /* La regla de la etiqueta de sección se traza al llegar: es la línea desde la que se mide. */
+  .section-label[data-rv]::after {
+    transform-origin: left;
+    transition: transform 1.2s var(--ease-out) calc(var(--reveal-delay, 0ms) + 120ms);
+  }
+
+  .section-label[data-rv='wait'] {
+    transform: none;
+  }
+
+  .section-label[data-rv='wait']::after {
+    transform: scaleX(0);
+  }
+}
+
+/* Barra de desplazamiento discreta, del color de la noche. */
+html {
+  scrollbar-color: var(--night-line-2) var(--night);
+}

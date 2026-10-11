@@ -70,13 +70,18 @@ Aragon es una agencia de software a la medida (apps web, automatización, agente
 
 Regla: **nada se mueve por adorno.** Cada movimiento responde a una de estas preguntas: qué problema hay, qué hace el servicio o qué cambió tras una acción.
 
-- **Hero:** el campo de partículas barre de derecha a izquierda; a la derecha las piezas ya forman una interfaz (barra lateral, cabecera, tarjetas, filas). El cursor ordena lo que toca.
+- **Precarga «poner en orden»** (solo al abrir `/`, sin ancla y sin movimiento reducido; `app/components/chrome/preloader.tsx`): antes del JS la capa ya pinta la noche y un cuadrado que parpadea (el script en línea de `layout.tsx` la enciende). El cuadrado revienta en las mismas piezas del hero, que quedan sueltas; luego aterrizan de izquierda a derecha en la retícula de la palabra `aragon■`. El avance es real: el frente nunca pasa de lo que ya cargó (tipografías, campo del hero y página, cada paso con su tiempo medido) y la cuenta dice cuántas piezas están en orden. Al completarse, las piezas pasan al campo del hero **en el mismo cuadro** (`field/relay.ts`) y desde ahí se reparten: son las mismas piezas. Un clic o una tecla la apuran; mientras dura, la página no se desplaza; si el JS no la toma en 8 s o el relevo no llega en 9 s, se retira sola. Excepción acotada a las duraciones: una vez por carga de `/`.
+- **Hero:** el titular sube palabra por palabra al relevo (líneas fijas, así la palabra que rota no mueve el resto). El campo barre de derecha a izquierda; a la derecha las piezas ya forman una interfaz (barra lateral, cabecera, tarjetas, filas). Lo que el cursor toca **queda** en orden (destella al encajar) y la cuenta «piezas en orden» lo dice; al bajar, el frente termina de ordenar todo antes del problema y el texto sube un poco antes que el campo.
 - **«Del desorden al sistema»** (sticky, 5 paradas): las mismas piezas pasan por *hoy* (sueltas), *ordenar* (tabla, apps web), *conectar* (flujo, automatización), *responder* (conversación, agentes) y *vigilar* (latidos, infraestructura). Cada figura explica un servicio.
 - **Demos vivas:** pedidos que avanzan de estado, un flujo que se ejecuta con su registro, un agente que responde con traza medida de verdad (`performance.now()`), servidores con latido.
 - **Texto que se enciende con la lectura** (el problema) y **línea del proceso** que se llena con el scroll.
-- Cinta de herramientas inclinada cuya velocidad sigue al scroll; vista del proyecto que sigue al cursor en Trabajo.
+- Cinta de herramientas inclinada cuya velocidad sigue al scroll.
+- **Trabajo:** una ventana (barra con puntos, título y `01/03`) sigue al cursor, se inclina con la velocidad y se voltea cerca del borde; al pasar de una fila a otra, las vistas corren como un carrete. Las demás filas bajan la voz, el título rueda y una regla se traza bajo la fila activa. Cada ilustración se mueve solo mientras se ve y su movimiento explica el proyecto: el vivero brota y una barra sigue un lote (AiDEN), cada servicio late con su ritmo (Aragon-Server), la página se recorre (portafolio). En táctil, la ilustración va dentro de la fila.
+- **Pie:** la palabra `aragon■` hecha de piezas se arma al aparecer (la misma retícula de la precarga); el cursor las aparta y vuelven a su lugar.
+- **Revelados** (`interactions.tsx`): titulares que suben y se enfocan, reglas de sección que se trazan y listas que entran escalonadas. Solo se esconde lo que está debajo de la pantalla al cargar; nada sin JS ni con movimiento reducido.
+- **Indicadores que viajan:** la pastilla de la navegación y la de las pestañas de las demos se deslizan a su destino. La cabecera se aparta al bajar leyendo y vuelve al subir.
 - Duraciones: `--dur-fast` 140 ms, `--dur` 240 ms, `--dur-slow` 520 ms. Curvas `--ease-out` y `--ease-in-out`.
-- Con `prefers-reduced-motion`: sin bucles, las figuras quedan quietas en su lugar y el recorrido sticky se vuelve una lista.
+- Con `prefers-reduced-motion`: sin precarga ni bucles, las figuras quedan quietas en su lugar (la marca del pie, ya armada) y el recorrido sticky se vuelve una lista.
 
 ## El motor de partículas
 
@@ -85,6 +90,7 @@ Regla: **nada se mueve por adorno.** Cada movimiento responde a una de estas pre
 - `sim.ts`: simulación en CPU (resortes hacia destinos, retícula bajo el cursor, «updaters» para figuras que se mueven).
 - `shapes.ts`: figuras y medidas compartidas con las etiquetas HTML.
 - `render-gpu.ts`: **vgpu** (Vercel Labs, MIT) sobre WebGPU, una llamada instanciada leyendo un buffer de almacenamiento. Se carga en diferido y solo con WebGPU (ni con ahorro de datos ni en 2G/3G).
+- `wordmark.ts`: la palabra de marca medida sobre una retícula (precarga y pie). `relay.ts`: el relevo de la precarga al hero.
 - `render-canvas.ts`: respaldo en Canvas 2D. Se usa desde el primer cuadro y cuando WebGPU falla en cualquier momento.
 - Los lienzos se pausan fuera de pantalla (IntersectionObserver) y usan menos de la mitad de las piezas en teléfonos.
 

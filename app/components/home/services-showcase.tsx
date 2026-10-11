@@ -15,6 +15,23 @@ export default function ServicesShowcase() {
   const [active, setActive] = useState(0);
   const [narrow, setNarrow] = useState(false);
   const itemsRef = useRef<(HTMLElement | null)[]>([]);
+  const tabsRef = useRef<HTMLDivElement>(null);
+
+  // La pastilla de la pestaña activa viaja a la nueva en vez de saltar.
+  useEffect(() => {
+    const tabs = tabsRef.current;
+    const place = () => {
+      const button = tabs?.querySelectorAll<HTMLButtonElement>('button')[active];
+      if (!tabs || !button) return;
+      tabs.style.setProperty('--tab-x', `${button.offsetLeft}px`);
+      tabs.style.setProperty('--tab-w', `${button.offsetWidth}px`);
+      tabs.dataset.ready = 'true';
+    };
+    place();
+    document.fonts?.ready.then(place).catch(() => undefined);
+    window.addEventListener('resize', place);
+    return () => window.removeEventListener('resize', place);
+  }, [active, narrow]);
 
   useEffect(() => {
     const query = window.matchMedia('(max-width: 980px)');
@@ -80,7 +97,7 @@ export default function ServicesShowcase() {
           </ol>
           <div className="showcase-stage" aria-label="Demo del servicio activo">
             <div className="showcase-sticky">
-              <div className="showcase-tabs" role="tablist" aria-label="Servicio">
+              <div ref={tabsRef} className="showcase-tabs" role="tablist" aria-label="Servicio">
                 {services.map((s, i) => (
                   <button
                     key={s.slug}

@@ -17,7 +17,9 @@ export type WorkItem = {
   stack: string[];
   href?: string;
   hrefLabel?: string;
-  visual: 'vivero' | 'servidor' | 'portafolio' | 'finanzas' | 'calendario';
+  /** Título de la barra de la ventana en la vista previa. */
+  bar: string;
+  visual: 'vivero' | 'servidor' | 'portafolio';
 };
 
 export const work: WorkItem[] = [
@@ -44,6 +46,7 @@ export const work: WorkItem[] = [
     stack: ['React', 'Vite', 'WebGPU (vgpu)', 'PWA'],
     href: 'https://aidencol.vercel.app/',
     hrefLabel: 'Abrir AiDEN',
+    bar: 'aidencol.vercel.app',
     visual: 'vivero',
   },
   {
@@ -67,6 +70,7 @@ export const work: WorkItem[] = [
       { title: 'Secretos fuera del código', body: 'Las credenciales viven en un archivo de entorno fuera del repositorio de configuración.' },
     ],
     stack: ['Ubuntu Server', 'Docker', 'Caddy', 'Tailscale', 'PostgreSQL', 'Uptime Kuma'],
+    bar: 'aragon-server — monitoreo',
     visual: 'servidor',
   },
   {
@@ -85,43 +89,8 @@ export const work: WorkItem[] = [
     ],
     decisions: [{ title: 'Velocidad primero', body: 'Imágenes optimizadas y nada de librerías que no aporten a la lectura.' }],
     stack: ['React', 'Vercel', 'SEO local'],
+    bar: 'portafolio — publicado',
     visual: 'portafolio',
-  },
-  {
-    slug: 'aragon-finance',
-    title: 'Aragon-Finance',
-    kind: 'Producto propio',
-    status: 'En desarrollo',
-    year: '2026',
-    service: 'Agentes de IA',
-    summary: 'Finanzas personales con patrimonio, flujo mensual y presupuestos, con un asistente por WhatsApp en camino.',
-    problem: 'Entender a dónde se va el dinero cada mes sin pelear con hojas de cálculo.',
-    built: [
-      { title: 'Patrimonio y flujo', body: 'Cuentas, movimientos y presupuestos en una lectura clara del mes.' },
-      { title: 'Asistente por WhatsApp', body: 'En desarrollo: registrar gastos y consultar el mes desde un chat, con un flujo de n8n.' },
-    ],
-    decisions: [{ title: 'El chat como entrada', body: 'Registrar un gasto debe costar lo mismo que mandar un mensaje.' }],
-    stack: ['Next.js', 'Supabase', 'n8n', 'WhatsApp'],
-    visual: 'finanzas',
-  },
-  {
-    slug: 'calendar',
-    title: 'Calendar',
-    kind: 'App con IA',
-    status: 'Prototipo funcional',
-    year: '2026',
-    service: 'Agentes de IA',
-    summary: 'App de calendario con IA conectada a Google Calendar.',
-    problem: 'Organizar la agenda conversando, en lugar de llenar formularios de eventos.',
-    built: [
-      { title: 'Conexión con Google Calendar', body: 'Lee y crea eventos en el calendario de la persona, con su autorización.' },
-      { title: 'Asistente', body: 'Interpreta lo que la persona escribe y lo convierte en eventos.' },
-    ],
-    decisions: [{ title: 'Permisos mínimos', body: 'Solo se piden los permisos de calendario necesarios.' }],
-    stack: ['React', 'Google Calendar API', 'IA'],
-    href: 'https://github.com/JordanAragon/Calendar_App',
-    hrefLabel: 'Ver el repositorio',
-    visual: 'calendario',
   },
 ];
 

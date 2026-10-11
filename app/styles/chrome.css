@@ -184,7 +184,21 @@
   padding: 8px 8px 8px 22px;
   border-radius: 999px;
   border: 1px solid transparent;
-  transition: background-color var(--dur), border-color var(--dur), box-shadow var(--dur), color var(--dur);
+  translate: 0 0;
+}
+
+/* Al bajar leyendo, la cabecera se aparta; al subir, vuelve. */
+.site-header[data-hidden='true'] {
+  translate: 0 calc(-100% - 24px);
+}
+
+.site-header {
+  transition:
+    background-color var(--dur),
+    border-color var(--dur),
+    box-shadow var(--dur),
+    color var(--dur),
+    translate 0.6s var(--ease-out);
 }
 
 .site-header[data-solid='true'] {
@@ -220,8 +234,36 @@
 }
 
 .header-nav {
+  position: relative;
   display: flex;
   gap: 4px;
+}
+
+/* Un indicador que viaja al enlace bajo el cursor en vez de aparecer en cada uno. */
+.nav-pill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 40px;
+  width: var(--pill-w, 0px);
+  border-radius: 999px;
+  background: currentColor;
+  opacity: 0;
+  translate: var(--pill-x, 0px) 0;
+  pointer-events: none;
+  transition:
+    translate 0.45s var(--ease-out),
+    width 0.45s var(--ease-out),
+    opacity var(--dur);
+}
+
+.header-nav[data-pill='true'] .nav-pill {
+  opacity: 0.08;
+}
+
+.header-nav[data-pill='fresh'] .nav-pill {
+  opacity: 0.08;
+  transition: opacity var(--dur);
 }
 
 .header-nav a {
@@ -459,23 +501,41 @@
   color: var(--on-night);
 }
 
+/* La marca del pie, hecha de piezas (footer-word.tsx); el texto queda debajo como respaldo. */
 .footer-word {
+  position: relative;
   margin-top: clamp(64px, 9vw, 120px);
   font-family: var(--font-display-stack);
   font-weight: 650;
-  font-size: clamp(5rem, 24vw, 22rem);
-  line-height: 0.78;
-  letter-spacing: -0.075em;
+  font-size: min(calc((100vw - 2 * var(--gutter)) * 0.3), 396px);
+  line-height: 1.08;
+  letter-spacing: -0.045em;
   white-space: nowrap;
   user-select: none;
+}
+
+.footer-word-text {
   display: flex;
   align-items: baseline;
 }
 
 .footer-word .brand-mark {
-  width: 0.18em;
-  height: 0.18em;
+  width: 0.3em;
+  height: 0.3em;
   margin-left: 0.04em;
+}
+
+/* Con JS, las piezas dibujan la palabra; el texto solo guarda el lugar. */
+.js .footer-word-text {
+  visibility: hidden;
+}
+
+.footer-word-field,
+.footer-word > canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
 }
 
 .footer-base {
@@ -803,5 +863,167 @@
   }
   100% {
     box-shadow: 0 0 0 10px rgb(255 255 255 / 0);
+  }
+}
+
+/* ---------- Precarga «poner en orden» ---------- */
+/*
+  La capa se ve solo con `html.is-preloading` (la pone el script en línea de
+  layout.tsx antes del primer cuadro). Antes del JS ya pinta la noche y la pieza
+  que parpadea; el JS (preloader.tsx) la toma y la lleva hasta el relevo.
+*/
+.preloader {
+  display: none;
+}
+
+.is-preloading .preloader {
+  display: block;
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  background: var(--night);
+  color: var(--on-night);
+  cursor: progress;
+  user-select: none;
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.preloader[data-leaving='true'] {
+  opacity: 0;
+  transition: opacity 0.5s cubic-bezier(0.4, 0, 1, 1);
+}
+
+.preloader-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* La pieza antes del JS: un cuadrado que parpadea donde nacerá la marca. */
+.preloader-seed {
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  width: 10px;
+  height: 10px;
+  margin: -5px 0 0 -5px;
+  background: var(--on-night);
+  animation: preloader-seed 1.05s steps(1) infinite;
+}
+
+html[data-preload-taken] .preloader-seed {
+  display: none;
+}
+
+@keyframes preloader-seed {
+  50% {
+    opacity: 0;
+  }
+}
+
+.preloader-hud {
+  position: absolute;
+  left: var(--gutter);
+  right: var(--gutter);
+  bottom: calc(28px + env(safe-area-inset-bottom, 0px));
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 24px;
+  opacity: 0;
+  animation: preloader-hud var(--dur-slow) var(--ease-out) 0.25s forwards;
+}
+
+@keyframes preloader-hud {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.preloader-count {
+  display: grid;
+  gap: 6px;
+}
+
+.preloader-count strong {
+  font-family: var(--font-display-stack);
+  font-size: clamp(2.5rem, 1.6rem + 3vw, 4.5rem);
+  font-weight: 600;
+  line-height: 0.9;
+  letter-spacing: -0.05em;
+}
+
+.preloader-count span {
+  font-size: var(--t-xs);
+  color: var(--on-night-3);
+}
+
+.preloader-log {
+  list-style: none;
+  display: grid;
+  gap: 4px;
+  min-width: 230px;
+  font-size: var(--t-xs);
+  color: var(--on-night-3);
+}
+
+.preloader-log li {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+/* Puntos guía entre el paso y su tiempo, como en una cuenta. */
+.preloader-log li::after {
+  content: '';
+  order: 1;
+  flex: 1;
+  border-bottom: 1px dotted var(--night-line-2);
+  transform: translateY(-3px);
+}
+
+.preloader-log em {
+  order: 2;
+  font-style: normal;
+  font-variant-numeric: tabular-nums;
+}
+
+.preloader-log li[data-done='true'] {
+  color: var(--on-night-2);
+}
+
+.preloader-log li[data-done='true'] em {
+  color: var(--on-night);
+}
+
+@media (max-width: 560px) {
+  .preloader-log {
+    min-width: 0;
+    width: 52%;
+  }
+}
+
+/* La cabecera baja al llegar la página (con precarga, al relevo). */
+@media (prefers-reduced-motion: no-preference) {
+  .site-header {
+    animation: header-in 0.9s var(--ease-out) 0.35s backwards;
+  }
+
+  .is-preloading .site-header {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes header-in {
+  from {
+    opacity: 0;
+    translate: 0 -18px;
   }
 }

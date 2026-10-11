@@ -9,7 +9,9 @@ import { openCommandPalette } from './command-palette';
 export default function SiteHeader() {
   const pathname = usePathname();
   const headerRef = useRef<HTMLElement>(null);
+  const navRef = useRef<HTMLElement>(null);
   const [solid, setSolid] = useState(false);
+  const [hidden, setHidden] = useState(false);
   const [tone, setTone] = useState<'night' | 'paper'>('night');
   // El menú se abre para la ruta actual: al navegar, se cierra solo.
   const [openAt, setOpenAt] = useState<string | null>(null);
@@ -21,11 +23,20 @@ export default function SiteHeader() {
 
   useEffect(() => {
     let raf = 0;
+    let lastY = window.scrollY;
     const update = () => {
       raf = 0;
       const header = headerRef.current;
       if (!header) return;
-      setSolid(window.scrollY > 24);
+      const y = window.scrollY;
+      setSolid(y > 24);
+      // Se aparta al bajar pasada la primera pantalla y vuelve al subir (o si algo de ella tiene el foco).
+      const delta = y - lastY;
+      if (Math.abs(delta) > 6) {
+        const down = delta > 0 && y > window.innerHeight * 0.7;
+        setHidden(down && !header.contains(document.activeElement));
+        lastY = y;
+      }
       const max = document.documentElement.scrollHeight - window.innerHeight;
       header.style.setProperty('--progress', max > 0 ? (window.scrollY / max).toFixed(4) : '0');
       // El tono de la cabecera sigue a la sección que tiene debajo.
@@ -61,16 +72,37 @@ export default function SiteHeader() {
     };
   }, [open]);
 
+  // El indicador viaja de un enlace a otro; al entrar a la barra aparece donde está el cursor.
+  const movePill = (event: React.PointerEvent<HTMLElement>) => {
+    const nav = navRef.current;
+    const link = (event.target as Element).closest('a');
+    if (!nav || !link || !nav.contains(link)) return;
+    nav.style.setProperty('--pill-x', `${link.offsetLeft}px`);
+    nav.style.setProperty('--pill-w', `${link.offsetWidth}px`);
+    nav.dataset.pill = nav.dataset.pill === 'true' || nav.dataset.pill === 'fresh' ? 'true' : 'fresh';
+  };
+  const hidePill = () => {
+    if (navRef.current) navRef.current.dataset.pill = 'false';
+  };
+
   const isCurrent = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
   const effectiveTone = open ? 'night' : tone;
 
   return (
     <>
-      <header ref={headerRef} className="site-header" data-solid={solid || open} data-tone={effectiveTone}>
+      <header
+        ref={headerRef}
+        className="site-header"
+        data-solid={solid || open}
+        data-hidden={hidden && !open}
+        data-tone={effectiveTone}
+        onFocus={() => setHidden(false)}
+      >
         <Link href="/" className="brand" aria-label="Aragon, inicio">
           aragon<span className="brand-mark" aria-hidden="true" />
         </Link>
-        <nav className="header-nav" aria-label="Principal">
+        <nav ref={navRef} className="header-nav" aria-label="Principal" onPointerOver={movePill} onPointerLeave={hidePill}>
+          <span className="nav-pill" aria-hidden="true" />
           {nav.map((item) => (
             <Link key={item.href} href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>
               {item.label}
