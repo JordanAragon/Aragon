@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { services } from '../../data/services';
 import { site } from '../../data/site';
 import { ArrowRight } from '../ui/icons';
+import FooterWord from './footer-word';
 
 export default function SiteFooter() {
   const year = 2026;
@@ -67,9 +68,7 @@ export default function SiteFooter() {
             </ul>
           </div>
         </div>
-        <div className="footer-word" aria-hidden="true">
-          aragon<span className="brand-mark" />
-        </div>
+        <FooterWord />
         <div className="footer-base">
           <span>
             © {year} Aragon, estudio de software de <a href={site.portfolioUrl}>{site.founder}</a>. {site.location}.
