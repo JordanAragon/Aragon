@@ -2,21 +2,22 @@
 
 import Link from 'next/link';
 
-export default function GlobalError({ reset }: { error: Error & { digest?: string }; reset: () => void }) {
+export default function Error({ reset }: { error: Error & { digest?: string }; reset: () => void }) {
   return (
-    <main className="status-page">
-      <div className="status-page-inner">
-        <span className="section-number">500 / TEMPORARY ERROR</span>
-        <h1>Algo no salió como debería.</h1>
-        <p>La aplicación encontró un error inesperado. Puedes reintentar sin perder la navegación principal.</p>
-        <div className="status-actions">
-          <button type="button" className="hero-cta" onClick={() => reset()}>
-            <span>Reintentar</span>
-            <span className="icon-box" aria-hidden="true">↻</span>
+    <section className="not-found night" data-tone="night" aria-labelledby="err-title">
+      <div className="shell not-found-inner">
+        <p className="section-label">algo falló</p>
+        <h1 id="err-title">Esta parte del sitio no cargó.</h1>
+        <p>Vuelve a intentarlo. Si sigue fallando, escríbenos y lo revisamos.</p>
+        <div className="page-actions">
+          <button type="button" className="btn btn-primary" onClick={reset}>
+            Intentar de nuevo
           </button>
-          <Link className="under-link" href="/#inicio">Volver al inicio ↗</Link>
+          <Link href="/" className="btn btn-ghost">
+            Ir al inicio
+          </Link>
         </div>
       </div>
-    </main>
+    </section>
   );
 }
