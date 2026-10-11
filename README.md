@@ -16,7 +16,7 @@ Sitio web de Aragon, agencia de software a la medida: apps web, automatización 
 | `/` | Inicio: precarga «poner en orden», hero, el problema, «Del desorden al sistema», servicios con demos, proceso, trabajo, nosotros, preguntas y contacto |
 | `/servicios` y `/servicios/<slug>` | Los cuatro servicios, cada uno con demo, señales, ejemplos, qué incluye y preguntas |
 | `/como-trabajamos` | Las cuatro fases con lo que pones y lo que recibes |
-| `/trabajo` y `/trabajo/<slug>` | Proyectos reales con su estado (`/work/<slug>` redirige aquí) |
+| `/trabajo` y `/trabajo/<slug>` | Proyectos reales con su estado y su captura (`/work/<slug>` redirige aquí) |
 | `/nosotros` | Historia, principios y servicios |
 | `/preguntas` | Preguntas frecuentes con búsqueda y temas |
 | `/contacto` | Agenda (Cal.com) y formulario que arma el mensaje |

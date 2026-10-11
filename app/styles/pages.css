@@ -24,6 +24,45 @@
 .page-intro .shell {
   position: relative;
   z-index: 1;
+  pointer-events: none;
+}
+
+.page-intro .shell > * {
+  pointer-events: auto;
+}
+
+/* Las piezas de la apertura: a la derecha en escritorio, discretas detrás del título en el teléfono. */
+.intro-field,
+.intro-field > canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.intro-field {
+  z-index: 0;
+}
+
+/* Con figura, el texto se queda en su mitad y la figura en la otra. */
+@media (min-width: 900px) {
+  .page-intro[data-figure] .page-title {
+    max-width: min(15ch, 58%);
+  }
+
+  .page-intro[data-figure] .page-lead {
+    max-width: min(46ch, 56%);
+  }
+}
+
+@media (max-width: 899px) {
+  .intro-field {
+    opacity: 0.35;
+  }
+
+  .page-intro[data-figure] .page-title {
+    max-width: none;
+  }
 }
 
 .crumbs {
@@ -118,7 +157,7 @@
 
 .service-row {
   display: grid;
-  grid-template-columns: 56px minmax(0, 1.2fr) minmax(0, 1fr) 32px;
+  grid-template-columns: 72px minmax(0, 1.2fr) minmax(0, 1fr) 32px;
   gap: 28px;
   align-items: start;
   padding: 36px 0;
@@ -126,9 +165,15 @@
 }
 
 .service-row-index {
+  display: grid;
+  gap: 10px;
   padding-top: 6px;
   font-size: var(--t-sm);
   color: var(--ink-3);
+}
+
+.service-row-index .service-glyph {
+  color: var(--ink);
 }
 
 .service-row-main {
@@ -231,10 +276,15 @@
 
 @media (max-width: 900px) {
   .service-row {
-    grid-template-columns: minmax(0, 1fr) 24px;
+    grid-template-columns: 56px minmax(0, 1fr) 24px;
+    gap: 18px;
   }
 
-  .service-row-index,
+  .service-row-index .service-glyph {
+    width: 52px;
+    height: 36px;
+  }
+
   .service-row-signs {
     display: none;
   }
@@ -531,21 +581,20 @@
 }
 
 .case-visual {
-  aspect-ratio: 16 / 9;
-  max-height: 640px;
   width: 100%;
+}
+
+/* La captura en una ventana con su dirección, como en la vista previa del inicio. */
+.case-window {
   border-radius: var(--radius-l);
   border: 1px solid var(--night-line);
-  overflow: visible;
-}
-
-.case-visual .work-visual {
-  border-radius: var(--radius-l);
+  background: var(--night-2);
   overflow: hidden;
+  box-shadow: 0 60px 140px -70px rgb(0 0 0 / 0.95);
 }
 
-.case-visual svg {
-  max-width: 900px;
+.case-window .work-shot {
+  aspect-ratio: 16 / 10;
 }
 
 .case-meta {
@@ -857,4 +906,147 @@
 
 .contact-page {
   padding-top: calc(var(--header-h) + clamp(64px, 8vw, 120px));
+}
+
+/* ---------- Siguiente capítulo (next-chapter.tsx) ---------- */
+.next-chapter {
+  padding-block: clamp(64px, 8vw, 112px);
+  border-top: 1px solid var(--night-line);
+}
+
+/* La historia en piezas: las ya recorridas en orden, la siguiente late una vez. */
+.nc-rail {
+  list-style: none;
+  display: flex;
+  gap: 6px;
+  margin-bottom: clamp(28px, 4vw, 48px);
+}
+
+.nc-rail a {
+  display: block;
+  width: 26px;
+  height: 26px;
+  padding: 9px;
+  background-clip: content-box;
+  background-color: var(--night-line-2);
+  transition: background-color var(--dur);
+}
+
+.nc-rail li[data-state='done'] a {
+  background-color: var(--on-night);
+}
+
+.nc-rail li[data-state='next'] a {
+  background-color: var(--on-night-3);
+}
+
+.nc-rail a:hover {
+  background-color: var(--on-night-2);
+}
+
+.nc-link {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 14px 48px;
+  align-items: end;
+  padding-bottom: clamp(28px, 3vw, 40px);
+  text-decoration: none;
+}
+
+/* Una regla que se traza bajo el capítulo al pasar el cursor: hacia allá se va. */
+.nc-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--night-line);
+}
+
+.nc-link::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  height: 1px;
+  background: var(--on-night);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.9s var(--ease-out);
+}
+
+.nc-link:hover::before,
+.nc-link:focus-visible::before {
+  transform: scaleX(1);
+}
+
+.nc-meta {
+  grid-column: 1 / -1;
+  font-size: var(--t-xs);
+  color: var(--on-night-3);
+}
+
+.nc-title {
+  grid-column: 1;
+  max-width: 20ch;
+  font-family: var(--font-display-stack);
+  font-size: var(--t-3xl);
+  font-weight: 600;
+  line-height: 0.98;
+  letter-spacing: -0.05em;
+  transition: transform 0.7s var(--ease-out);
+}
+
+.nc-link:hover .nc-title {
+  transform: translateX(14px);
+}
+
+.nc-teaser {
+  grid-column: 1;
+  max-width: 52ch;
+  color: var(--on-night-2);
+  font-size: var(--t-md);
+}
+
+.nc-arrow {
+  grid-column: 2;
+  grid-row: 2 / span 2;
+  display: grid;
+  place-items: center;
+  width: clamp(64px, 7vw, 96px);
+  height: clamp(64px, 7vw, 96px);
+  border-radius: 999px;
+  border: 1px solid var(--night-line-2);
+  transition: background-color var(--dur), color var(--dur), border-color var(--dur);
+}
+
+.nc-arrow svg {
+  width: 28px;
+  height: 28px;
+  transition: transform 0.5s var(--ease-out);
+}
+
+.nc-link:hover .nc-arrow {
+  background: var(--on-night);
+  border-color: var(--on-night);
+  color: var(--night);
+}
+
+.nc-link:hover .nc-arrow svg {
+  transform: translateX(4px);
+}
+
+@media (max-width: 700px) {
+  .nc-link {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .nc-arrow {
+    grid-column: 1;
+    grid-row: auto;
+  }
 }

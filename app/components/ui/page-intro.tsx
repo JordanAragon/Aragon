@@ -1,26 +1,31 @@
 import Link from 'next/link';
 import type { ReactNode } from 'react';
 import { ArrowRight } from './icons';
+import IntroField, { type IntroFigure } from './intro-field';
 
 type Crumb = { label: string; href: string };
 
-/* Apertura de las páginas internas: miga, título, entrada y acciones. */
+/* Apertura de las páginas internas: miga, título, entrada, acciones y la figura de piezas del tema. */
 export default function PageIntro({
   label,
   title,
   lead,
   crumbs = [],
+  figure,
   children,
 }: {
   label: string;
   title: ReactNode;
   lead?: ReactNode;
   crumbs?: Crumb[];
+  /** La figura que forman las piezas al abrir la página (ver intro-field.tsx). */
+  figure?: IntroFigure;
   children?: ReactNode;
 }) {
   return (
-    <section className="page-intro night" data-tone="night">
+    <section className="page-intro night" data-tone="night" data-figure={figure}>
       <div className="page-intro-grid" aria-hidden="true" />
+      {figure && <IntroField figure={figure} />}
       <div className="shell">
         <nav className="crumbs mono" aria-label="Ruta">
           <Link href="/">inicio</Link>

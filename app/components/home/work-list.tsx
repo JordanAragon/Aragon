@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { work } from '../../data/work';
-import WorkVisual from '../ui/work-visual';
+import WorkShot from '../ui/work-shot';
 import { ArrowUpRight } from '../ui/icons';
 
 const LIVE = /^(en producción|operando)/i;
@@ -11,9 +11,9 @@ const LIVE = /^(en producción|operando)/i;
 /*
   Lista de trabajo: una fila por proyecto. Con puntero fino, una ventana con la
   vista previa del proyecto sigue al cursor (se inclina con la velocidad y se
-  voltea al acercarse al borde); al pasar de una fila a otra, las vistas corren
+  voltea al acercarse al borde); al pasar de una fila a otra, las capturas corren
   como un carrete, así se lee que es la misma ventana mostrando otro proyecto.
-  En pantallas táctiles la ilustración va dentro de cada fila.
+  En pantallas táctiles la captura va dentro de cada fila.
 */
 export default function WorkList({ limit }: { limit?: number }) {
   const items = limit ? work.slice(0, limit) : work;
@@ -129,7 +129,7 @@ export default function WorkList({ limit }: { limit?: number }) {
                 <ArrowUpRight className="work-row-arrow" />
               </span>
               <span className="work-row-visual">
-                <WorkVisual visual={item.visual} label="" />
+                <WorkShot item={item} sizes="(max-width: 900px) 92vw, 460px" decorative />
               </span>
             </Link>
           </li>
@@ -154,8 +154,8 @@ export default function WorkList({ limit }: { limit?: number }) {
         <div className="work-peek-body">
           <div className="work-peek-reel">
             {items.map((item, i) => (
-              <div key={item.slug} className="work-peek-item">
-                <WorkVisual visual={item.visual} label="" play={hover === i} />
+              <div key={item.slug} className="work-peek-item" data-active={i === active}>
+                <WorkShot item={item} sizes="460px" decorative />
               </div>
             ))}
           </div>

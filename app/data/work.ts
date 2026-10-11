@@ -19,7 +19,8 @@ export type WorkItem = {
   hrefLabel?: string;
   /** Título de la barra de la ventana en la vista previa. */
   bar: string;
-  visual: 'vivero' | 'servidor' | 'portafolio';
+  /** Captura real del proyecto (public/media/trabajo). */
+  shot: { src: string; width: number; height: number; alt: string };
 };
 
 export const work: WorkItem[] = [
@@ -47,7 +48,12 @@ export const work: WorkItem[] = [
     href: 'https://aidencol.vercel.app/',
     hrefLabel: 'Abrir AiDEN',
     bar: 'aidencol.vercel.app',
-    visual: 'vivero',
+    shot: {
+      src: '/media/trabajo/aiden.webp',
+      width: 1440,
+      height: 900,
+      alt: 'Portada de AiDEN: el titular «Pasado mañana salen 400 plantas de tomate hacia Timbío», el isotipo hecho con las 4.894 plantas del vivero y la ficha del lote.',
+    },
   },
   {
     slug: 'aragon-server',
@@ -70,8 +76,13 @@ export const work: WorkItem[] = [
       { title: 'Secretos fuera del código', body: 'Las credenciales viven en un archivo de entorno fuera del repositorio de configuración.' },
     ],
     stack: ['Ubuntu Server', 'Docker', 'Caddy', 'Tailscale', 'PostgreSQL', 'Uptime Kuma'],
-    bar: 'aragon-server — monitoreo',
-    visual: 'servidor',
+    bar: 'aragon-server — btop',
+    shot: {
+      src: '/media/trabajo/aragon-server.webp',
+      width: 1440,
+      height: 877,
+      alt: 'Monitor del servidor en btop: memoria, discos, tráfico de red y la lista de procesos con Docker, PostgreSQL y Samba corriendo.',
+    },
   },
   {
     slug: 'portafolio-leidy',
@@ -89,8 +100,13 @@ export const work: WorkItem[] = [
     ],
     decisions: [{ title: 'Velocidad primero', body: 'Imágenes optimizadas y nada de librerías que no aporten a la lectura.' }],
     stack: ['React', 'Vercel', 'SEO local'],
-    bar: 'portafolio — publicado',
-    visual: 'portafolio',
+    bar: 'leidymicolta.vercel.app',
+    shot: {
+      src: '/media/trabajo/leidy.webp',
+      width: 1440,
+      height: 900,
+      alt: 'Portada del portafolio de Leidy Micolta Aragón: su nombre en serif itálica sobre una escena de lectura junto a una ventana.',
+    },
   },
 ];
 

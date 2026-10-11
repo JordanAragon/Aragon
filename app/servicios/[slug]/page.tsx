@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import ServiceDemo from '../../components/demos/service-demo';
 import FaqList from '../../components/ui/faq-list';
 import PageIntro, { CtaBand } from '../../components/ui/page-intro';
+import NextChapter from '../../components/ui/next-chapter';
 import ProcessTimeline from '../../components/ui/process-timeline';
 import { ArrowRight } from '../../components/ui/icons';
 import { getService, services } from '../../data/services';
@@ -47,7 +48,7 @@ export default async function ServicePage({ params }: Params) {
 
   return (
     <>
-      <PageIntro label={service.short.toLowerCase()} crumbs={[{ label: 'Servicios', href: '/servicios' }]} title={service.name} lead={service.promise}>
+      <PageIntro figure={service.forma} label={service.short.toLowerCase()} crumbs={[{ label: 'Servicios', href: '/servicios' }]} title={service.name} lead={service.promise}>
         <Link href="/contacto" className="btn btn-primary btn-lg">
           Hablar de mi caso <ArrowRight className="arrow" />
         </Link>
@@ -172,6 +173,7 @@ export default async function ServicePage({ params }: Params) {
       </section>
 
       <CtaBand />
+      <NextChapter from="/servicios" />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structured) }} />
     </>
   );

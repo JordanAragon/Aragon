@@ -144,23 +144,57 @@ export function tableShape(w: number, h: number, n: number) {
   return latticeFill(rects, n);
 }
 
-/** La interfaz que aparece en la zona ordenada del hero: barra lateral, cabecera, tarjetas y filas. */
-export function heroInterface(w: number, h: number): Box[] {
-  const x0 = w * 0.58;
-  const x1 = w - Math.max(24, w * 0.03);
-  const y0 = Math.max(120, h * 0.15);
-  const y1 = h * 0.8;
+/* ---------------- El hero: la app que se llena ---------------- */
+
+/** Pedidos visibles en la tabla del hero y piezas por pedido (un cuadrado de 7 × 7). */
+export const HERO_ROWS = 5;
+export const PACKET_SIDE = 7;
+
+/**
+ * La app del hero, a la derecha: barra lateral, cabecera, tres tarjetas y la
+ * tabla de pedidos. Cada pedido llega como un cuadrado de piezas (la pieza
+ * ordenada de la marca) y su texto va al lado.
+ */
+export function heroApp(w: number, h: number) {
+  const narrow = w < 900;
+  const x0 = narrow ? w * 0.5 : w * 0.6;
+  const x1 = w - Math.max(narrow ? 16 : 24, w * 0.03);
+  const y0 = narrow ? Math.max(96, h * 0.12) : Math.max(120, h * 0.16);
+  const y1 = narrow ? h * 0.46 : h * 0.79;
   const W = x1 - x0;
   const H = y1 - y0;
-  const side = W * 0.18;
-  const rects: Box[] = [
-    { x: x0, y: y0, w: side, h: H },
-    { x: x0 + side + W * 0.04, y: y0, w: W - side - W * 0.04, h: H * 0.08 },
-  ];
-  const cx = x0 + side + W * 0.04;
-  const cw = (W - side - W * 0.04 - W * 0.04) / 3;
-  for (let i = 0; i < 3; i++) rects.push({ x: cx + i * (cw + W * 0.02), y: y0 + H * 0.14, w: cw, h: H * 0.2 });
-  for (let r = 0; r < 5; r++) rects.push({ x: cx, y: y0 + H * 0.42 + r * H * 0.115, w: (W - side - W * 0.04) * (r % 2 ? 0.86 : 1), h: H * 0.06 });
+  const side = W * 0.21;
+  const gap = W * 0.035;
+  const cx = x0 + side + gap;
+  const cw = x1 - cx;
+  const header = { x: cx, y: y0, w: cw, h: H * 0.1 };
+  const cardGap = W * 0.025;
+  const cardW = (cw - cardGap * 2) / 3;
+  const cards = [0, 1, 2].map((i) => ({ x: cx + i * (cardW + cardGap), y: y0 + H * 0.15, w: cardW, h: H * 0.2 }));
+  const tableY = y0 + H * 0.42;
+  const rowH = (y1 - tableY) / HERO_ROWS;
+  const square = Math.min(rowH * 0.6, 30);
+  const rows = Array.from({ length: HERO_ROWS }, (_, r) => {
+    const y = tableY + r * rowH;
+    return { x: cx, y, w: cw, h: rowH, sq: { x: cx, y: y + (rowH - square) / 2, size: square } };
+  });
+  const sidebar = { x: x0, y: y0, w: side, h: H };
+  // La frontera entre lo suelto y lo ordenado: por aquí cruzan los pedidos.
+  const gateX = x0 - Math.max(18, W * 0.06);
+  return { x0, x1, y0, y1, W, H, sidebar, header, cards, rows, tableY, rowH, square, gateX, narrow };
+}
+
+export type HeroApp = ReturnType<typeof heroApp>;
+
+/** Las líneas de la app (cabecera, tarjetas y separadores de la tabla), para dibujarlas con piezas. */
+export function heroFrameLines(app: HeroApp): Box[] {
+  const t = Math.max(1.5, app.W * 0.004);
+  const rects: Box[] = [{ x: app.header.x, y: app.header.y + app.header.h, w: app.header.w, h: t }];
+  app.cards.forEach((c) => {
+    rects.push({ x: c.x, y: c.y, w: c.w, h: t }, { x: c.x, y: c.y + c.h - t, w: c.w, h: t });
+    rects.push({ x: c.x, y: c.y, w: t, h: c.h }, { x: c.x + c.w - t, y: c.y, w: t, h: c.h });
+  });
+  app.rows.forEach((r) => rects.push({ x: r.x, y: r.y + r.h - t / 2, w: r.w, h: t * 0.6 }));
   return rects;
 }
 
@@ -247,7 +281,7 @@ export function chatShape(w: number, h: number, n: number) {
       ctx.stroke();
       if (!bb.text) {
         // El agente escribiendo: tres puntos dentro de la última burbuja.
-        const r = Math.min(bb.h * 0.16, 8);
+        const r = Math.max(0.5, Math.min(bb.h * 0.16, 8));
         [0.32, 0.5, 0.68].forEach((f) => {
           ctx.beginPath();
           ctx.arc(bb.x + bb.w * f, bb.y + bb.h / 2, r, 0, Math.PI * 2);
