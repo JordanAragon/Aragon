@@ -2,6 +2,9 @@
 const nextConfig = {
   poweredByHeader: false,
   reactStrictMode: true,
+  async redirects() {
+    return [{ source: '/work/:slug', destination: '/trabajo/:slug', permanent: true }];
+  },
   async headers() {
     return [
       {

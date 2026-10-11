@@ -1,22 +1,24 @@
-import type { Metadata } from 'next';
 import Link from 'next/link';
-
-export const metadata: Metadata = {
-  robots: { index: false, follow: false },
-};
+import NotFoundField from './components/home/not-found-field';
+import { ArrowRight } from './components/ui/icons';
 
 export default function NotFound() {
   return (
-    <main className="status-page">
-      <div className="status-page-inner">
-        <span className="section-number">404 / NOT FOUND</span>
-        <h1>Esta página no existe.</h1>
-        <p>La ruta que buscas no está disponible. El contenido principal de Aragon sigue en la página de inicio.</p>
-        <Link className="hero-cta" href="/#inicio">
-          <span>Volver a Aragon</span>
-          <span className="icon-box" aria-hidden="true">↗</span>
-        </Link>
+    <section className="not-found night" data-tone="night" aria-labelledby="nf-title">
+      <NotFoundField />
+      <div className="shell not-found-inner">
+        <p className="section-label">error 404</p>
+        <h1 id="nf-title">Esta página no está en su lugar.</h1>
+        <p>Puede que el enlace haya cambiado. Pasa el cursor por las piezas: al menos ellas sí encuentran el suyo.</p>
+        <div className="page-actions">
+          <Link href="/" className="btn btn-primary">
+            Volver al inicio <ArrowRight className="arrow" />
+          </Link>
+          <Link href="/contacto" className="btn btn-ghost">
+            Escribirnos
+          </Link>
+        </div>
       </div>
-    </main>
+    </section>
   );
 }
