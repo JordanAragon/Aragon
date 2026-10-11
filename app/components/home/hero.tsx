@@ -4,111 +4,13 @@ import Link from 'next/link';
 import { Fragment, useCallback, useEffect, useRef, useState } from 'react';
 import ParticleCanvas from '../field/particle-canvas';
 import type { ParticleSim } from '../field/sim';
-import { heroInterface } from '../field/shapes';
+import type { HeroApp } from '../field/shapes';
 import { HERO_COUNT } from '../field/relay';
+import { STATES, setupHeroSystem, type HeroCounts, type HeroHud, type HeroRow } from './hero-system';
 import { services } from '../../data/services';
 import { ArrowRight } from '../ui/icons';
 
 const WORDS = ['pedidos', 'citas', 'clientes', 'ventas', 'reportes', 'procesos'];
-
-type Hud = {
-  /** 0 arriba del todo, 1 cuando el hero salió de la pantalla. */
-  exit: number;
-  onCount: (ordered: number, total: number) => void;
-};
-
-/*
-  El campo del hero cuenta la idea de Aragon: a la izquierda las piezas de un
-  negocio flotan sueltas; a la derecha ya encontraron su lugar en la retícula y
-  dibujan una interfaz. Al cargar, el frente del orden barre de derecha a
-  izquierda. Lo que el cursor toca queda en orden (y se cuenta); al bajar, el
-  frente termina de ordenar todo antes de llegar al problema.
-*/
-function setupHero(sim: ParticleSim, hud: Hud) {
-  let home = new Float32Array(sim.n * 2);
-  let ui = new Float32Array(sim.n);
-  let gap = 14;
-  const phase = new Float32Array(sim.n);
-  // Orden que dejó el cursor (0–1, sube suave) y el destello de cuando una pieza encaja.
-  const touched = new Float32Array(sim.n);
-  const flash = new Float32Array(sim.n);
-  for (let i = 0; i < sim.n; i++) phase[i] = sim.random() * Math.PI * 2;
-  sim.stiffness = 0.06;
-  sim.damping = 0.78;
-  sim.jitter = 0;
-  sim.pointerRadius = 130;
-  sim.baseSize = 2.1;
-  let start = -1;
-  let lastReport = -1;
-
-  sim.updater = (s, time, dt) => {
-    // La entrada empieza en el primer cuadro que corre (con precarga, al recibir las piezas).
-    if (start < 0) start = time;
-    const w = s.width;
-    const intro = Math.min(1, (time - start) / 2.4);
-    const eased = 1 - Math.pow(1 - intro, 3);
-    // El borde del orden: entra por la derecha hasta el 46 % del ancho; al bajar, sigue hasta el borde izquierdo.
-    const exit = Math.min(1, Math.max(0, hud.exit));
-    const edge = w * (1.08 - 0.62 * eased) - w * 0.7 * exit * exit * (3 - 2 * exit);
-    const soft = w * 0.2;
-    const p = s.pointer;
-    const R2 = s.pointerRadius * s.pointerRadius * 0.55;
-    const grow = Math.min(1, dt * 3.2);
-    const fade = Math.min(1, dt * 2.4);
-    let ordered = 0;
-    for (let i = 0; i < s.n; i++) {
-      const hx = home[i * 2];
-      const hy = home[i * 2 + 1];
-      if (p.active && touched[i] === 0) {
-        const dx = s.x[i] - p.x;
-        const dy = s.y[i] - p.y;
-        if (dx * dx + dy * dy < R2) {
-          touched[i] = 0.0001;
-          flash[i] = 1;
-        }
-      }
-      if (touched[i] > 0 && touched[i] < 1) touched[i] = Math.min(1, touched[i] + grow * (1.02 - touched[i]));
-      if (flash[i] > 0) flash[i] = Math.max(0, flash[i] - fade);
-      const t = (hx - edge) / soft;
-      const front = t <= 0 ? 0 : t >= 1 ? 1 : t * t * (3 - 2 * t);
-      const o = Math.max(front, touched[i]);
-      if (o > 0.5) ordered++;
-      const amp = (1 - o) * gap * 3.2;
-      const ph = phase[i];
-      s.tx[i] = hx + Math.sin(time * 0.35 + ph) * amp + Math.sin(time * 0.13 + ph * 2) * amp * 0.8;
-      s.ty[i] = hy + Math.cos(time * 0.29 + ph * 1.3) * amp * 0.8;
-      // Ya ordenadas, las piezas dibujan una interfaz; fuera de ella quedan como una retícula tenue.
-      const rest = ui[i] ? 0.1 + ui[i] * 0.86 : 0.17;
-      s.targetAlpha[i] = 0.24 * (1 - o) + o * rest + flash[i] * 0.7;
-      s.size[i] = 1 + o * ui[i] * 0.5 + flash[i] * 0.35;
-    }
-    if (ordered !== lastReport) {
-      lastReport = ordered;
-      hud.onCount(ordered, s.n);
-    }
-  };
-
-  return (w: number, h: number) => {
-    gap = Math.max(10, Math.sqrt((w * h) / sim.n));
-    sim.gridSize = gap;
-    const cols = Math.max(1, Math.floor(w / gap));
-    home = new Float32Array(sim.n * 2);
-    for (let i = 0; i < sim.n; i++) {
-      const c = i % cols;
-      const r = Math.floor(i / cols);
-      home[i * 2] = (c + 0.5) * (w / cols);
-      home[i * 2 + 1] = (r + 0.5) * gap;
-    }
-    const rects = heroInterface(w, h);
-    ui = new Float32Array(sim.n);
-    for (let i = 0; i < sim.n; i++) {
-      const x = home[i * 2];
-      const y = home[i * 2 + 1];
-      ui[i] = rects.some((r) => x >= r.x && x <= r.x + r.w && y >= r.y && y <= r.y + r.h) ? 1 : 0;
-    }
-    if (sim.time === 0) sim.scatter(w * 0.8, h * 0.5, Math.max(w, h));
-  };
-}
 
 function RotatingWord() {
   const [index, setIndex] = useState(0);
@@ -169,38 +71,90 @@ function Words({ text, from }: { text: string; from: number }) {
   ));
 }
 
+/*
+  La app del hero, en HTML sobre las piezas que la dibujan: la barra lateral,
+  la cabecera, las cuentas y las filas de los pedidos que llegan. Así se lee
+  qué está haciendo el campo: poner en orden lo que entra.
+*/
+function AppLayer({ app, rows, counts }: { app: HeroApp; rows: HeroRow[]; counts: HeroCounts }) {
+  const cards = [
+    { label: 'pedidos hoy', value: counts.arrived },
+    { label: 'en ruta', value: counts.route },
+    { label: 'entregados', value: counts.done },
+  ];
+  return (
+    <div className="hero-app" aria-hidden="true">
+      <div className="hero-app-side" style={{ left: app.sidebar.x, top: app.sidebar.y, width: app.sidebar.w }}>
+        <span className="hero-app-brand">
+          <i />
+          distribuidora
+        </span>
+        {['Pedidos', 'Clientes', 'Inventario', 'Rutas', 'Reportes'].map((item, i) => (
+          <span key={item} className="hero-app-nav" data-active={i === 0}>
+            {item}
+          </span>
+        ))}
+      </div>
+      <div className="hero-app-head" style={{ left: app.header.x, top: app.header.y, width: app.header.w, height: app.header.h }}>
+        <strong>Pedidos de hoy</strong>
+        <span className="mono">datos de ejemplo</span>
+      </div>
+      {app.cards.map((c, i) => (
+        <div key={cards[i].label} className="hero-app-card" style={{ left: c.x, top: c.y, width: c.w, height: c.h }}>
+          <span className="mono">{cards[i].label}</span>
+          <strong className="tabular" key={cards[i].value}>
+            {cards[i].value}
+          </strong>
+        </div>
+      ))}
+      {rows.map((r) => {
+        const slot = app.rows[Math.min(app.rows.length - 1, r.slot)];
+        // El que sale baja una fila más mientras se apaga, como su cuadrado.
+        const y = app.tableY + r.slot * app.rowH;
+        return (
+          <div
+            key={r.id}
+            className="hero-app-row"
+            data-leaving={r.leaving}
+            style={{ left: slot.x + app.square + 14, width: slot.w - app.square - 14, height: slot.h, transform: `translateY(${y}px)` }}
+          >
+            <span className="hero-app-row-main">
+              <span className="mono tabular">{r.order}</span> {r.client}
+            </span>
+            <span className="hero-app-row-meta mono">
+              <span className="hero-app-row-source">{r.source}</span>
+              <span className="hero-app-row-state" data-state={r.state}>
+                {STATES[r.state]}
+              </span>
+            </span>
+          </div>
+        );
+      })}
+      <p className="hero-legend mono" style={{ left: app.header.x, top: app.y1 + 18, width: app.header.w }}>
+        <i />
+        <span>
+          Cada cuadrado es un pedido que llegó suelto y quedó en orden. <span className="hero-legend-hint">Pasa el cursor por las piezas sueltas: entran al sistema.</span>
+        </span>
+      </p>
+    </div>
+  );
+}
+
 export default function Hero() {
   const frameRef = useRef<HTMLElement>(null);
-  const countRef = useRef<HTMLElement>(null);
-  const totalRef = useRef<HTMLSpanElement>(null);
-  const hudRef = useRef<Hud>({ exit: 0, onCount: () => undefined });
-  const fmt = useRef<Intl.NumberFormat | null>(null);
+  const [app, setApp] = useState<HeroApp | null>(null);
+  const [rows, setRows] = useState<HeroRow[]>([]);
+  const [counts, setCounts] = useState<HeroCounts>({ arrived: 0, route: 0, done: 0 });
+  const hudRef = useRef<HeroHud>({
+    exit: 0,
+    onLayout: (next) => setApp(next),
+    onRows: (nextRows, nextCounts) => {
+      setRows(nextRows);
+      setCounts(nextCounts);
+    },
+  });
 
   useEffect(() => {
-    fmt.current = new Intl.NumberFormat('es-CO');
-    let lastText = '';
-    let pending = 0;
-    let latest = 0;
-    let total = 0;
-    // La cuenta se escribe a lo sumo diez veces por segundo: se lee, no parpadea.
-    hudRef.current.onCount = (ordered, n) => {
-      latest = ordered;
-      if (n !== total && totalRef.current) {
-        // En el teléfono el campo tiene menos piezas: el total dice las que hay.
-        total = n;
-        totalRef.current.textContent = `/ ${fmt.current?.format(n) ?? n}`;
-      }
-      if (pending) return;
-      pending = window.setTimeout(() => {
-        pending = 0;
-        const text = fmt.current?.format(latest) ?? String(latest);
-        if (text !== lastText && countRef.current) {
-          countRef.current.textContent = text;
-          lastText = text;
-        }
-      }, 100);
-    };
-
     const frame = frameRef.current;
     if (!frame) return undefined;
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -222,16 +176,19 @@ export default function Hero() {
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', onScroll);
       if (raf) cancelAnimationFrame(raf);
-      if (pending) window.clearTimeout(pending);
     };
   }, []);
 
-  const setup = useCallback((sim: ParticleSim) => setupHero(sim, hudRef.current), []);
+  const setup = useCallback(
+    (sim: ParticleSim) => setupHeroSystem(sim, hudRef.current, window.matchMedia('(prefers-reduced-motion: reduce)').matches),
+    [],
+  );
 
   return (
     <section ref={frameRef} className="hero night" data-tone="night" aria-labelledby="hero-title">
       <ParticleCanvas className="hero-field" count={HERO_COUNT} seed={7} setup={setup} pointerTarget={frameRef} relay />
       <div className="hero-veil" aria-hidden="true" />
+      {app && !app.narrow && <AppLayer app={app} rows={rows} counts={counts} />}
       <div className="shell hero-inner">
         <p className="hero-kicker">
           <span className="chip chip-live">Estudio de software en Cali, Colombia</span>
@@ -267,20 +224,9 @@ export default function Hero() {
             Ver cómo lo hacemos
           </Link>
         </div>
-        <p className="hero-readout" aria-hidden="true">
-          <span className="hero-readout-count">
-            <strong ref={countRef} className="tabular">
-              0
-            </strong>
-            <span ref={totalRef} className="mono tabular">
-              / {HERO_COUNT.toLocaleString('es-CO')}
-            </span>
-          </span>
-          <span className="hero-readout-label mono">
-            piezas en orden
-            <span className="hero-readout-hint"> · pasa el cursor por las sueltas</span>
-            <span className="hero-readout-hint-touch"> · baja para ordenarlas</span>
-          </span>
+        <p className="hero-legend hero-legend-inline mono" aria-hidden="true">
+          <i />
+          Cada cuadrado es un pedido que llegó suelto y quedó en orden.
         </p>
       </div>
       <nav className="hero-services shell" aria-label="Servicios">

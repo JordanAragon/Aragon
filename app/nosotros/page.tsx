@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import PageIntro, { CtaBand } from '../components/ui/page-intro';
+import NextChapter from '../components/ui/next-chapter';
 import { ArrowRight, ArrowUpRight } from '../components/ui/icons';
 import { principles } from '../data/process';
 import { services } from '../data/services';
@@ -23,6 +24,7 @@ export default function AboutPage() {
   return (
     <>
       <PageIntro
+        figure="nosotros"
         label="nosotros"
         title="Un estudio pequeño a propósito."
         lead="Quien diseña tu sistema es quien lo construye y lo mantiene. Sin capas de intermediarios entre lo que pides y lo que se entrega."
@@ -98,6 +100,7 @@ export default function AboutPage() {
         </div>
       </section>
       <CtaBand title="¿Hablamos de tu proyecto?" />
+      <NextChapter from="/nosotros" />
     </>
   );
 }

@@ -43,7 +43,7 @@ Nombre Aragon. Distinto de Aragon-Server (homelab) y de Aragon-Finance (otro pro
 
 ## Evidence on Hand
 
-- Trabajo real: AiDEN (en producción), Aragon-Server (operando), portafolio de Leidy (publicado; falta su permiso para capturas), Aragon-Finance (en desarrollo) y Calendar. Por pedido de David (2026-10-11), Calendar y Aragon-Finance no se muestran en la web.
+- Trabajo real: AiDEN (en producción), Aragon-Server (operando), portafolio de Leidy (publicado; David pidió mostrar la captura de su portada el 2026-10-11), Aragon-Finance (en desarrollo) y Calendar. Por pedido de David (2026-10-11), Calendar y Aragon-Finance no se muestran en la web.
 - No hay testimonios ni métricas de clientes confirmados. No se inventan.
 - Textos por confirmar con David: política de precios (precio cerrado tras el diagnóstico), pagos por etapas, horario de atención y acompañamiento posterior a la entrega.
 

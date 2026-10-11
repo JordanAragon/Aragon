@@ -62,6 +62,8 @@ export default function ParticleCanvas({ className, style, count, seed = 1, colo
 
     const measure = () => {
       const rect = canvas.getBoundingClientRect();
+      // Un lienzo oculto (sin tamaño) no tiene dónde acomodar figuras: se espera a que tenga.
+      if (rect.width < 2 || rect.height < 2) return;
       const dpr = Math.min(2, window.devicePixelRatio || 1);
       sim.resize(rect.width, rect.height);
       renderer.resize(rect.width, rect.height, dpr);

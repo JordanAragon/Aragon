@@ -1,6 +1,9 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import PageIntro, { CtaBand } from '../components/ui/page-intro';
+import NextChapter from '../components/ui/next-chapter';
+import ServiceGlyph from '../components/ui/service-glyph';
+import OrderStory from '../components/home/order-story';
 import { ArrowRight } from '../components/ui/icons';
 import { services } from '../data/services';
 
@@ -14,17 +17,23 @@ export default function ServicesPage() {
   return (
     <>
       <PageIntro
+        figure="servicios"
         label="servicios"
         title="Cuatro servicios, un mismo objetivo: que tu operación funcione en orden."
         lead="Casi siempre se combinan: una app para ordenar la información, automatizaciones para moverla, un agente para responder y la infraestructura que lo sostiene. Empezamos por lo que más te duele hoy."
       />
-      <section className="services-index paper" data-tone="paper" aria-label="Servicios">
+      {/* El mismo recorrido del inicio: quien llega por la barra ve cada servicio explicado con las piezas. */}
+      <OrderStory />
+      <section className="services-index paper" data-tone="paper" aria-label="Servicios" data-glyphs="on">
         <div className="shell">
           <ol className="service-rows">
             {services.map((s) => (
               <li key={s.slug}>
                 <Link href={`/servicios/${s.slug}`} className="service-row">
-                  <span className="service-row-index mono">{s.index}</span>
+                  <span className="service-row-index mono">
+                    <ServiceGlyph forma={s.forma} />
+                    {s.index}
+                  </span>
                   <span className="service-row-main">
                     <span className="service-row-verb mono">{s.verb.toLowerCase()}</span>
                     <span className="service-row-name">{s.name}</span>
@@ -53,6 +62,7 @@ export default function ServicesPage() {
         </div>
       </section>
       <CtaBand />
+      <NextChapter from="/servicios" />
     </>
   );
 }

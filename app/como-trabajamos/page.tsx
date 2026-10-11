@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import FaqList from '../components/ui/faq-list';
 import PageIntro, { CtaBand } from '../components/ui/page-intro';
+import NextChapter from '../components/ui/next-chapter';
 import ProcessTimeline from '../components/ui/process-timeline';
 import { faqs } from '../data/faq';
 import { principles } from '../data/process';
@@ -16,6 +17,7 @@ export default function HowWeWorkPage() {
   return (
     <>
       <PageIntro
+        figure="proceso"
         label="cómo trabajamos"
         title="Ves algo funcionando antes de comprometer el proyecto completo."
         lead="Cada fase termina con algo concreto que recibes. Así las decisiones se toman sobre algo que se puede tocar, no sobre un documento."
@@ -58,6 +60,7 @@ export default function HowWeWorkPage() {
         </div>
       </section>
       <CtaBand />
+      <NextChapter from="/como-trabajamos" />
     </>
   );
 }

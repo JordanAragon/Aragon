@@ -42,3 +42,18 @@ export const nav = [
   { label: 'Nosotros', href: '/nosotros' },
   { label: 'Preguntas', href: '/preguntas' },
 ];
+
+/**
+ * La narrativa del sitio en capítulos, en el mismo orden que el inicio al
+ * hacer scroll. Quien navega solo desde la barra recorre la misma historia:
+ * cada página termina invitando al capítulo siguiente.
+ */
+export const chapters = [
+  { href: '/', label: 'Inicio', title: 'Del desorden al sistema.', teaser: 'Qué le pasa a un negocio que crece con chats y hojas sueltas, y cómo se pone en orden.' },
+  { href: '/servicios', label: 'Servicios', title: 'Cuatro formas de poner tu operación en orden.', teaser: 'Apps web, automatización, agentes de IA e infraestructura, cada una con su demo.' },
+  { href: '/como-trabajamos', label: 'Cómo trabajamos', title: 'Ves algo funcionando antes de comprometer el proyecto.', teaser: 'Cuatro fases, cada una con algo concreto que recibes.' },
+  { href: '/trabajo', label: 'Trabajo', title: 'Lo que hemos construido, con su estado tal cual.', teaser: 'AiDEN, Aragon-Server y el portafolio de Leidy.' },
+  { href: '/nosotros', label: 'Nosotros', title: 'Un estudio pequeño a propósito.', teaser: 'Quien diseña tu sistema es quien lo construye y lo mantiene.' },
+  { href: '/preguntas', label: 'Preguntas', title: 'Lo que casi todos preguntan antes de empezar.', teaser: 'Costos, tiempos, código y datos, en lenguaje claro.' },
+  { href: '/contacto', label: 'Contacto', title: '¿Qué parte de tu operación debería estar hecha en software?', teaser: 'Una llamada de 30 minutos o tu caso por escrito.' },
+] as const;

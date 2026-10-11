@@ -2,7 +2,8 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import PageIntro, { CtaBand } from '../../components/ui/page-intro';
-import WorkVisual from '../../components/ui/work-visual';
+import NextChapter from '../../components/ui/next-chapter';
+import WorkShot from '../../components/ui/work-shot';
 import { ArrowRight, ArrowUpRight } from '../../components/ui/icons';
 import { services } from '../../data/services';
 import { getWorkItem, work } from '../../data/work';
@@ -41,7 +42,19 @@ export default async function CasePage({ params }: Params) {
       <section className="case night" data-tone="night" aria-label={`Caso ${item.title}`}>
         <div className="shell">
           <div className="case-visual registered">
-            <WorkVisual visual={item.visual} label={`Ilustración de ${item.title}`} />
+            <div className="case-window">
+              <div className="work-peek-bar" aria-hidden="true">
+                <span className="window-dots">
+                  <i />
+                  <i />
+                  <i />
+                </span>
+                <span className="work-peek-titles">
+                  <span>{item.bar}</span>
+                </span>
+              </div>
+              <WorkShot item={item} sizes="(max-width: 1400px) 94vw, 1320px" priority />
+            </div>
           </div>
           <dl className="case-meta">
             <div>
@@ -111,6 +124,7 @@ export default async function CasePage({ params }: Params) {
         </div>
       </section>
       <CtaBand />
+      <NextChapter from="/trabajo" />
     </>
   );
 }
