@@ -16,6 +16,12 @@ Rules:
 - `PRODUCT.md` solo cambia con hechos confirmados por David.
 - Antes de diseñar una sección o página nueva, revisa las plataformas de referencia del brain (`knowledge/diseno/plataformas-de-referencia-web.md` en David-AI).
 
+## Documentos y marca
+
+- La marca (símbolo A, Sora, escala noche → papel) vive en `marca/`, según el tablero del 2026-10-11 (`marca/referencias/tablero-de-marca.png`).
+- Todo informe, propuesta o documento PDF de Aragon sale de `marca/documentos/` (YAML → PDF) y se escribe con `marca/documentos/GUIA-DE-REDACCION.md`. Los documentos van en `docs/documentos/AAAA-MM-DD-<tema>/`.
+- Precio, pagos, garantía y acompañamiento no se escriben en una propuesta hasta que David los confirme.
+
 ## Verificación
 
 - Servidor de desarrollo: `npm run dev` → http://localhost:3000
