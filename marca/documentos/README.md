@@ -21,12 +21,13 @@ Ejemplo real: [`docs/documentos/2026-10-11-estado-del-sitio/documento.yaml`](../
 
 | Elemento | Regla |
 | --- | --- |
-| Portada | Noche `#0A0A0A` a sangre, muro con retícula y grano, rendija de luz vertical al 74 % del ancho. Logo horizontal blanco, tipo y código en mono, pastilla con la pieza, titular en Sora 600 (líneas anteriores en `#B3B3B3`, la última en blanco), resumen y 3–4 cifras separadas por líneas finas. Pie con «Preparado para» (propuestas) y «Preparado por». |
+| Portada | Tarjeta de noche `#0A0A0A` con esquinas redondeadas (7 mm) sobre papel, muro con retícula y grano, rendija de luz vertical al 74 % del ancho. Logo horizontal blanco, tipo y código en mono, pastilla con la pieza, titular en Sora 600 (líneas anteriores en `#B3B3B3`, la última en blanco), resumen y 3–4 cifras separadas por líneas finas. Pie con «Preparado para» (propuestas) y «Preparado por». |
 | Interior | Fondo blanco. Cabecera con el logo monocromo y la sección en mono. Número de sección en la pieza negra. |
 | Contraportada | La misma escena, símbolo grande, lema «Software a medida para negocios reales», siguiente paso y contacto. Se quita con `contraportada: false`. |
 | Tipografía | Sora (títulos y cifras), Inter (texto), JetBrains Mono (rótulos, códigos, encabezados de tabla y pie). |
 | Color | Solo la escala del tablero: noche, grafito `#454545`, gris `#9A9A9A`, línea `#E1E1DF`, papel `#F5F5F4`, blanco. La única calidez es la luz de la rendija. |
 | Estados | La pieza: llena, a medias, vacía, rombo o punteada, siempre con su palabra. |
+| Formas | Todo va redondeado, como las piezas del símbolo: 7 mm en la portada, 5 mm en la banda, 3,6 mm en tarjetas, tablas, avisos y cifras, 2,4 mm en los cuadros de sección, y pastilla completa en chips y barras. Nada de esquinas en ángulo recto. |
 | Pie | `ARAGON · <tipo> · <código>` y `página / total` (sin contar portada ni contraportada). |
 
 ## Esquema del YAML

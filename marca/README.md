@@ -37,6 +37,10 @@ Los SVG son una **vectorización a mano** del tablero (`herramientas/construir_l
 - **Inter** (SIL OFL): texto, documentación y contenido.
 - **JetBrains Mono** (SIL OFL): solo códigos, rótulos y datos.
 
+## Formas
+
+Las esquinas van redondeadas, como las piezas del símbolo. En los documentos: 7 mm en portadas, 5 mm en bandas, 3,6 mm en tarjetas, tablas y avisos, 2,4 mm en cuadros pequeños y pastilla completa en chips y barras.
+
 ## Aplicaciones
 
 - Documentos PDF (informes y propuestas): [`documentos/`](documentos/README.md).

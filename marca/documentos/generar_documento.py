@@ -86,7 +86,7 @@ def bloque(b: dict) -> str:
     if tipo == "tarjetas":
         n = b.get("columnas", 3)
         items = "".join(
-            f"<div class='tarjeta' style='border-top-color:{color(i.get('color'))}'>"
+            f"<div class='tarjeta' style='--pieza:{color(i.get('color'))}'>"
             + (f"<div class='mono etq'>{md(i['etiqueta'])}</div>" if i.get("etiqueta") else "")
             + f"<h4>{md(i['titulo'])}</h4>" + parrafos(i.get("texto"))
             + (lista(i["lista"]) if i.get("lista") else "") + "</div>"
@@ -147,7 +147,7 @@ def portada(d: dict) -> str:
     tipo = TIPOS.get(d.get("tipo", "informe"), "Documento")
     bloque_para = (f"<div><div class='mono'>Preparado para</div><div class='quien'>{md(para.get('nombre', ''))}</div><div class='donde'>{md(para.get('detalle', ''))}</div></div>"
                    if para else "")
-    return f"""<section class="portada"><div class="muro"></div><div class="rendija"></div><div class="suelo"></div>
+    return f"""<section class="portada"><div class="escena"><div class="muro"></div><div class="rendija"></div><div class="suelo"></div>
       <div class="capa">
         <div class="cabeza"><div><img class="logo" src="{uri(LOGO / 'logo-horizontal-blanco.svg')}"><div class="mono sub">{md(d.get('area', 'Software a medida para negocios reales'))}</div></div>
           <div class="mono meta">{md(tipo)} · {md(d.get('codigo', ''))}<br>{md(d.get('version', ''))} · {md(d.get('fecha', ''))}</div></div>
@@ -156,7 +156,7 @@ def portada(d: dict) -> str:
           {f'<div class="kpis" style="grid-template-columns:repeat({len(kpis)},1fr)">{k}</div>' if kpis else ''}</div>
         <div class="pie-portada">{bloque_para}<div><div class='mono'>Preparado por</div><div class="quien">{md(por.get('nombre', 'Aragon'))}</div><div class="donde">{md(por.get('detalle', ''))}</div></div>
           <img class="iso" src="{uri(LOGO / 'simbolo-blanco.svg')}"></div>
-      </div></section>"""
+      </div></div></section>"""
 
 
 def contraportada(d: dict) -> str:
@@ -165,11 +165,11 @@ def contraportada(d: dict) -> str:
     paso = (f"<div class='paso'><div class='mono'>Siguiente paso</div><p>{md(sig)}</p></div>" if sig else "")
     filas = "".join(f"<div class='fila'><span class='mono'>{md(k)}</span><span>{md(v)}</span></div>"
                     for k, v in (("Correo", c.get("correo")), ("Agenda", c.get("agenda")), ("WhatsApp", c.get("whatsapp")), ("Web", c.get("web")), ("Desde", c.get("lugar"))) if v)
-    return f"""<section class="contra"><div class="muro"></div><div class="rendija"></div><div class="suelo"></div>
+    return f"""<section class="contra"><div class="escena"><div class="muro"></div><div class="rendija"></div><div class="suelo"></div>
       <div class="capa"><img class="grande" src="{uri(LOGO / 'simbolo-blanco.svg')}">
         <div class="lema">Software a medida<br><span>para negocios reales.</span></div>
         {paso}<div class="contacto">{filas}</div>
-        <div class="mono cierre">Ideas · Procesos · Personas · Sistemas</div></div></section>"""
+        <div class="mono cierre">Ideas · Procesos · Personas · Sistemas</div></div></div></section>"""
 
 
 def secciones(d: dict) -> str:
