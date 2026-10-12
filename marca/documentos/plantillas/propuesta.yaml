@@ -17,7 +17,7 @@ kpis:
   - {valor: "4", etiqueta: fases, detalle: con entregas que pruebas}
   - {valor: "‹$0›", etiqueta: inversión, detalle: "‹COP, precio cerrado›"}
 preparado_para: {nombre: "‹Empresa›", detalle: "‹Nombre de contacto · cargo›"}
-preparado_por: {nombre: Aragon, detalle: Jordan David Micolta Aragón}
+preparado_por: {nombre: Aragon, detalle: Jordan David Aragon}
 siguiente_paso: "‹Qué hace el cliente para empezar y para cuándo. Ej.: aprobar esta propuesta para agendar la sesión de diagnóstico.›"
 secciones:
   - titulo: La propuesta en una página

@@ -44,7 +44,7 @@ resumen: Una a tres frases con la conclusión.
 kpis:                                # 3 o 4
   - {valor: "23", etiqueta: rutas generadas, detalle: build del 11 de octubre}
 preparado_para: {nombre: Empresa, detalle: Contacto · cargo}   # opcional (propuestas)
-preparado_por: {nombre: Aragon, detalle: Jordan David Micolta Aragón}
+preparado_por: {nombre: Aragon, detalle: Jordan David Aragon}
 siguiente_paso: "Texto de la contraportada."     # opcional
 contacto: {whatsapp: ..., web: ...}  # opcional; por defecto correo, agenda y lugar del sitio
 contraportada: true

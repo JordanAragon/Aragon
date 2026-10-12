@@ -21,6 +21,7 @@ Rules:
 - La marca (símbolo A, Sora, escala noche → papel) vive en `marca/`, según el tablero del 2026-10-11 (`marca/referencias/tablero-de-marca.png`).
 - Todo informe, propuesta o documento PDF de Aragon sale de `marca/documentos/` (YAML → PDF) y se escribe con `marca/documentos/GUIA-DE-REDACCION.md`. Los documentos van en `docs/documentos/AAAA-MM-DD-<tema>/`.
 - Precio, pagos, garantía y acompañamiento no se escriben en una propuesta hasta que David los confirme.
+- En documentos, el nombre de David es `Jordan David Aragon` (o «Jordan Aragon» / «David Aragon»), nunca «Micolta». Regla de David (2026-10-12). No aplica a la firma de los commits, que sigue abajo.
 
 ## Verificación
 

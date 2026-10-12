@@ -142,7 +142,7 @@ def portada(d: dict) -> str:
     h1 = "".join(f"<span>{md(l)}</span>" for l in lineas[:-1]) + f"<span class='resalte'>{md(lineas[-1])}</span>"
     kpis = d.get("kpis", [])
     k = "".join(f"<div class='kpi'><div class='v'>{md(x['valor'])}</div><div class='e'>{md(x['etiqueta'])}</div><div class='d'>{md(x.get('detalle', ''))}</div></div>" for x in kpis)
-    por = d.get("preparado_por", {"nombre": "Aragon", "detalle": "Jordan David Micolta Aragón"})
+    por = d.get("preparado_por", {"nombre": "Aragon", "detalle": "Jordan David Aragon"})
     para = d.get("preparado_para")
     tipo = TIPOS.get(d.get("tipo", "informe"), "Documento")
     bloque_para = (f"<div><div class='mono'>Preparado para</div><div class='quien'>{md(para.get('nombre', ''))}</div><div class='donde'>{md(para.get('detalle', ''))}</div></div>"

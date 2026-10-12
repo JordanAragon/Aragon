@@ -13,7 +13,7 @@ kpis:
   - {valor: "4", etiqueta: servicios con demo, detalle: cada uno con su página}
   - {valor: "16", etiqueta: preguntas respondidas, detalle: en cinco temas}
   - {valor: "0", etiqueta: desbordes a 390 px, detalle: en 16 rutas revisadas}
-preparado_por: {nombre: Aragon, detalle: Jordan David Micolta Aragón}
+preparado_por: {nombre: Aragon, detalle: Jordan David Aragon}
 siguiente_paso: "Confirmar los cuatro textos de la sección 03 y decidir si la web usa el símbolo A y Sora."
 secciones:
   - titulo: La respuesta corta

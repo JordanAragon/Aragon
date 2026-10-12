@@ -2,6 +2,10 @@
 
 Un documento de Aragon lo lee alguien con poco tiempo: el dueño de un negocio, un cliente o David. En un minuto sabe qué pasa, cuánto cuesta o qué falta, y qué tiene que hacer.
 
+## El nombre de David
+
+En todo documento de Aragon su nombre se escribe **Jordan David Aragon** (o «Jordan Aragon» / «David Aragon»). Nunca «Micolta». Regla de David (2026-10-12). La firma de los commits es aparte y no cambia.
+
 ## Cinco reglas
 
 1. **La conclusión primero.** La portada y el primer párrafo de cada sección dicen el resultado, no el tema. «El sitio funciona; falta decidir y publicar», no «Análisis del estado del sitio».
