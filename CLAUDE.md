@@ -15,6 +15,7 @@ Rules:
 - `ui-ux-pro-max` es solo consulta. No ejecutes `--persist`.
 - `PRODUCT.md` solo cambia con hechos confirmados por David.
 - Antes de diseñar una sección o página nueva, revisa las plataformas de referencia del brain (`knowledge/diseno/plataformas-de-referencia-web.md` en David-AI).
+- `design-taste-frontend` (taste-skill) es solo consulta: sus direcciones (`draw.mjs`) e imágenes con licencia libre (`assets.mjs`) son insumo para `/impeccable shape`; no construye la página ni decide la dirección. Para el código aplica `vercel-react-best-practices`, `vercel-composition-patterns` y `vercel-react-view-transitions`.
 
 ## Verificación
 
