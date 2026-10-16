@@ -1,0 +1,102 @@
+tipo: informe
+codigo: AR-INF-2026-001
+version: Borrador 1
+fecha: 11 de octubre de 2026
+area: Software a medida para negocios reales
+etiqueta: Estado del sitio · octubre 2026
+titulo: [El sitio nuevo de Aragon, ya está en producción.]
+resumen: >-
+  El rediseño de agencia se integró en main (PR 14, 15 y 16) y Vercel lo desplegó a producción el 11 de octubre.
+  Quedan cuatro textos comerciales por confirmar, una prueba del campo de partículas con GPU real y decidir si la web adopta la marca nueva.
+kpis:
+  - {valor: "21", etiqueta: rutas generadas, detalle: build del 11 de octubre}
+  - {valor: "4", etiqueta: servicios con demo, detalle: cada uno con su página}
+  - {valor: "16", etiqueta: preguntas respondidas, detalle: en cinco temas}
+  - {valor: "0", etiqueta: desbordes a 390 px, detalle: en 16 rutas revisadas}
+preparado_por: {nombre: Aragon, detalle: Jordan David Aragon}
+siguiente_paso: "Confirmar los cuatro textos de la sección 03 y decidir si la web usa el símbolo A y Sora."
+secciones:
+  - titulo: La respuesta corta
+    subtitulo: Qué hay, qué falta y qué se recomienda.
+    encabezado: Resumen
+    bloques:
+      - tipo: banda
+        rotulo: Conclusión
+        titulo: El sitio está publicado; faltan decisiones, no trabajo.
+        texto: >-
+          Las ocho páginas, los cuatro servicios y los tres proyectos con captura real están en producción.
+          Lo pendiente son **decisiones tuyas** (textos y marca) y **una prueba** en un equipo con tarjeta gráfica.
+      - tipo: tabla
+        titulo: De un vistazo
+        columnas: [Parte, Estado, Qué falta]
+        anchos: [30%, 20%, 50%]
+        filas:
+          - ["Publicación", "[[ok:Listo]]", "Nada. `main` en producción en Vercel (commit `a1c8cb4`)."]
+          - ["Páginas y contenido", "[[ok:Listo]]", "Nada. Ocho páginas, cuatro servicios, tres proyectos y 16 preguntas."]
+          - ["Build y calidad", "[[ok:Listo]]", "Nada. Build en verde; sin desbordes ni errores propios en consola."]
+          - ["Campo de partículas", "[[alerta:Parcial]]", "Probar WebGPU con una GPU real. El respaldo en Canvas 2D funciona."]
+          - ["Textos comerciales", "[[info:Decisión]]", "Confirmar precio cerrado, pagos por etapas, horario y acompañamiento."]
+          - ["Marca en la web", "[[info:Decisión]]", "La web usa el cuadrado e Inter Tight; el tablero define el símbolo A y Sora."]
+      - tipo: aviso
+        estilo: marca
+        titulo: Nueva identidad de marca
+        texto: >-
+          El tablero del 11 de octubre define el símbolo A, la tipografía Sora y la escala de grises. Los documentos ya los usan.
+          Llevarlos a la web cambia la marca, el hero y la precarga, por eso es una decisión aparte.
+
+  - titulo: Lo que tiene el sitio
+    subtitulo: Cada parte responde una pregunta de quien llega.
+    encabezado: Contenido
+    bloques:
+      - tipo: tarjetas
+        columnas: 3
+        items:
+          - etiqueta: Inicio
+            titulo: Del desorden al sistema
+            texto: Cinco paradas donde las mismas piezas forman cada servicio. Cada animación explica algo.
+          - etiqueta: Servicios
+            titulo: Cuatro servicios con demo
+            texto: Pedidos que avanzan, un flujo con su registro, un agente que responde y un servidor con latidos.
+          - etiqueta: Confianza
+            titulo: Trabajo real, con captura
+            texto: AiDEN, Aragon-Server y el portafolio de Leidy. Sin testimonios ni cifras que no existan.
+      - tipo: tabla
+        titulo: Páginas
+        columnas: [Ruta, Qué responde]
+        anchos: [32%, 68%]
+        filas:
+          - ["`/`", "Qué hace Aragon y por qué confiar."]
+          - ["`/servicios` y `/servicios/<slug>`", "Qué construimos, señales, ejemplos, qué incluye y preguntas de cada servicio."]
+          - ["`/como-trabajamos`", "Las cuatro fases y lo que pones y recibes en cada una."]
+          - ["`/trabajo` y `/trabajo/<slug>`", "Tres proyectos reales con problema, solución, decisiones y captura."]
+          - ["`/nosotros`", "Quién está detrás y sus principios."]
+          - ["`/preguntas`", "16 preguntas con búsqueda y temas."]
+          - ["`/contacto`", "Agenda en Cal.com y un formulario que arma el mensaje."]
+          - ["`/privacidad`", "Tratamiento de datos (Ley 1581 de 2012)."]
+
+  - titulo: Lo que falta
+    subtitulo: En orden, con quién lo hace.
+    encabezado: Plan
+    bloques:
+      - tipo: tabla
+        columnas: ["#", Qué, Quién, Cómo se sabe que quedó]
+        anchos: [6%, 44%, 14%, 36%]
+        filas:
+          - ["1", "Confirmar los textos de precio cerrado, pagos por etapas, horario y acompañamiento", "David", "`PRODUCT.md` sin textos por confirmar"]
+          - ["2", "Abrir el sitio en un equipo con GPU y revisar el campo de partículas", "David", "El lienzo marcado `data-field-gpu` dibuja sin errores"]
+          - ["3", "Decidir si la web adopta el símbolo A y Sora", "David", "Decisión registrada en el brain"]
+          - ["4", "Si se aprueba, llevar la marca a la web", "Aragon", "Revisión a 375, 768 y 1440 px, sin errores"]
+      - tipo: aviso
+        estilo: info
+        titulo: Fotografías de ElevenLabs
+        texto: Las cinco escenas generadas no están en el sitio; la sección de trabajo usa capturas reales. Decidir si se usan o se descartan.
+
+  - titulo: Fuentes y método
+    encabezado: Fuentes
+    nueva_pagina: false
+    bloques:
+      - tipo: fuentes
+        texto: >-
+          Build de producción del repo `JordanAragon/Aragon` sobre `main` (`a1c8cb4`, 11 de octubre de 2026) y estado del despliegue de producción en Vercel por la API de GitHub.
+          Recorrido en Chromium sin interfaz de 16 rutas a 1440 y 390 px; el único error de consola fue la agenda de Cal.com, bloqueada por la red del entorno de prueba.
+          Conteos tomados de `app/data/` (servicios, trabajo y preguntas). WebGPU no se verificó con GPU real.
