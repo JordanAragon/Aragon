@@ -1,0 +1,124 @@
+# Plantilla de propuesta de Aragon. Copiar a docs/documentos/AAAA-MM-DD-<cliente>/documento.yaml
+# y reemplazar todo lo que está entre ‹ ›. No se entrega con ningún ‹ › sin llenar.
+# Las fases salen de app/data/process.ts (lo mismo que publica el sitio).
+# POR CONFIRMAR CON DAVID antes de la primera propuesta real: precio cerrado tras el diagnóstico,
+# pagos por etapas, garantía y acompañamiento posterior (ver PRODUCT.md).
+tipo: propuesta
+codigo: AR-PT-2026-‹000›
+version: Borrador 1
+fecha: ‹día› de ‹mes› de 2026
+area: Software a medida para negocios reales
+etiqueta: Propuesta · ‹nombre del proyecto›
+titulo: [‹Lo que el cliente gana›, ‹en dos líneas›, ‹con el resultado al final.›]
+resumen: >-
+  ‹Una a tres frases: qué se construye, para quién y qué cambia en su operación.›
+kpis:
+  - {valor: "‹0›", etiqueta: semanas, detalle: del inicio a producción}
+  - {valor: "4", etiqueta: fases, detalle: con entregas que pruebas}
+  - {valor: "‹$0›", etiqueta: inversión, detalle: "‹COP, precio cerrado›"}
+preparado_para: {nombre: "‹Empresa›", detalle: "‹Nombre de contacto · cargo›"}
+preparado_por: {nombre: Aragon, detalle: Jordan David Aragon}
+siguiente_paso: "‹Qué hace el cliente para empezar y para cuándo. Ej.: aprobar esta propuesta para agendar la sesión de diagnóstico.›"
+secciones:
+  - titulo: La propuesta en una página
+    subtitulo: Qué construimos, en cuánto tiempo y por cuánto.
+    encabezado: Resumen
+    bloques:
+      - tipo: banda
+        rotulo: Qué vamos a construir
+        titulo: "‹Nombre del sistema: qué hace, en una frase›"
+        texto: >-
+          ‹El problema de hoy en una frase y cómo se ve el día a día cuando el sistema esté funcionando.›
+      - tipo: tabla
+        titulo: De un vistazo
+        columnas: [Parte, Qué incluye]
+        anchos: [28%, 72%]
+        filas:
+          - ["Alcance", "‹Módulos o flujos principales›"]
+          - ["Plazo", "‹0› semanas, en 4 fases"]
+          - ["Inversión", "‹$0› COP"]
+          - ["Lo que queda a tu nombre", "Código, datos, accesos y documentación"]
+
+  - titulo: Lo que entendimos de tu negocio
+    subtitulo: Así funciona hoy y esto es lo que se quiere cambiar.
+    encabezado: Diagnóstico
+    bloques:
+      - tipo: tarjetas
+        columnas: 3
+        items:
+          - {etiqueta: Hoy, titulo: "‹Cómo se hace hoy›", texto: "‹Herramientas, personas y pasos reales.›", color: grafito}
+          - {etiqueta: Lo que cuesta, titulo: "‹Dónde se pierde›", texto: "‹Tiempo, errores o ventas perdidas, con la cifra si el cliente la dio.›", color: gris}
+          - {etiqueta: Lo que cambia, titulo: "‹Cómo se verá›", texto: "‹El mismo proceso con el sistema funcionando.›"}
+
+  - titulo: Lo que vamos a construir
+    subtitulo: Cada parte con lo que hace. Lo que no está aquí no está incluido.
+    encabezado: Alcance
+    nueva_pagina: false
+    bloques:
+      - tipo: tabla
+        columnas: [Parte, Qué hace, Incluido]
+        anchos: [24%, 58%, 18%]
+        filas:
+          - ["‹Módulo›", "‹Qué hace, en palabras del cliente›", "[[ok:Incluido]]"]
+          - ["‹Módulo›", "‹Qué hace›", "[[ok:Incluido]]"]
+          - ["‹Opcional›", "‹Qué haría›", "[[info:Opcional]]"]
+      - tipo: aviso
+        estilo: info
+        titulo: Fuera de esta propuesta
+        lista:
+          - "‹Lo que el cliente podría suponer incluido y no lo está›"
+
+  - titulo: Cómo trabajamos
+    subtitulo: Cuatro fases. En cada una sabes qué pones y qué recibes.
+    encabezado: Proceso
+    bloques:
+      - tipo: fases
+        items:
+          - nombre: Diagnóstico
+            duracion: "‹0› semanas"
+            texto: Entendemos cómo trabaja tu negocio hoy.
+            necesitamos: [Acceso a quien conoce el proceso, "Ejemplos reales: hojas, chats, formatos"]
+            entregables: [Mapa del proceso actual, Qué conviene construir primero y por qué]
+          - nombre: Prototipo
+            duracion: "‹0› semanas"
+            texto: Decides sobre algo que puedes tocar.
+            necesitamos: [Una o dos sesiones de revisión]
+            entregables: [Prototipo navegable, Diseño de interfaz aprobado, Plan de entregas]
+          - nombre: Construcción
+            duracion: "‹0› semanas"
+            texto: Entregas cortas que pruebas mientras avanzan.
+            necesitamos: [Pruebas de cada entrega, Datos reales para cargar]
+            entregables: [Avances en línea, Código en un repositorio a tu nombre]
+          - nombre: Producción
+            duracion: "‹0› semanas"
+            texto: Lo ponemos a correr y lo seguimos cuidando.
+            necesitamos: [Un responsable del lado de tu negocio]
+            entregables: [Sistema en producción, Monitoreo y respaldos, Documentación y accesos a tu nombre]
+
+  - titulo: Inversión y forma de pago
+    subtitulo: Precio cerrado para el alcance de la sección 03.
+    encabezado: Inversión
+    bloques:
+      - tipo: tabla
+        columnas: [Fase, Qué se paga, Valor]
+        anchos: [26%, 50%, 24%]
+        filas:
+          - ["Diagnóstico y prototipo", "‹Al aprobar la propuesta›", "‹$0›"]
+          - ["Construcción", "‹Por entregas›", "‹$0›"]
+          - ["Producción", "‹Al quedar en producción›", "‹$0›"]
+        total: ["**Total**", "", "**‹$0› COP**"]
+        nota: "‹Valores en pesos colombianos. Impuestos: ‹incluidos / no incluidos›. Vigencia de la propuesta: ‹30› días.›"
+      - tipo: aviso
+        estilo: ok
+        titulo: Lo que es tuyo
+        lista:
+          - El código, los datos y los accesos quedan a tu nombre.
+          - "Puedes seguir con nosotros o sin nosotros: la documentación es tuya."
+
+  - titulo: Fuentes y supuestos
+    encabezado: Supuestos
+    nueva_pagina: false
+    bloques:
+      - tipo: fuentes
+        texto: >-
+          ‹De dónde sale lo que dice esta propuesta: sesión de diagnóstico del ‹fecha›, documentos que compartió el cliente, supuestos de plazo y de datos.›

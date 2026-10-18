@@ -1,0 +1,178 @@
+/* Documentos PDF de Aragon — A4 vertical. Lo usa generar_documento.py.
+   Identidad: tablero de marca del 2026-10-11 (marca/referencias/tablero-de-marca.png).
+   Monocromo: noche → papel. Formas redondeadas, como las piezas del símbolo.
+   El estado se lee en la pieza (llena, a medias o vacía), no en el color. */
+@page { size: A4; margin: 0 }
+* { box-sizing: border-box; margin: 0; padding: 0 }
+:root {
+  --noche: #0A0A0A; --noche-2: #111111; --elevada: #181818; --linea-oscura: #242424;
+  --grafito: #454545; --gris: #9A9A9A; --terciario: #B3B3B3; --linea: #E6E6E3;
+  --papel: #F5F5F4; --blanco: #FFFFFF; --texto: #1C1C1C; --suave: #5E5E5E;
+  --r-xs: 1.4mm; --r-s: 2.4mm; --r-m: 3.6mm; --r-l: 5mm; --r-xl: 7mm; --r-full: 20mm;
+  --sombra: 0 .4mm 1.4mm rgba(10,10,10,.045);
+}
+html { -webkit-print-color-adjust: exact; print-color-adjust: exact }
+body { font-family: 'Inter', sans-serif; color: var(--texto); font-size: 8.7pt; line-height: 1.62; background: white; font-feature-settings: 'ss01', 'cv11' }
+b, strong { font-weight: 650; color: var(--noche) }
+code { font-family: 'JetBrains Mono', monospace; font-size: .84em; background: var(--papel); border: 1px solid var(--linea); padding: .2mm 1.3mm; border-radius: var(--r-xs) }
+.mono { font-family: 'JetBrains Mono', monospace; letter-spacing: .18em; text-transform: uppercase; font-size: 6.2pt; font-weight: 500 }
+
+/* ---------- Escena: tarjeta de noche con muro, rendija de luz y suelo ---------- */
+.portada, .contra { width: 210mm; height: 297mm; padding: 7mm; background: var(--papel); page-break-after: always }
+.escena { position: relative; height: 100%; border-radius: var(--r-xl); overflow: hidden; background: var(--noche); color: var(--blanco) }
+.muro { position: absolute; inset: 0;
+  background:
+    linear-gradient(90deg, rgba(255,255,255,.03) 0 1px, transparent 1px) 0 0 / 34mm 100%,
+    linear-gradient(0deg, rgba(255,255,255,.022) 0 1px, transparent 1px) 0 0 / 100% 34mm,
+    linear-gradient(100deg, #131313 0%, #0e0e0e 46%, #181818 70%, #0a0a0a 74.2%, #070707 100%);
+}
+.muro::after { content: ''; position: absolute; inset: 0; opacity: .5; mix-blend-mode: screen;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E") }
+.rendija { position: absolute; top: 0; bottom: 0; left: 74%; width: .7mm;
+  background: linear-gradient(180deg, rgba(255,246,232,0) 0%, rgba(255,246,232,.7) 22%, #fffaf2 52%, rgba(255,246,232,.8) 78%, rgba(255,246,232,.18) 100%);
+  box-shadow: 0 0 2.5mm .6mm rgba(255,240,220,.4), 0 0 14mm 4mm rgba(255,236,210,.12), 0 0 42mm 14mm rgba(255,236,210,.05) }
+.suelo { position: absolute; left: 0; right: 0; bottom: 0; height: 26%;
+  background: radial-gradient(60mm 18mm at 74% 100%, rgba(255,240,220,.10), transparent 70%), linear-gradient(180deg, transparent, rgba(0,0,0,.5)) }
+.capa { position: relative; height: 100%; padding: 13mm 13mm 11mm; display: flex; flex-direction: column }
+
+/* ---------- Portada ---------- */
+.portada .cabeza { display: flex; justify-content: space-between; align-items: flex-start }
+.portada .logo { height: 8mm; display: block }
+.portada .cabeza .sub { color: var(--gris); margin-top: 3mm }
+.portada .meta { text-align: right; color: var(--gris); line-height: 2 }
+.portada .centro { margin-top: auto; margin-bottom: 11mm }
+.pastilla { display: inline-flex; align-items: center; gap: 2.2mm; border: 1px solid rgba(255,255,255,.2); color: #eaeae8; border-radius: var(--r-full); padding: 1.8mm 4.2mm 1.8mm 3.2mm; margin-bottom: 8mm; background: rgba(255,255,255,.05) }
+.pastilla i { width: 1.7mm; height: 1.7mm; border-radius: .5mm; background: var(--blanco); display: block }
+.portada h1 { max-width: 142mm; font-family: 'Sora', sans-serif; font-weight: 600; font-size: 33pt; line-height: 1.08; letter-spacing: -.03em; color: var(--terciario) }
+.portada h1 span { display: block }
+.portada h1 .resalte { color: var(--blanco) }
+.portada .resumen { margin-top: 7mm; max-width: 118mm; font-size: 9.8pt; line-height: 1.62; color: #c8c8c6 }
+.portada .kpis { margin-top: 10mm; display: grid; gap: 3mm }
+.portada .kpi { border: 1px solid rgba(255,255,255,.1); background: rgba(255,255,255,.04); border-radius: var(--r-m); padding: 3.6mm 3.6mm }
+.portada .kpi .v { font-family: 'Sora'; font-weight: 600; font-size: 16pt; letter-spacing: -.025em; color: var(--blanco) }
+.portada .kpi .e { font-size: 7.5pt; color: #d6d6d4; margin-top: .9mm; line-height: 1.4 }
+.portada .kpi .d { font-size: 6.7pt; color: #8a8a88; line-height: 1.4 }
+.portada .pie-portada { border-top: 1px solid rgba(255,255,255,.12); padding-top: 4.5mm; display: flex; gap: 14mm; align-items: flex-end }
+.portada .pie-portada .mono { color: #8a8a88 }
+.portada .pie-portada .quien, .contra .quien { font-family: 'Sora'; font-weight: 600; font-size: 10.5pt; color: var(--blanco); margin-top: 1.4mm }
+.portada .pie-portada .donde { font-size: 7.2pt; color: #8a8a88 }
+.portada .pie-portada .iso { height: 10mm; margin-left: auto; opacity: .95 }
+
+/* ---------- Contraportada ---------- */
+.contra .capa { justify-content: flex-end; padding-bottom: 15mm }
+.contra .grande { position: absolute; top: 30mm; left: 13mm; width: 66mm; opacity: .96 }
+.contra .lema { font-family: 'Sora'; font-weight: 600; font-size: 25pt; line-height: 1.14; letter-spacing: -.025em; color: var(--blanco); max-width: 125mm }
+.contra .lema span { color: var(--terciario) }
+.contra .paso { margin-top: 9mm; max-width: 112mm; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1); border-radius: var(--r-m); padding: 4mm 5mm }
+.contra .paso .mono { color: var(--gris); margin-bottom: 1.4mm }
+.contra .paso p { color: #dededc; font-size: 9.2pt }
+.contra .contacto { margin-top: 7mm; border: 1px solid rgba(255,255,255,.1); border-radius: var(--r-m); max-width: 125mm; overflow: hidden }
+.contra .fila { display: grid; grid-template-columns: 26mm 1fr; padding: 2.6mm 5mm; font-size: 8.8pt; color: #e6e6e4 }
+.contra .fila + .fila { border-top: 1px solid rgba(255,255,255,.07) }
+.contra .fila .mono { color: #8a8a88; padding-top: .7mm }
+.contra .cierre { margin-top: 8mm; color: #6e6e6c }
+
+/* ---------- Páginas interiores ---------- */
+.seccion { padding: 4mm 15mm 0 }
+.seccion.continua { padding-top: 7mm }
+.seccion.nueva { page-break-before: always }
+.cabecera { display: flex; justify-content: space-between; align-items: center; padding-bottom: 3mm; border-bottom: 1px solid var(--linea); margin-bottom: 8mm }
+.cabecera img { height: 4.6mm }
+.cabecera .mono { color: var(--suave) }
+.titulo-seccion { display: flex; gap: 4mm; align-items: flex-start; margin-bottom: 6mm }
+.numero { flex: none; width: 7.6mm; height: 7.6mm; border-radius: var(--r-s); background: var(--noche); color: var(--blanco); font-family: 'JetBrains Mono'; font-weight: 600; font-size: 7pt; display: flex; align-items: center; justify-content: center; margin-top: .4mm }
+.titulo-seccion h2 { font-family: 'Sora'; font-weight: 600; font-size: 15.5pt; line-height: 1.2; color: var(--noche); letter-spacing: -.02em }
+.titulo-seccion p { color: var(--suave); font-size: 8.6pt; margin-top: 1mm }
+.bloque { margin-bottom: 6mm; break-inside: avoid }
+.bloque.partible { break-inside: auto }
+h3 { font-family: 'Sora'; font-weight: 600; font-size: 10.2pt; color: var(--noche); margin-bottom: 2mm; letter-spacing: -.01em }
+h4 { font-family: 'Sora'; font-weight: 600; font-size: 9.4pt; color: var(--noche); margin-bottom: 1.4mm; letter-spacing: -.01em }
+p + p { margin-top: 2.2mm }
+
+/* Tarjetas */
+.tarjetas { display: grid; gap: 3.5mm }
+.tarjeta { position: relative; border: 1px solid var(--linea); border-radius: var(--r-m); padding: 5mm 4.2mm 4mm; background: white; box-shadow: var(--sombra); break-inside: avoid; overflow: hidden }
+.tarjeta::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1.1mm; background: var(--pieza, var(--noche)); border-radius: var(--r-m) var(--r-m) 0 0 }
+.tarjeta .etq { color: var(--suave); margin-bottom: 1.4mm }
+.tarjeta p, .tarjeta li { font-size: 8pt; color: #333 }
+
+/* La pieza: llena = listo, a medias = parcial, vacía = falta, rombo = decisión, punteada = fuera */
+.chip { display: inline-flex; align-items: center; gap: 1.4mm; font-family: 'JetBrains Mono'; font-size: 5.9pt; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; padding: .7mm 2.4mm .7mm 1.9mm; white-space: nowrap; border: 1px solid var(--linea); border-radius: var(--r-full); background: white; color: var(--noche); vertical-align: 1px }
+.chip i, .aviso .t i { display: inline-block; width: 1.8mm; height: 1.8mm; flex: none; border: 1px solid var(--noche); border-radius: .5mm }
+.chip.ok { background: var(--noche); color: white; border-color: var(--noche) } .chip.ok i { background: white; border-color: white }
+.chip.alerta { background: var(--papel) } .chip.alerta i, .aviso.alerta .t i { background: linear-gradient(90deg, var(--noche) 50%, transparent 50%) }
+.chip.critico { border: 1.3px solid var(--noche); font-weight: 700 } .chip.critico i { background: white; border-width: 1.3px }
+.chip.info i, .aviso.info .t i { transform: rotate(45deg) scale(.82); border-radius: .3mm }
+.chip.neutro { color: #7a7a78; border-style: dashed } .chip.neutro i { border-style: dashed; border-color: #7a7a78 }
+
+/* Avisos */
+.aviso { position: relative; border: 1px solid var(--linea); border-radius: var(--r-m); background: var(--papel); padding: 4.2mm 5mm 4.2mm 6.5mm; break-inside: avoid; overflow: hidden }
+.aviso::before { content: ''; position: absolute; top: 0; bottom: 0; left: 0; width: 1.1mm; background: var(--noche) }
+.aviso .t { display: flex; align-items: center; gap: 2.2mm; font-family: 'Sora'; font-weight: 600; font-size: 9pt; color: var(--noche); margin-bottom: 1.4mm }
+.aviso.ok .t i { background: var(--noche) }
+.aviso.alerta::before { background: repeating-linear-gradient(180deg, var(--noche) 0 2mm, transparent 2mm 3.2mm) }
+.aviso.critico { background: var(--noche); color: #d9d9d7; border-color: var(--noche) }
+.aviso.critico::before { background: white }
+.aviso.critico .t, .aviso.critico b { color: white } .aviso.critico .t i { border-color: white } .aviso.critico code { background: #1d1d1d; border-color: #333; color: #eee }
+.aviso.critico ul.flechas li::before { color: white }
+.aviso.info { background: white } .aviso.info::before { background: var(--grafito) }
+.aviso.marca::before { background: var(--gris) }
+.aviso.marca .t i { border: 0; border-radius: 0; width: 3.6mm; height: 1.9mm; background: url("../logo/simbolo.svg") center / contain no-repeat }
+ul.flechas { list-style: none; margin-top: 1.2mm } ul.flechas li { padding-left: 3.8mm; position: relative; margin-top: .8mm }
+ul.flechas li::before { content: '→'; position: absolute; left: 0; font-weight: 600; color: var(--noche) }
+
+/* Banda oscura con la rendija de luz */
+.banda { position: relative; overflow: hidden; border-radius: var(--r-l); background: var(--noche); color: #cfcfcd; padding: 7mm 7.5mm; padding-right: 30mm; break-inside: avoid }
+.banda .rendija { left: auto; right: 15mm; width: .5mm }
+.banda .mono { color: var(--gris); margin-bottom: 2.2mm }
+.banda h3 { color: white; font-size: 12.5pt; margin-bottom: 2.4mm; letter-spacing: -.015em }
+.banda b { color: white }
+.banda ul.lista li::before { background: white }
+
+/* Tablas */
+table { width: 100%; border-collapse: separate; border-spacing: 0; border: 1px solid var(--linea); border-radius: var(--r-m); overflow: hidden; box-shadow: var(--sombra) }
+thead th { background: var(--noche); color: white; font-family: 'JetBrains Mono'; font-weight: 500; font-size: 6pt; letter-spacing: .14em; text-transform: uppercase; text-align: left; padding: 2.8mm 3.4mm }
+tbody td { padding: 2.8mm 3.4mm; border-top: 1px solid var(--linea); vertical-align: top; font-size: 8pt }
+tbody tr { break-inside: avoid }
+tbody tr:nth-child(even) td { background: #fafaf9 }
+tfoot td { padding: 3mm 3.4mm; background: var(--noche); color: white; font-weight: 650 }
+tfoot b { color: white }
+.nota-tabla { font-size: 7pt; color: var(--suave); margin-top: 1.8mm; padding: 0 1mm }
+
+/* KPIs interiores */
+.kpis-int { display: grid; gap: 3.5mm }
+.kpis-int .k { border: 1px solid var(--linea); border-radius: var(--r-m); background: var(--papel); padding: 4mm 4.2mm }
+.kpis-int .v { font-family: 'Sora'; font-weight: 600; font-size: 18pt; line-height: 1.1; letter-spacing: -.025em; color: var(--noche) }
+.kpis-int .e { font-size: 7.7pt; font-weight: 600; margin-top: 1mm; color: var(--noche) } .kpis-int .d { font-size: 6.9pt; color: var(--suave) }
+
+/* Fases: el proceso en piezas que se suman */
+.fases { display: grid; gap: 4mm }
+.fase { border: 1px solid var(--linea); border-radius: var(--r-m); padding: 4mm 4.2mm; background: white; box-shadow: var(--sombra) }
+.fase-cab { display: flex; align-items: center; gap: 2.2mm; margin-bottom: 2.8mm }
+.fase-cab .cuadro { width: 7.2mm; height: 7.2mm; border-radius: var(--r-s); background: var(--noche); color: white; font-family: 'JetBrains Mono'; font-size: 6.6pt; font-weight: 600; display: flex; align-items: center; justify-content: center; flex: none }
+.fase-cab .linea { flex: 1; height: 1px; background: var(--linea) }
+.fase:last-child .fase-cab .linea { background: linear-gradient(90deg, var(--linea), transparent) }
+.fase .dur { color: var(--suave); margin-bottom: 1mm }
+.fase p, .fase li { font-size: 7.9pt; color: #333 }
+.fase .sub { color: var(--suave); margin: 2.6mm 0 .8mm; font-size: 5.8pt }
+
+/* Barras */
+.barras { display: grid; gap: 2.8mm }
+.barra { display: grid; grid-template-columns: 36mm 1fr 13mm; gap: 3mm; align-items: center }
+.barra .n { font-weight: 600; font-size: 8pt; color: var(--noche) } .barra .pct { font-family: 'JetBrains Mono'; font-size: 7pt; text-align: right }
+.barra .pista { height: 2.6mm; background: var(--linea); border-radius: var(--r-full); overflow: hidden } .barra .relleno { height: 100%; border-radius: var(--r-full) }
+.barra .nota { grid-column: 2 / 4; font-size: 7pt; color: var(--suave); margin-top: -1.4mm }
+
+/* Listas: viñeta en forma de pieza */
+ul.lista { list-style: none } ul.lista li { position: relative; padding-left: 4.2mm; margin-top: 1.2mm }
+ul.lista li::before { content: ''; position: absolute; left: .3mm; top: 2.1mm; width: 1.6mm; height: 1.6mm; border-radius: .5mm; background: var(--noche) }
+
+/* Fuentes */
+.fuentes { border: 1px solid var(--linea); border-radius: var(--r-m); background: var(--papel); padding: 4mm 4.5mm; font-size: 6.9pt; color: var(--suave); line-height: 1.65 }
+
+/* Imágenes (capturas de pantalla, mockups) */
+.imagenes { display: grid; gap: 4mm; align-items: start }
+.imagen { margin: 0; break-inside: avoid }
+.imagen img { width: 100%; display: block; border: 1px solid var(--linea); border-radius: var(--r-m); background: var(--papel) }
+.imagen figcaption { margin-top: 2mm; font-size: 7.4pt; line-height: 1.45; color: var(--suave) }
+.imagen figcaption b { display: block; color: var(--noche); font-weight: 600; margin-bottom: .6mm }

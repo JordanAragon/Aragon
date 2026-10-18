@@ -1,0 +1,150 @@
+tipo: propuesta
+codigo: AR-PT-2026-001
+version: Borrador 1
+fecha: 18 de octubre de 2026
+area: Software a medida para negocios reales
+etiqueta: Propuesta · Tu tienda en línea
+titulo: ["Tu tienda en el celular,", "con los pedidos", "directo a tu WhatsApp."]
+resumen: >-
+  Este es el mockup de tu tienda: así se vería la primera versión en el celular. Revísalo y dime qué ajustamos.
+  Si seguimos, te entrego la tienda funcionando en una semana, con un panel en Google Sheets para manejar productos, pedidos y ventas.
+kpis:
+  - {valor: "1", etiqueta: semana, detalle: de entrega}
+  - {valor: "5", etiqueta: vistas, detalle: en el mockup del celular}
+  - {valor: "$1.300.000", etiqueta: inversión, detalle: COP por todo el trabajo}
+preparado_para: {nombre: Sergio Alejandro Micolta, detalle: "Tienda multimarca · calzado y camisetas"}
+preparado_por: {nombre: Aragon, detalle: Jordan David Aragon}
+siguiente_paso: "Revisa el mockup y cuéntame qué te gusta, qué cambiarías y qué falta. Si quieres seguir, me confirmas por WhatsApp y me envías el nombre de la tienda, tus marcas aliadas y tus productos."
+secciones:
+  - titulo: Así se vería la primera versión
+    subtitulo: Las vistas que va a tener tu tienda en el celular.
+    encabezado: Mockup
+    bloques:
+      - tipo: imagenes
+        columnas: 4
+        items:
+          - {src: capturas/inicio.jpg, titulo: 1 · Inicio, pie: "Tus colaboraciones como portadas grandes, lo nuevo y cómo pedir."}
+          - {src: capturas/coleccion.jpg, titulo: 2 · Colaboración, pie: "Una sección por marca aliada, con su sello y filtros por tipo."}
+          - {src: capturas/producto.jpg, titulo: 3 · Producto, pie: "Color, tallas en botones, agotadas tachadas y guía de tallas."}
+          - {src: capturas/pedido.jpg, titulo: 4 · Pedido, pie: "El cliente arma el pedido y te lo envía por WhatsApp."}
+      - tipo: aviso
+        estilo: info
+        titulo: Lo que está entre corchetes
+        texto: >-
+          Nombre, marcas, precios, ciudades y medidas van entre corchetes porque todavía no los tengo. Se reemplazan con tu información.
+          La versión para computador la estoy preparando con el mismo diseño.
+
+
+          **Lo que necesito de ti ahora:** que revises las cinco vistas y me digas qué te parece. Con tus comentarios hago los ajustes.
+
+  - titulo: Tu catálogo se maneja desde una hoja
+    subtitulo: La quinta vista. La editas en el celular y la tienda se actualiza sola.
+    encabezado: Mockup
+    bloques:
+      - tipo: imagenes
+        columnas: 1
+        items:
+          - {src: capturas/hoja.jpg, titulo: 5 · Hoja del catálogo en Google Sheets, pie: "Una fila por talla y color. Si las unidades llegan a 0, la talla sale agotada en la tienda."}
+
+  - titulo: Lo que incluye el trabajo
+    subtitulo: Todo lo que recibes por el mismo precio. Lo que no está aquí no está incluido.
+    encabezado: Alcance
+    nueva_pagina: false
+    bloques:
+      - tipo: tabla
+        columnas: [Parte, Qué hace, Incluido]
+        anchos: [22%, 62%, 16%]
+        filas:
+          - ["Catálogo en celular y computador", "Inicio con tus colaboraciones, una sección por marca aliada con su sello «Tu tienda × Marca», filtros por tipo, buscador y «Lo nuevo».", "[[ok:Incluido]]"]
+          - ["Ficha de cada producto", "Fotos, colores, tallas en botones, tallas agotadas tachadas y guía de tallas.", "[[ok:Incluido]]"]
+          - ["Pedido por WhatsApp", "El cliente arma su pedido y te llega un mensaje ordenado: número de pedido, productos, talla, color, entrega y total. Con un botón de «copiar pedido» para cuando WhatsApp no abre desde Instagram.", "[[ok:Incluido]]"]
+          - ["Panel del catálogo", "En Google Sheets, desde el celular: subes productos, cambias precios, pones ofertas, marcas agotados, ocultas productos y eliges los destacados. La tienda se actualiza sola.", "[[ok:Incluido]]"]
+          - ["Registro de pedidos", "Cada pedido enviado queda en tu hoja con fecha, cliente, productos y total. Tú le cambias el estado: pendiente, pagado, enviado o entregado.", "[[ok:Incluido]]"]
+          - ["Resumen de ventas", "Ventas del mes, lo más vendido y ventas por marca aliada, para cuadrar cuentas con cada marca.", "[[ok:Incluido]]"]
+          - ["Dominio y vista previa", "Tu dominio propio conectado (tumarca.com) y una imagen de vista previa cuando compartes el enlace por WhatsApp o redes.", "[[ok:Incluido]]"]
+          - ["QR y enlace para redes", "Código QR de la tienda para imprimir y enlace para la biografía de Instagram.", "[[ok:Incluido]]"]
+          - ["Estadísticas", "Cuántas personas visitan la tienda y qué productos miran más.", "[[ok:Incluido]]"]
+          - ["Páginas legales", "Envíos, cambios, derecho de retracto, garantías y tratamiento de datos, en plantillas que tú confirmas.", "[[ok:Incluido]]"]
+          - ["Kit de arranque", "Mensajes listos para WhatsApp Business (confirmar pedido, datos de pago, envío despachado), una guía para tomar fotos de producto con el celular y un manual para actualizar el catálogo.", "[[ok:Incluido]]"]
+          - ["Lista para crecer", "La hoja usa el formato de importación de Shopify: cuando quieras pagos en línea, se migra sin volver a cargar tus productos.", "[[ok:Incluido]]"]
+          - ["Publicación", "En un alojamiento sin mensualidad.", "[[ok:Incluido]]"]
+          - ["Acompañamiento", "Capacitación, 2 rondas de ajustes al diseño y 1 mes de soporte después de la entrega.", "[[ok:Incluido]]"]
+      - tipo: aviso
+        estilo: info
+        titulo: Fuera de esta propuesta
+        lista:
+          - Pagos en línea y la migración a Shopify. Se cotizan cuando los necesites.
+          - Diseño de logo y fotografía profesional de los productos.
+          - Pauta publicitaria y manejo de redes sociales.
+          - El pago del dominio, que va a tu nombre.
+
+  - titulo: De qué te encargas tú
+    subtitulo: Lo que solo tú puedes poner para que la tienda funcione.
+    encabezado: Tu parte
+    nueva_pagina: false
+    bloques:
+      - tipo: lista
+        items:
+          - "**Tu marca:** nombre y logo de la tienda."
+          - "**Tus productos:** fotos, precios, tallas, colores y una descripción corta de cada uno."
+          - "**Tus marcas aliadas:** los acuerdos con cada una y su permiso para usar su nombre y logo en la tienda."
+          - "**Tu WhatsApp:** el número de WhatsApp Business donde llegan los pedidos."
+          - "**Tu dominio:** pagarlo a tu nombre, entre $60.000 y $150.000 al año."
+          - "**Tus datos de vendedor:** nombre o razón social, cédula o NIT y tus condiciones de envío y cambios."
+          - "**La operación:** atender los pedidos, cobrar, despachar y mantener la hoja al día."
+
+  - titulo: Cómo trabajamos
+    subtitulo: Una semana desde que tengo tu contenido y apruebas el diseño.
+    encabezado: Proceso
+    bloques:
+      - tipo: fases
+        items:
+          - nombre: Ajustes
+            duracion: 1 día
+            texto: Ajusto el mockup con tus comentarios.
+            necesitamos: [Tus comentarios sobre las 5 vistas, "Nombre, logo y marcas aliadas"]
+            entregables: [Mockup ajustado, Versión para computador]
+          - nombre: Construcción
+            duracion: 4 días
+            texto: Armo la tienda con tus productos reales.
+            necesitamos: ["Productos con fotos, precios, tallas y colores", Número de WhatsApp Business]
+            entregables: [Tienda en un enlace de prueba, Hoja del catálogo y de pedidos]
+          - nombre: Entrega
+            duracion: 2 días
+            texto: La publicamos y te enseño a manejarla.
+            necesitamos: [Acceso al dominio, Una sesión de capacitación]
+            entregables: ["Tienda en tu dominio", "QR, kit de arranque y manual"]
+          - nombre: Acompañamiento
+            duracion: 1 mes
+            texto: Te acompaño mientras arrancas.
+            necesitamos: [Que me cuentes lo que veas raro]
+            entregables: [Soporte por WhatsApp, Ajustes menores]
+
+  - titulo: Inversión y forma de pago
+    subtitulo: Precio cerrado para todo lo de la sección 03.
+    encabezado: Inversión
+    nueva_pagina: false
+    bloques:
+      - tipo: tabla
+        columnas: [Momento, Qué se paga, Valor]
+        anchos: [26%, 50%, 24%]
+        filas:
+          - ["Al confirmar", "50 % para empezar", "$650.000"]
+          - ["Al entregar", "50 % con la tienda publicada", "$650.000"]
+        total: ["**Total**", "", "**$1.300.000 COP**"]
+        nota: "Valores en pesos colombianos. El dominio se paga aparte y va a tu nombre."
+      - tipo: aviso
+        estilo: ok
+        titulo: Lo que es tuyo
+        lista:
+          - El dominio, la hoja del catálogo y la de pedidos quedan a tu nombre.
+          - El código de la tienda y los accesos quedan documentados para ti.
+
+  - titulo: Supuestos
+    encabezado: Supuestos
+    nueva_pagina: false
+    bloques:
+      - tipo: fuentes
+        texto: >-
+          La semana de entrega cuenta desde que apruebas el mockup y recibo tu contenido completo: nombre, logo, marcas aliadas y productos con fotos, precios, tallas y colores.
+          Las imágenes del mockup son una primera versión; los productos, precios y marcas que aparecen son de ejemplo.
