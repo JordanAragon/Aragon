@@ -71,6 +71,7 @@ secciones:
 | `kpis` | `titulo`, `columnas`, `items: [{valor, etiqueta, detalle}]` | Cifras clave |
 | `barras` | `titulo`, `items: [{nombre, valor (0–100), color, nota}]` | Avance o cumplimiento |
 | `fases` | `titulo`, `items: [{nombre, duracion, texto, necesitamos, entregables}]` | El proceso de trabajo (propuestas) |
+| `imagenes` | `titulo`, `columnas`, `items: [{src, titulo, pie, alt}]` (`src` relativo a la carpeta del YAML) | Capturas, mockups o fotos |
 | `fuentes` | `texto` | Fuentes, método o supuestos |
 
 Colores (`color`): `noche`, `grafito`, `gris`, `terciario`, `linea` o un HEX en gris.

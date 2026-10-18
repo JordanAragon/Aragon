@@ -33,6 +33,9 @@ CONTACTO = {"correo": "jordandavidaragon@outlook.com",
 
 TIPOS = {"informe": "Informe", "propuesta": "Propuesta", "documento": "Documento"}
 
+# Carpeta del YAML: las imágenes de los bloques se buscan ahí.
+BASE = Path(".")
+
 
 def uri(p: Path) -> str:
     return p.resolve().as_uri()
@@ -132,6 +135,14 @@ def bloque(b: dict) -> str:
             + "</div>"
             for n, f in enumerate(items, 1))
         return f"<div class='bloque'>{h3(b)}<div class='fases' style='grid-template-columns:repeat({len(items)},1fr)'>{fs}</div></div>"
+    if tipo == "imagenes":
+        n = b.get("columnas", len(b["items"]))
+        figs = "".join(
+            f"<figure class='imagen'><img src='{uri(BASE / i['src'])}' alt='{html.escape(i.get('alt', i.get('pie', '')))}'>"
+            + (f"<figcaption><b>{md(i['titulo'])}</b>{md(i.get('pie', ''))}</figcaption>" if i.get("titulo") else (f"<figcaption>{md(i['pie'])}</figcaption>" if i.get("pie") else ""))
+            + "</figure>"
+            for i in b["items"])
+        return f"<div class='bloque'>{h3(b)}<div class='imagenes' style='grid-template-columns:repeat({n},1fr)'>{figs}</div></div>"
     if tipo == "fuentes":
         return f"<div class='bloque fuentes'>{parrafos(b['texto'])}</div>"
     raise ValueError(f"Tipo de bloque desconocido: {tipo}")
@@ -208,6 +219,8 @@ def pdf(pg, html_doc: str, pie: str | None) -> bytes:
 
 
 def generar(yaml_path: Path, salida: Path):
+    global BASE
+    BASE = yaml_path.resolve().parent
     d = yaml.safe_load(yaml_path.read_text(encoding="utf-8"))
     tipo = TIPOS.get(d.get("tipo", "informe"), "Documento")
     pie = ("<div style=\"width:100%;padding:0 15mm;font-family:monospace;font-size:6.4pt;letter-spacing:.14em;color:#6b6b6b;"

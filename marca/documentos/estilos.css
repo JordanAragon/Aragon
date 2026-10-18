@@ -169,3 +169,10 @@ ul.lista li::before { content: ''; position: absolute; left: .3mm; top: 2.1mm; w
 
 /* Fuentes */
 .fuentes { border: 1px solid var(--linea); border-radius: var(--r-m); background: var(--papel); padding: 4mm 4.5mm; font-size: 6.9pt; color: var(--suave); line-height: 1.65 }
+
+/* Imágenes (capturas de pantalla, mockups) */
+.imagenes { display: grid; gap: 4mm; align-items: start }
+.imagen { margin: 0; break-inside: avoid }
+.imagen img { width: 100%; display: block; border: 1px solid var(--linea); border-radius: var(--r-m); background: var(--papel) }
+.imagen figcaption { margin-top: 2mm; font-size: 7.4pt; line-height: 1.45; color: var(--suave) }
+.imagen figcaption b { display: block; color: var(--noche); font-weight: 600; margin-bottom: .6mm }
