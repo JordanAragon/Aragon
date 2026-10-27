@@ -11,8 +11,8 @@ export default function SiteFooter() {
       <div className="shell">
         <div className="footer-top">
           <div className="footer-lead">
-            <h2>Software a la medida, desde Cali.</h2>
-            <p>Apps web, automatizaciones, agentes de IA e infraestructura para negocios en Colombia y en remoto.</p>
+            <h2>Automatización e IA, desde Cali.</h2>
+            <p>Agentes de IA, automatizaciones y software a la medida para negocios en Colombia y en remoto. Prototipos en 48 horas.</p>
             <Link href="/contacto" className="text-link">
               Escribirnos <ArrowRight className="arrow" />
             </Link>
@@ -28,7 +28,7 @@ export default function SiteFooter() {
             </ul>
           </div>
           <div className="footer-col">
-            <h3>Estudio</h3>
+            <h3>Agencia</h3>
             <ul>
               <li>
                 <Link href="/como-trabajamos">Cómo trabajamos</Link>
@@ -71,7 +71,7 @@ export default function SiteFooter() {
         <FooterWord />
         <div className="footer-base">
           <span>
-            © {year} Aragon, estudio de software de <a href={site.portfolioUrl}>{site.founder}</a>. {site.location}.
+            © {year} Aragon, agencia de automatización e IA de <a href={site.portfolioUrl}>{site.founder}</a>. {site.location}.
           </span>
           <span>
             <Link href="/privacidad">Tratamiento de datos</Link>

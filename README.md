@@ -1,6 +1,6 @@
 # Aragon
 
-Sitio web de Aragon, agencia de software a la medida: apps web, automatización de procesos, agentes de IA e infraestructura. Cali, Colombia.
+Sitio web de Aragon, agencia de automatización e inteligencia artificial: desarrollo agéntico (agentes de IA para WhatsApp), automatización de procesos y software a la medida sobre infraestructura web de alta velocidad, con prototipos en 48 horas. Cali, Colombia.
 
 ## Stack
 
@@ -14,8 +14,8 @@ Sitio web de Aragon, agencia de software a la medida: apps web, automatización 
 | Ruta | Qué es |
 |---|---|
 | `/` | Inicio: precarga «poner en orden», hero, el problema, «Del desorden al sistema», servicios con demos, proceso, trabajo, nosotros, preguntas y contacto |
-| `/servicios` y `/servicios/<slug>` | Los cuatro servicios, cada uno con demo, señales, ejemplos, qué incluye y preguntas |
-| `/como-trabajamos` | Las cuatro fases con lo que pones y lo que recibes |
+| `/servicios` y `/servicios/<slug>` | Los tres servicios (agentes de IA, automatización y software a la medida), cada uno con demo, señales, ejemplos, qué incluye y preguntas. `/servicios/infraestructura` redirige a `/servicios` |
+| `/como-trabajamos` | Las cuatro fases (con el prototipo en 48 horas) y lo que pones y recibes en cada una |
 | `/trabajo` y `/trabajo/<slug>` | Proyectos reales con su estado y su captura (`/work/<slug>` redirige aquí) |
 | `/nosotros` | Historia, principios y servicios |
 | `/preguntas` | Preguntas frecuentes con búsqueda y temas |

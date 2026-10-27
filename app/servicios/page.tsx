@@ -9,7 +9,7 @@ import { services } from '../data/services';
 
 export const metadata: Metadata = {
   title: 'Servicios',
-  description: 'Apps web a medida, automatización de procesos, agentes de IA e infraestructura. Qué hacemos, para quién y qué recibes en cada caso.',
+  description: 'Desarrollo agéntico con agentes de IA para WhatsApp, automatización de procesos y software a la medida sobre infraestructura web de alta velocidad. Qué hacemos, para quién y qué recibes en cada caso.',
   alternates: { canonical: '/servicios' },
 };
 
@@ -19,8 +19,8 @@ export default function ServicesPage() {
       <PageIntro
         figure="servicios"
         label="servicios"
-        title="Cuatro servicios, un mismo objetivo: que tu operación funcione en orden."
-        lead="Casi siempre se combinan: una app para ordenar la información, automatizaciones para moverla, un agente para responder y la infraestructura que lo sostiene. Empezamos por lo que más te duele hoy."
+        title="Tres servicios, un mismo objetivo: que el trabajo manual se haga solo."
+        lead="Casi siempre se combinan: un agente que atiende tu WhatsApp, automatizaciones que mueven la información y un software a la medida que la ordena. Aprobado el alcance, ves un prototipo funcionando en 48 horas."
       />
       {/* El mismo recorrido del inicio: quien llega por la barra ve cada servicio explicado con las piezas. */}
       <OrderStory />

@@ -3,7 +3,11 @@ const nextConfig = {
   poweredByHeader: false,
   reactStrictMode: true,
   async redirects() {
-    return [{ source: '/work/:slug', destination: '/trabajo/:slug', permanent: true }];
+    return [
+      { source: '/work/:slug', destination: '/trabajo/:slug', permanent: true },
+      // El servicio de servidores e infraestructura salió de la oferta (2026-10-26).
+      { source: '/servicios/infraestructura', destination: '/servicios', permanent: true },
+    ];
   },
   async headers() {
     return [

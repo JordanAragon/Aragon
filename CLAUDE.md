@@ -22,7 +22,7 @@ Rules:
 - Todo cambio de UI se verifica en el navegador con el skill `playwright-cli` antes de darlo por terminado: abrir la página, revisar 375, 768 y 1440 px (`resize`), sin errores en consola, y una captura por ancho.
 - Para recorrer o verificar la app usa `playwright-cli` (`snapshot` y `find` en vez de leer el DOM completo). Para tareas largas, usa una sesión propia: `-s=<proyecto>`.
 - No uses `--persistent` ni guardes estado de sesión (`state-save`) con cuentas reales; las salidas van a `.playwright-cli/` (ignorado por Git).
-- Flujos clave: hero (campo de partículas y palabra que rota), «Del desorden al sistema» (cinco paradas), demos de servicios, paleta ⌘K, formulario de contacto, agenda (Cal.com), página de un servicio (`/servicios/<slug>`) y de un caso (`/trabajo/<slug>`).
+- Flujos clave: hero (campo de partículas y palabra que rota), «Del desorden al sistema» (cuatro paradas), demos de servicios, paleta ⌘K, formulario de contacto, agenda (Cal.com), página de un servicio (`/servicios/<slug>`) y de un caso (`/trabajo/<slug>`).
 - El campo de partículas intenta WebGPU (vgpu) y cae a Canvas 2D si falla: comprueba los dos caminos cuando toques `app/components/field/`.
 
 ## Skills

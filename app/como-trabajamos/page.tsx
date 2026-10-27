@@ -8,7 +8,7 @@ import { principles } from '../data/process';
 
 export const metadata: Metadata = {
   title: 'Cómo trabajamos',
-  description: 'Diagnóstico, prototipo, construcción por entregas y producción. Qué pones tú y qué recibes en cada fase de un proyecto con Aragon.',
+  description: 'Diagnóstico, prototipo funcionando en 48 horas, construcción por entregas y producción. Qué pones tú y qué recibes en cada fase de un proyecto con Aragon.',
   alternates: { canonical: '/como-trabajamos' },
 };
 
@@ -19,8 +19,8 @@ export default function HowWeWorkPage() {
       <PageIntro
         figure="proceso"
         label="cómo trabajamos"
-        title="Ves algo funcionando antes de comprometer el proyecto completo."
-        lead="Cada fase termina con algo concreto que recibes. Así las decisiones se toman sobre algo que se puede tocar, no sobre un documento."
+        title="Un prototipo funcionando en 48 horas, antes de comprometer el proyecto completo."
+        lead="Aprobado el alcance, en 48 horas tocas algo que funciona. Cada fase termina con algo concreto que recibes: las decisiones se toman sobre algo real, no sobre un documento."
       />
       <section className="process paper" data-tone="paper" aria-labelledby="fases-title">
         <div className="shell">

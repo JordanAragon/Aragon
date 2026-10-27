@@ -12,8 +12,6 @@ import {
   flowEdges,
   flowLayout,
   flowNodeShape,
-  heartbeatLayout,
-  pulse,
   stageBox,
   tableColumns,
   tableLayout,
@@ -23,10 +21,10 @@ import { services } from '../../data/services';
 import { ArrowRight } from '../ui/icons';
 
 /*
-  «Del desorden al sistema»: el mismo puñado de piezas pasa por los cuatro
-  servicios. Suelto (hoy), ordenado en una tabla (apps web), conectado en un
-  flujo (automatización), respondiendo en una conversación (agentes de IA) y
-  vigilado con un latido (infraestructura). La figura explica el servicio.
+  «Del desorden al sistema»: el mismo puñado de piezas sigue a un pedido por los
+  tres servicios. Suelto (hoy), atendido en una conversación (agentes de IA),
+  conectado en un flujo (automatización) y ordenado en una tabla (software a la
+  medida). La figura explica el servicio.
 */
 
 type Stop = {
@@ -45,36 +43,27 @@ const STOPS: Stop[] = [
     count: (n) => `${n} piezas sueltas`,
   },
   {
-    id: 'ordenar',
-    title: 'Primero, cada pieza en su lugar.',
-    body: 'Una app web hecha para tu proceso: la información en una sola base, con permisos, historial y una vista que tu equipo entiende sin manual.',
-    count: (n) => `${n} registros en una sola tabla`,
+    id: 'responder',
+    title: 'Primero, alguien responde a toda hora.',
+    body: 'Un agente de IA atiende tu WhatsApp con tu información: contesta, toma el pedido y agenda la cita. Cuando no sabe algo, pasa la conversación a una persona.',
+    count: (n) => `${n} piezas, una conversación`,
     service: services[0],
   },
   {
     id: 'conectar',
-    title: 'Después, que viajen solas.',
+    title: 'Después, el trabajo manual se hace solo.',
     body: 'Automatizaciones que llevan cada pedido del chat al sistema, a la bodega y al reporte, sin copiar y pegar. Si algo falla, avisan.',
     count: (n) => `${n} datos en movimiento`,
     service: services[1],
   },
   {
-    id: 'responder',
-    title: 'Que alguien responda a toda hora.',
-    body: 'Un agente de IA que contesta con tu información, toma pedidos y agenda citas. Cuando no sabe algo, pasa la conversación a una persona.',
-    count: (n) => `${n} piezas, una conversación`,
+    id: 'ordenar',
+    title: 'Y todo queda en su lugar.',
+    body: 'Software a la medida de tu proceso: la información en una sola base, con permisos e historial, en una app que carga al instante.',
+    count: (n) => `${n} registros en una sola tabla`,
     service: services[2],
   },
-  {
-    id: 'vigilar',
-    title: 'Y que no se caiga.',
-    body: 'Servidores con respaldos, acceso privado y monitoreo. Cada servicio tiene un latido; si se detiene, lo sabemos antes que tus clientes.',
-    count: (n) => `${n} piezas vigiladas`,
-    service: services[3],
-  },
 ];
-
-const HEART_ROWS = ['tu app', 'n8n', 'base de datos', 'agente'];
 
 export default function OrderStory() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -116,7 +105,6 @@ export default function OrderStory() {
         speed[i] = 0.12 + sim.random() * 0.1;
         lane[i] = (sim.random() - 0.5) * 6;
       }
-      let geo = { w: 1, h: 1 };
       let edgeGeo: number[][] = [];
 
       sim.updater = (s, time) => {
@@ -144,24 +132,10 @@ export default function OrderStory() {
             s.ty[i] = y + lane[i];
             s.targetAlpha[i] = 0.35 + Math.sin(t * Math.PI) * 0.65;
           }
-        } else if (current === 4) {
-          // Cuatro servicios, cuatro latidos con su propio ritmo.
-          const L = heartbeatLayout(geo.w, geo.h);
-          for (let i = 0; i < s.n; i++) {
-            const row = i % L.lines;
-            const u = (base[i * 2] - L.b.x) / L.b.w;
-            const phase = (time * (0.32 + row * 0.04) + row * 0.27) % 1.2;
-            const amp = L.rowH * 0.36;
-            s.tx[i] = base[i * 2];
-            s.ty[i] = base[i * 2 + 1] - pulse(u, phase) * amp;
-            const d = phase - u;
-            s.targetAlpha[i] = d >= 0 && d < 0.22 ? 1 - d * 2.8 : 0.32;
-          }
         }
       };
 
       return (w: number, h: number) => {
-        geo = { w, h };
         const n = sim.n;
         const flowNodes = flowNodeShape(w, h, n);
         // Mezcla: los primeros índices son nodos, el resto viaja (el updater los mueve).
@@ -178,15 +152,7 @@ export default function OrderStory() {
           flow[i * 2] = e[0];
           flow[i * 2 + 1] = e[1];
         }
-        const L = heartbeatLayout(w, h);
-        const heart = new Float32Array(n * 2);
-        for (let i = 0; i < n; i++) {
-          const row = i % L.lines;
-          const k = Math.floor(i / L.lines) / Math.ceil(n / L.lines);
-          heart[i * 2] = L.b.x + L.b.w * 0.2 + k * L.b.w * 0.72;
-          heart[i * 2 + 1] = L.b.y + (row + 0.5) * L.rowH;
-        }
-        basesRef.current = [chaosShape(w, h, n), tableShape(w, h, n), flow, chatShape(w, h, n), heart];
+        basesRef.current = [chaosShape(w, h, n), chatShape(w, h, n), flow, tableShape(w, h, n)];
         if (sim.time === 0) sim.scatter(w * 0.7, h * 0.5, w * 0.6);
         applyStop(stopRef.current, sim.time === 0 && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
         setSize({ w, h });
@@ -294,27 +260,6 @@ function renderOverlays(stop: number, w: number, h: number) {
     ));
   }
   if (stop === 1) {
-    const T = tableLayout(w, h);
-    let x = T.b.x;
-    return tableColumns.map((col, i) => {
-      const left = x;
-      x += T.b.w * T.cols[i];
-      return (
-        <span key={col} className="ov-col mono" style={{ left, top: T.b.y - 26 }}>
-          {col}
-        </span>
-      );
-    });
-  }
-  if (stop === 2) {
-    const F = flowLayout(w, h);
-    return F.nodes.map((node) => (
-      <span key={node.label} className="ov-node mono" style={{ left: node.cx, top: node.cy }}>
-        {node.label}
-      </span>
-    ));
-  }
-  if (stop === 3) {
     const C = chatLayout(w, h);
     return C.bubbles
       .filter((bubble) => bubble.text)
@@ -329,11 +274,23 @@ function renderOverlays(stop: number, w: number, h: number) {
         </span>
       ));
   }
-  const L = heartbeatLayout(w, h);
-  return HEART_ROWS.map((row, i) => (
-    <span key={row} className="ov-row mono" style={{ left: L.b.x, top: L.b.y + (i + 0.5) * L.rowH, width: L.b.w }}>
-      <span>{row}</span>
-      <span>en línea</span>
-    </span>
-  ));
+  if (stop === 2) {
+    const F = flowLayout(w, h);
+    return F.nodes.map((node) => (
+      <span key={node.label} className="ov-node mono" style={{ left: node.cx, top: node.cy }}>
+        {node.label}
+      </span>
+    ));
+  }
+  const T = tableLayout(w, h);
+  let x = T.b.x;
+  return tableColumns.map((col, i) => {
+    const left = x;
+    x += T.b.w * T.cols[i];
+    return (
+      <span key={col} className="ov-col mono" style={{ left, top: T.b.y - 26 }}>
+        {col}
+      </span>
+    );
+  });
 }

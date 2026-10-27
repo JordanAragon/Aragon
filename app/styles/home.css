@@ -42,6 +42,9 @@
 }
 
 .hero-kicker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
   margin-bottom: 26px;
 }
 
@@ -462,7 +465,7 @@
 
 .hero-services {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   border-top: 1px solid var(--night-line);
 }
 
@@ -539,24 +542,31 @@
 }
 
 @media (max-width: 980px) {
+  .hero-veil {
+    background: linear-gradient(0deg, rgb(10 10 10 / 0.92) 0%, rgb(10 10 10 / 0.7) 55%, rgb(10 10 10 / 0.35) 100%);
+  }
+}
+
+/* En el teléfono, los tres servicios van uno debajo del otro. */
+@media (max-width: 640px) {
   .hero-services {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: minmax(0, 1fr);
   }
 
-  .hero-service:nth-child(2) {
+  .hero-service,
+  .hero-service + .hero-service {
+    padding: 14px 0 16px;
     border-right: 0;
   }
 
-  .hero-service:nth-child(3) {
-    padding-left: 0;
-  }
-
-  .hero-service:nth-child(n + 3) {
+  .hero-service + .hero-service {
     border-top: 1px solid var(--night-line);
   }
 
-  .hero-veil {
-    background: linear-gradient(0deg, rgb(10 10 10 / 0.92) 0%, rgb(10 10 10 / 0.7) 55%, rgb(10 10 10 / 0.35) 100%);
+  .hero-service::before,
+  .hero-service + .hero-service::before {
+    left: 0;
+    right: 0;
   }
 }
 
@@ -620,7 +630,7 @@
 /* ---------- Del desorden al sistema ---------- */
 .story {
   position: relative;
-  height: 560vh;
+  height: 460vh;
 }
 
 .story-stage {
@@ -697,16 +707,6 @@
   font-size: clamp(0.8rem, 0.6rem + 0.6vw, 1rem);
   line-height: 1.35;
   color: var(--on-night);
-}
-
-.ov-row {
-  --ox: 0;
-  --oy: -50%;
-  transform: translateY(-50%);
-  display: flex;
-  justify-content: space-between;
-  font-size: var(--t-xs);
-  color: var(--on-night-2);
 }
 
 .story-inner {

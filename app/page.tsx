@@ -27,7 +27,7 @@ export default function Home() {
           </h2>
           <ScrollWords
             className="problem-text"
-            text="La mayoría de negocios no necesita otra herramienta. Necesita que la información deje de vivir en chats, libretas y hojas sueltas, y que el trabajo repetido se haga solo. Eso es lo que construimos."
+            text="La mayoría de negocios no necesita otra herramienta. Necesita que la información deje de vivir en chats, libretas y hojas sueltas, y que el trabajo manual se haga solo. Eso es lo que automatizamos."
           />
           <ul className="problem-signs">
             <li>
@@ -54,9 +54,9 @@ export default function Home() {
         <div className="shell">
           <p className="section-label">cómo trabajamos</p>
           <div className="split-head">
-            <h2 id="process-title">Ves algo funcionando antes de comprometer el proyecto completo.</h2>
+            <h2 id="process-title">Un prototipo funcionando en 48 horas, antes de comprometer el proyecto completo.</h2>
             <div>
-              <p>Cuatro fases, cada una con algo concreto que recibes. Sin meses de silencio entre la firma y la entrega.</p>
+              <p>Aprobado el alcance, en 48 horas tocas algo que funciona. Después, entregas cortas hasta producción, sin meses de silencio entre la firma y la entrega.</p>
               <Link href="/como-trabajamos" className="text-link">
                 El proceso completo <ArrowRight className="arrow" />
               </Link>
@@ -72,7 +72,7 @@ export default function Home() {
           <div className="split-head">
             <h2 id="work-title">Lo que hemos construido, con su estado tal cual.</h2>
             <div>
-              <p>Productos propios, nuestra infraestructura y proyectos para clientes. Lo que está en desarrollo se dice así.</p>
+              <p>Productos propios, nuestro propio servidor y proyectos para clientes. Lo que está en desarrollo se dice así.</p>
               <Link href="/trabajo" className="text-link">
                 Ver todo el trabajo <ArrowRight className="arrow" />
               </Link>
@@ -87,12 +87,12 @@ export default function Home() {
           <p className="section-label">nosotros</p>
           <div className="about-grid">
             <div>
-              <h2 id="about-title">Un estudio pequeño a propósito: quien diseña tu sistema es quien lo construye y lo mantiene.</h2>
+              <h2 id="about-title">Una agencia pequeña a propósito: quien diseña tu sistema es quien lo construye y lo mantiene.</h2>
               <p className="about-lead">
-                Aragon nació en Cali de la mano de {site.founder}, desarrollador de software. Empezó arreglando computadores y redes; hoy construye apps, agentes de IA y automatizaciones que corren en producción.
+                Aragon nació en Cali de la mano de {site.founder}, desarrollador de software. Empezó arreglando computadores y redes; hoy construye agentes de IA, automatizaciones y software a la medida que corren en producción.
               </p>
               <Link href="/nosotros" className="btn btn-primary">
-                Conocer el estudio <ArrowRight className="arrow" />
+                Conocer la agencia <ArrowRight className="arrow" />
               </Link>
             </div>
             <ul className="principles">

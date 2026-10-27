@@ -9,7 +9,8 @@ export type WorkItem = {
   kind: string;
   status: string;
   year: string;
-  service: string;
+  /** El servicio que muestra el caso. Aragon-Server no tiene: es infraestructura propia, no un servicio que se ofrezca. */
+  service?: string;
   summary: string;
   problem: string;
   built: { title: string; body: string }[];
@@ -30,7 +31,7 @@ export const work: WorkItem[] = [
     kind: 'Producto propio',
     status: 'En producción, en mejora continua',
     year: '2026',
-    service: 'Apps web a medida',
+    service: 'Software a la medida',
     summary: 'Gestión de viveros e invernaderos con el vivero completo dibujado en 3D en el navegador.',
     problem:
       'En muchos viveros el estado de cada lote vive en cuadernos, mensajes y la memoria de quien lo cuida. Cuando esa persona falta, nadie sabe qué riego, trasplante o plaga está pendiente.',
@@ -61,7 +62,6 @@ export const work: WorkItem[] = [
     kind: 'Infraestructura propia',
     status: 'Operando',
     year: '2026',
-    service: 'Infraestructura y servidores',
     summary: 'Nuestro propio servidor: diez servicios en producción con Docker, certificados y acceso privado.',
     problem:
       'Antes de ofrecer infraestructura a un cliente, la operamos nosotros: archivos, música, bases de datos, monitoreo y automatizaciones en un servidor propio.',
@@ -90,7 +90,7 @@ export const work: WorkItem[] = [
     kind: 'Proyecto para clienta',
     status: 'Publicado',
     year: '2026',
-    service: 'Apps web a medida',
+    service: 'Software a la medida',
     summary: 'Portafolio web para una profesional, con SEO local y revisión de rendimiento y accesibilidad antes de publicar.',
     problem: 'La clienta necesitaba presentar su trabajo con claridad y aparecer en búsquedas locales, sin depender de una plantilla genérica.',
     built: [

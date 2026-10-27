@@ -1,6 +1,6 @@
 import { ImageResponse } from 'next/og';
 
-export const alt = 'Aragon: software a la medida, apps web, automatización y agentes de IA';
+export const alt = 'Aragon: agencia de automatización e IA. Agentes de IA, automatización y software a la medida, con prototipos en 48 horas';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
@@ -29,8 +29,8 @@ export default function Image() {
           <div style={{ width: 14, height: 14, background: '#fff', marginLeft: 4, marginBottom: 12 }} />
         </div>
         <div style={{ position: 'absolute', left: 72, bottom: 72, display: 'flex', flexDirection: 'column', width: 680 }}>
-          <div style={{ fontSize: 68, fontWeight: 700, letterSpacing: -3.5, lineHeight: 1 }}>Ponemos en orden tu operación con software a la medida.</div>
-          <div style={{ marginTop: 26, fontSize: 26, color: '#b3b3b3' }}>Apps web · Automatización · Agentes de IA · Infraestructura</div>
+          <div style={{ fontSize: 68, fontWeight: 700, letterSpacing: -3.5, lineHeight: 1 }}>Automatizamos tu operación con IA.</div>
+          <div style={{ marginTop: 26, fontSize: 26, color: '#b3b3b3' }}>Agentes de IA · Automatización · Software a la medida · Prototipos en 48 horas</div>
         </div>
       </div>
     ),

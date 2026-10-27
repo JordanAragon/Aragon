@@ -7,7 +7,7 @@ import PageIntro, { CtaBand } from '../../components/ui/page-intro';
 import NextChapter from '../../components/ui/next-chapter';
 import ProcessTimeline from '../../components/ui/process-timeline';
 import { ArrowRight } from '../../components/ui/icons';
-import { getService, services } from '../../data/services';
+import { getService, inSentence, services } from '../../data/services';
 import { siteUrl } from '../../data/site';
 import { work } from '../../data/work';
 
@@ -48,7 +48,7 @@ export default async function ServicePage({ params }: Params) {
 
   return (
     <>
-      <PageIntro figure={service.forma} label={service.short.toLowerCase()} crumbs={[{ label: 'Servicios', href: '/servicios' }]} title={service.name} lead={service.promise}>
+      <PageIntro figure={service.forma} label={inSentence(service.short)} crumbs={[{ label: 'Servicios', href: '/servicios' }]} title={service.name} lead={service.promise}>
         <Link href="/contacto" className="btn btn-primary btn-lg">
           Hablar de mi caso <ArrowRight className="arrow" />
         </Link>
@@ -140,7 +140,7 @@ export default async function ServicePage({ params }: Params) {
         <div className="shell faq-grid">
           <div>
             <p className="section-label">preguntas</p>
-            <h2 id="svc-faq-title">Sobre {service.short.toLowerCase()}.</h2>
+            <h2 id="svc-faq-title">Sobre {inSentence(service.short)}.</h2>
             <Link href="/preguntas" className="text-link">
               Todas las preguntas <ArrowRight className="arrow" />
             </Link>

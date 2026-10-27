@@ -10,7 +10,7 @@ import { STATES, setupHeroSystem, type HeroCounts, type HeroHud, type HeroRow } 
 import { services } from '../../data/services';
 import { ArrowRight } from '../ui/icons';
 
-const WORDS = ['pedidos', 'citas', 'clientes', 'ventas', 'reportes', 'procesos'];
+const WORDS = ['pedidos', 'citas', 'mensajes', 'ventas', 'reportes', 'procesos'];
 
 function RotatingWord() {
   const [index, setIndex] = useState(0);
@@ -191,30 +191,28 @@ export default function Hero() {
       {app && !app.narrow && <AppLayer app={app} rows={rows} counts={counts} />}
       <div className="shell hero-inner">
         <p className="hero-kicker">
-          <span className="chip chip-live">Estudio de software en Cali, Colombia</span>
+          <span className="chip chip-live">Agencia de automatización e IA · Cali</span>
+          <span className="chip chip-dot">Prototipos en 48 horas</span>
         </p>
         {/* Líneas fijas: la palabra que rota cambia de ancho sin mover el resto del titular. */}
         <h1 id="hero-title" className="hero-title">
           <span className="hl">
-            <Words text="Ponemos en" from={0} />
+            <Words text="Automatizamos" from={0} />
           </span>
           <span className="hl">
-            <Words text="orden tus" from={2} />
-            <span className="hw hw-rotator" style={{ '--i': 4 } as React.CSSProperties}>
+            <Words text="tus" from={1} />
+            <span className="hw hw-rotator" style={{ '--i': 2 } as React.CSSProperties}>
               <span>
                 <RotatingWord />
               </span>
             </span>{' '}
           </span>
           <span className="hl">
-            <Words text="con software" from={5} />
-          </span>
-          <span className="hl">
-            <Words text="a la medida." from={7} />
+            <Words text="con IA." from={3} />
           </span>
         </h1>
         <p className="hero-lead">
-          Diseñamos y construimos apps web, automatizaciones y agentes de IA para negocios que crecieron con WhatsApp, libretas y hojas de cálculo.
+          Agentes de IA que atienden tu WhatsApp, automatizaciones que eliminan el trabajo manual y software a la medida sobre infraestructura web de alta velocidad. Aprobado el alcance, ves un prototipo funcionando en 48 horas.
         </p>
         <div className="hero-ctas">
           <Link href="/contacto" className="btn btn-primary btn-lg">

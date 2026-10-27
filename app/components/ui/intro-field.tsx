@@ -8,14 +8,14 @@ import type { ParticleSim } from '../field/sim';
   La apertura de cada página interna: las piezas llegan sueltas y se ordenan en
   la figura de lo que trata la página. Es la misma idea del inicio («poner en
   orden»), para quien llega directo desde la barra:
-  - servicios: las cuatro figuras (tabla, flujo, conversación y latido);
+  - servicios: las tres figuras (conversación, flujo y tabla);
   - proceso: cuatro fases unidas por una línea, cada una más completa;
   - trabajo: las ventanas de los proyectos;
-  - nosotros: una sola pieza grande (un estudio pequeño, a propósito);
+  - nosotros: una sola pieza grande (una agencia pequeña, a propósito);
   - preguntas: el signo de pregunta;
-  - tabla, flujo, conversacion y latido: la figura de cada servicio.
+  - conversacion, flujo y tabla: la figura de cada servicio.
 */
-export type IntroFigure = 'servicios' | 'proceso' | 'trabajo' | 'nosotros' | 'preguntas' | 'tabla' | 'flujo' | 'conversacion' | 'latido';
+export type IntroFigure = 'servicios' | 'proceso' | 'trabajo' | 'nosotros' | 'preguntas' | 'tabla' | 'flujo' | 'conversacion';
 
 type Box = { x: number; y: number; w: number; h: number };
 
@@ -73,26 +73,6 @@ function drawChat(ctx: CanvasRenderingContext2D, b: Box) {
   ctx.restore();
 }
 
-function drawPulse(ctx: CanvasRenderingContext2D, b: Box) {
-  ctx.lineWidth = Math.max(4, b.w * 0.016);
-  ctx.lineJoin = 'miter';
-  const lines = 3;
-  for (let l = 0; l < lines; l++) {
-    const y = b.y + b.h * (0.22 + l * 0.28);
-    const at = b.x + b.w * (0.3 + l * 0.18);
-    const a = b.h * 0.1;
-    ctx.beginPath();
-    ctx.moveTo(b.x, y);
-    ctx.lineTo(at, y);
-    ctx.lineTo(at + a * 0.4, y - a);
-    ctx.lineTo(at + a * 0.9, y + a * 0.9);
-    ctx.lineTo(at + a * 1.3, y - a * 0.4);
-    ctx.lineTo(at + a * 1.6, y);
-    ctx.lineTo(b.x + b.w, y);
-    ctx.stroke();
-  }
-}
-
 function draw(figure: IntroFigure, ctx: CanvasRenderingContext2D, b: Box) {
   switch (figure) {
     case 'tabla':
@@ -101,15 +81,13 @@ function draw(figure: IntroFigure, ctx: CanvasRenderingContext2D, b: Box) {
       return drawFlow(ctx, b);
     case 'conversacion':
       return drawChat(ctx, b);
-    case 'latido':
-      return drawPulse(ctx, b);
     case 'servicios': {
+      // En el orden del recorrido: la conversación y el flujo arriba, la tabla donde todo termina.
       const g = b.w * 0.1;
       const q = (b.w - g) / 2;
-      drawTable(ctx, { x: b.x, y: b.y, w: q, h: q });
+      drawChat(ctx, { x: b.x, y: b.y, w: q, h: q });
       drawFlow(ctx, { x: b.x + q + g, y: b.y, w: q, h: q });
-      drawChat(ctx, { x: b.x, y: b.y + q + g, w: q, h: q });
-      drawPulse(ctx, { x: b.x + q + g, y: b.y + q + g, w: q, h: q });
+      drawTable(ctx, { x: b.x + (b.w - q) / 2, y: b.y + q + g, w: q, h: q });
       return;
     }
     case 'proceso': {
