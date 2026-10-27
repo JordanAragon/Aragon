@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import ServiceDemo from '../demos/service-demo';
-import { services } from '../../data/services';
+import { inSentence, services } from '../../data/services';
 import { ArrowRight } from '../ui/icons';
 
 /*
@@ -58,7 +58,7 @@ export default function ServicesShowcase() {
       <div className="shell">
         <p className="section-label">servicios</p>
         <div className="showcase-head">
-          <h2 id="showcase-title">Cuatro formas de poner tu operación en orden. Pruébalas aquí mismo.</h2>
+          <h2 id="showcase-title">Tres formas de quitarle el trabajo manual a tu operación. Pruébalas aquí mismo.</h2>
           <Link href="/servicios" className="text-link">
             Ver todos los servicios <ArrowRight className="arrow" />
           </Link>
@@ -85,7 +85,7 @@ export default function ServicesShowcase() {
                   ))}
                 </ul>
                 <Link href={`/servicios/${s.slug}`} className="btn btn-ghost btn-sm">
-                  Ver {s.short.toLowerCase()} <ArrowRight className="arrow" />
+                  Ver {inSentence(s.short)} <ArrowRight className="arrow" />
                 </Link>
                 {narrow && (
                   <div className="showcase-inline-demo">

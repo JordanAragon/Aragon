@@ -65,10 +65,12 @@ export default async function CasePage({ params }: Params) {
               <dt>Estado</dt>
               <dd>{item.status}</dd>
             </div>
-            <div>
-              <dt>Servicio</dt>
-              <dd>{service ? <Link href={`/servicios/${service.slug}`}>{service.name}</Link> : item.service}</dd>
-            </div>
+            {item.service && (
+              <div>
+                <dt>Servicio</dt>
+                <dd>{service ? <Link href={`/servicios/${service.slug}`}>{service.name}</Link> : item.service}</dd>
+              </div>
+            )}
             <div>
               <dt>Herramientas</dt>
               <dd>{item.stack.join(', ')}</dd>

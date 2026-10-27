@@ -42,7 +42,14 @@ export const faqs: Faq[] = [
     topic: 'Costos y tiempos',
     home: true,
     q: '¿Cuánto tarda?',
-    a: 'Una automatización puntual puede estar lista en días; una app web completa, en semanas. El plazo exacto va en la propuesta, junto con el plan de entregas.',
+    a: 'Aprobado el alcance, en 48 horas ves un prototipo funcionando. Una automatización puntual puede quedar lista en días; un software completo, en semanas. El plazo exacto va en la propuesta, junto con el plan de entregas.',
+  },
+  {
+    id: 'prototipo-48-horas',
+    topic: 'Costos y tiempos',
+    home: true,
+    q: '¿Qué recibo en las primeras 48 horas?',
+    a: 'Un prototipo funcionando de lo que aprobaste: el agente respondiendo con tu información, el flujo principal corriendo o las pantallas clave de tu software. Lo revisas con tu equipo y decides sobre algo que puedes tocar, no sobre un documento.',
   },
   {
     id: 'pagos',
@@ -92,7 +99,7 @@ export const faqs: Faq[] = [
     id: 'tecnologias',
     topic: 'Tecnología y datos',
     q: '¿Con qué tecnologías trabajan?',
-    a: 'Next.js, React y TypeScript para las apps; PostgreSQL y Supabase para los datos; n8n para automatizar; modelos de lenguaje para los agentes; Docker, Caddy y Tailscale para la infraestructura.',
+    a: 'Modelos de lenguaje, bases vectoriales y WhatsApp Business para los agentes; n8n para automatizar; Next.js, React y TypeScript sobre Vercel para el software y las webs; PostgreSQL y Supabase para los datos.',
   },
   {
     id: 'ia-inventa',

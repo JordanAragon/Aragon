@@ -21,12 +21,12 @@ export const phases: Phase[] = [
   },
   {
     n: '02',
-    name: 'Prototipo',
+    name: 'Prototipo en 48 horas',
     line: 'Decides sobre algo que puedes tocar.',
     body:
-      'Antes de construir, armamos una versión navegable de las pantallas o del flujo principal. Lo revisas con tu equipo y lo ajustamos hasta que tenga sentido para quien lo va a usar.',
-    youGive: ['Una o dos sesiones de revisión', 'Comentarios de quien usará el sistema'],
-    youGet: ['Prototipo navegable', 'Diseño de interfaz aprobado', 'Plan de entregas'],
+      'Aprobado el alcance, en 48 horas tienes un prototipo funcionando: el agente respondiendo con tu información, el flujo principal corriendo o las pantallas clave. Lo revisas con tu equipo y lo ajustamos hasta que tenga sentido para quien lo va a usar.',
+    youGive: ['El alcance aprobado', 'Una o dos sesiones de revisión', 'Comentarios de quien usará el sistema'],
+    youGet: ['Prototipo funcionando en 48 horas', 'Diseño de interfaz aprobado', 'Plan de entregas'],
   },
   {
     n: '03',

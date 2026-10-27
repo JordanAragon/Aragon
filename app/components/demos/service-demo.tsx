@@ -4,13 +4,11 @@ import type { ServiceSlug } from '../../data/services';
 import AgentDemo from './agent-demo';
 import AppDemo from './app-demo';
 import FlowDemo from './flow-demo';
-import ServerDemo from './server-demo';
 
 const TITLES: Record<ServiceSlug, string> = {
   'apps-web': 'distribuidora — pedidos',
   automatizacion: 'n8n — flujo de pedidos',
   'agentes-ia': 'whatsapp — asistente',
-  infraestructura: 'aragon-server — estado',
 };
 
 export default function ServiceDemo({ slug, running = true }: { slug: ServiceSlug; running?: boolean }) {
@@ -29,7 +27,6 @@ export default function ServiceDemo({ slug, running = true }: { slug: ServiceSlu
         {slug === 'apps-web' && <AppDemo running={running} />}
         {slug === 'automatizacion' && <FlowDemo running={running} />}
         {slug === 'agentes-ia' && <AgentDemo />}
-        {slug === 'infraestructura' && <ServerDemo running={running} />}
       </div>
     </div>
   );

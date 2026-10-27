@@ -1,7 +1,7 @@
 /*
   Figuras que forman las partículas. Cada figura explica algo: el desorden de
-  hoy, la tabla donde todo queda ordenado, el flujo que conecta herramientas,
-  la conversación del agente y el latido del servidor vigilado.
+  hoy, la conversación del agente, el flujo que conecta herramientas y la
+  tabla donde todo queda ordenado.
 
   Las posiciones salen de dibujar la figura en un lienzo oculto y tomar sus
   píxeles. Las mismas medidas (`stageBox`, `flowLayout`…) sirven para ubicar
@@ -290,23 +290,6 @@ export function chatShape(w: number, h: number, n: number) {
       }
     });
   }, 41);
-}
-
-/* ---------------- Vigilar: el latido ---------------- */
-
-export function heartbeatLayout(w: number, h: number) {
-  const b = stageBox(w, h);
-  const lines = 4;
-  return { b, lines, rowH: b.h / lines };
-}
-
-/** Altura del pulso en una posición `u` (0–1) de la línea cuando el barrido va en `phase`. */
-export function pulse(u: number, phase: number) {
-  const d = u - phase;
-  if (d > 0.05 || d < -0.06) return 0;
-  if (d < -0.03) return Math.sin(((d + 0.06) / 0.03) * Math.PI) * 0.18;
-  if (d < 0.0) return -Math.sin(((d + 0.03) / 0.03) * Math.PI) * 0.25;
-  return Math.sin((d / 0.05) * Math.PI) * 1;
 }
 
 /* ---------------- Retícula del hero ---------------- */

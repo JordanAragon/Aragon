@@ -291,7 +291,7 @@ export default function SiteHeader() {
               </ul>
               <div className="np-foot">
                 <Link href="/servicios" className="np-foot-main">
-                  Ver los cuatro servicios <ArrowRight className="arrow" />
+                  Ver los tres servicios <ArrowRight className="arrow" />
                 </Link>
                 <Link href="/servicios#del-desorden-al-sistema">El recorrido: del desorden al sistema</Link>
                 <Link href="/como-trabajamos">Cómo trabajamos</Link>

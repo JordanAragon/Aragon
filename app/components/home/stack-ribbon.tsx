@@ -6,7 +6,7 @@ import { useEffect, useRef } from 'react';
   Las herramientas con las que construimos, en una cinta inclinada cuya
   velocidad sigue al scroll (más rápida al bajar rápido, en reversa al subir).
 */
-const TOOLS = ['Next.js', 'React', 'TypeScript', 'PostgreSQL', 'Supabase', 'n8n', 'WhatsApp Business', 'Modelos de lenguaje', 'WebGPU', 'Docker', 'Caddy', 'Tailscale', 'Vercel', 'Linux'];
+const TOOLS = ['Modelos de lenguaje', 'WhatsApp Business', 'n8n', 'Bases vectoriales', 'Next.js', 'React', 'TypeScript', 'Supabase', 'PostgreSQL', 'Vercel', 'WebGPU', 'APIs', 'Webhooks', 'Google Workspace'];
 
 export default function StackRibbon() {
   const trackRef = useRef<HTMLDivElement>(null);

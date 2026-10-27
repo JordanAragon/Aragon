@@ -2,10 +2,9 @@ import type { Service } from '../../data/services';
 
 /*
   Una figura mínima por servicio, que explica qué hace con su movimiento:
-  - tabla: los registros llegan a su fila (apps web);
-  - flujo: un dato viaja de una herramienta a otra pasando por el centro (automatización);
   - conversación: llega una pregunta y el agente escribe la respuesta (agentes de IA);
-  - latido: el pulso de un servicio vigilado (infraestructura).
+  - flujo: un dato viaja de una herramienta a otra pasando por el centro (automatización);
+  - tabla: los registros llegan a su fila (software a la medida).
   Solo se mueve dentro de un contenedor con `data-glyphs="on"` y sin movimiento reducido.
 */
 export default function ServiceGlyph({ forma }: { forma: Service['forma'] }) {
@@ -42,14 +41,6 @@ export default function ServiceGlyph({ forma }: { forma: Service['forma'] }) {
             <rect x="27" y="28" width="28" height="2" />
             <rect x="27" y="33" width="18" height="2" />
           </g>
-        </>
-      )}
-      {forma === 'latido' && (
-        <>
-          <path d="M2 26 H22 l4 -12 l6 20 l5 -14 l3 6 H62" className="sg-base" />
-          <path d="M2 26 H22 l4 -12 l6 20 l5 -14 l3 6 H62" className="sg-beat" pathLength="100" />
-          <rect x="4" y="5" width="5" height="5" className="sg-led" />
-          <rect x="12" y="7" width="20" height="2" className="sg-soft" />
         </>
       )}
     </svg>
