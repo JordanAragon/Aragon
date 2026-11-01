@@ -19,7 +19,7 @@ export default function ServicesPage() {
       <PageIntro
         figure="servicios"
         label="servicios"
-        title="Tres servicios, un mismo objetivo: que el trabajo manual se haga solo."
+        title="Tres servicios para que el trabajo manual se haga solo."
         lead="Casi siempre se combinan: un agente que atiende tu WhatsApp, automatizaciones que mueven la información y un software a la medida que la ordena. Aprobado el alcance, ves un prototipo funcionando en 48 horas."
       />
       {/* El mismo recorrido del inicio: quien llega por la barra ve cada servicio explicado con las piezas. */}

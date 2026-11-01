@@ -1,0 +1,332 @@
+/*
+  Hero «Automatizamos tus ___ con inteligencia artificial» (app/components/home/hero.tsx
+  y app/components/hero/). Sobre la noche, a todo el ancho: una palabra enorme hecha
+  de piezas en el centro. Lectura en Z: titular arriba a la izquierda, 48 h arriba a la
+  derecha, la palabra al centro, «con inteligencia artificial.» y la acción abajo a la
+  derecha. El motor publica la caja de la palabra armada en --wx, --wy, --ww y --wh.
+*/
+
+.hero {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto minmax(200px, 1fr) auto;
+  min-height: max(100svh, 700px);
+  padding-top: calc(var(--header-h) + clamp(20px, 4.5vh, 52px));
+  padding-bottom: clamp(24px, 4.5vh, 48px);
+  background: var(--night);
+  color: var(--on-night);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.hero-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.hero-top,
+.hero-bottom {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  gap: clamp(20px, 4vw, 64px);
+}
+
+.hero-top {
+  align-items: flex-start;
+}
+
+.hero-bottom {
+  align-items: flex-end;
+}
+
+/* Titular: dos golpes en las esquinas, la palabra en medio. */
+.hero-title,
+.hero-l3 {
+  margin: 0;
+  font-family: var(--font-display-stack);
+  font-weight: 700;
+  font-size: clamp(40px, min(5.6vw, 10vh), 100px);
+  line-height: 0.9;
+  letter-spacing: -0.052em;
+  text-wrap: balance;
+}
+
+.hero-l3 {
+  max-width: 9.5em;
+  text-align: right;
+}
+
+/* 48 h: un número concreto, con su condición escrita. */
+.hero-proof {
+  flex: none;
+  text-align: right;
+}
+
+.hero-proof-number {
+  margin: 0;
+  font-family: var(--font-display-stack);
+  font-weight: 800;
+  font-size: clamp(52px, 6.6vw, 116px);
+  line-height: 0.78;
+  letter-spacing: -0.065em;
+}
+
+.hero-proof-number span {
+  margin-left: 0.04em;
+  font-size: 0.42em;
+  letter-spacing: -0.02em;
+  color: var(--on-night-3);
+}
+
+.hero-proof-text {
+  max-width: 21ch;
+  margin: 14px 0 0 auto;
+  font-family: var(--font-mono-stack);
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: var(--on-night-2);
+}
+
+/* El hueco de la palabra: sus marcas se ubican sobre la sección, no sobre el hueco. */
+.hero-slot {
+  margin-inline: var(--gutter);
+  min-width: 0;
+}
+
+.hero-reg,
+.hero-hud {
+  position: absolute;
+  z-index: 1;
+  opacity: 0;
+  transition:
+    left 0.6s var(--ease-out),
+    top 0.6s var(--ease-out),
+    width 0.6s var(--ease-out),
+    opacity 0.6s var(--ease-out);
+}
+
+.hero[data-ready='true'] .hero-reg,
+.hero[data-ready='true'] .hero-hud {
+  opacity: 1;
+}
+
+.is-preloading .hero .hero-reg,
+.is-preloading .hero .hero-hud {
+  opacity: 0;
+}
+
+.hero-reg {
+  width: 14px;
+  height: 14px;
+  border: 0 solid var(--on-night-3);
+}
+
+.hero-reg-tl {
+  left: calc(var(--wx) - 18px);
+  top: calc(var(--wy) - 18px);
+  border-left-width: 1px;
+  border-top-width: 1px;
+}
+
+.hero-reg-tr {
+  left: calc(var(--wx) + var(--ww) + 4px);
+  top: calc(var(--wy) - 18px);
+  border-right-width: 1px;
+  border-top-width: 1px;
+}
+
+.hero-reg-bl {
+  left: calc(var(--wx) - 18px);
+  top: calc(var(--wy) + var(--wh) + 4px);
+  border-left-width: 1px;
+  border-bottom-width: 1px;
+}
+
+.hero-reg-br {
+  left: calc(var(--wx) + var(--ww) + 4px);
+  top: calc(var(--wy) + var(--wh) + 4px);
+  border-right-width: 1px;
+  border-bottom-width: 1px;
+}
+
+/* La regla bajo la palabra: cuál es y cuántas piezas quedaron en orden (la cuenta es real). */
+.hero-hud {
+  left: var(--wx);
+  top: calc(var(--wy) + var(--wh) + 14px);
+  width: var(--ww);
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 0;
+  padding-top: 10px;
+  font-size: 11.5px;
+  color: var(--on-night-3);
+  white-space: nowrap;
+}
+
+.hero-hud::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto;
+  height: 5px;
+  background:
+    linear-gradient(var(--night-line-2), var(--night-line-2)) top / 100% 1px no-repeat,
+    repeating-linear-gradient(to right, var(--night-line-2) 0 1px, transparent 1px 24px) top / 100% 5px no-repeat;
+}
+
+.hero-hud b {
+  font-weight: 500;
+  color: var(--on-night);
+}
+
+/* Abajo: lo que hacemos a la izquierda; el cierre del titular y la acción a la derecha. */
+.hero-copy {
+  max-width: 44ch;
+}
+
+.hero-lead {
+  margin: 0;
+  font-size: var(--t-md);
+  line-height: 1.55;
+  color: var(--on-night-2);
+}
+
+.hero-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 28px;
+  margin-top: 14px;
+}
+
+.hero-end {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: clamp(18px, 3vh, 28px);
+}
+
+/* ---------- Entrada (con precarga, al irse la precarga) ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  .hero-title,
+  .hero-proof,
+  .hero-l3,
+  .hero-copy,
+  .hero-cta {
+    animation: hero-rise 1s var(--ease-out) backwards;
+  }
+
+  .hero-proof {
+    animation-delay: 0.08s;
+  }
+
+  .hero-l3 {
+    animation-delay: 0.9s;
+  }
+
+  .hero-cta {
+    animation-delay: 1.05s;
+  }
+
+  .hero-copy {
+    animation-delay: 1.15s;
+  }
+
+  .is-preloading .hero-title,
+  .is-preloading .hero-proof,
+  .is-preloading .hero-l3,
+  .is-preloading .hero-copy,
+  .is-preloading .hero-cta {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    translate: 0 28px;
+    clip-path: inset(0 0 100% 0);
+  }
+  to {
+    clip-path: inset(0 0 -20% 0);
+  }
+}
+
+/* ---------- Tableta y teléfono ---------- */
+@media (max-width: 1000px) {
+  .hero-bottom {
+    flex-direction: column-reverse;
+    align-items: stretch;
+    gap: 32px;
+  }
+}
+
+@media (max-width: 760px) {
+  .hero {
+    grid-template-rows: auto auto auto;
+    min-height: 0;
+    padding-top: calc(var(--header-h) + 28px);
+    padding-bottom: 40px;
+  }
+
+  .hero-top {
+    align-items: flex-end;
+  }
+
+  .hero-title,
+  .hero-l3 {
+    font-size: clamp(34px, 10.4vw, 52px);
+  }
+
+  .hero-title {
+    max-width: 6em;
+  }
+
+  .hero-proof-number {
+    font-size: clamp(44px, 13vw, 64px);
+  }
+
+  .hero-proof-text {
+    max-width: 15ch;
+    margin-top: 10px;
+    font-size: 11px;
+  }
+
+  /* La palabra se ajusta al ancho; el hueco deja lugar a la regla. */
+  .hero-slot {
+    height: calc(24vw + 56px);
+    margin-block: 26px 30px;
+  }
+
+  .hero-bottom {
+    flex-direction: column-reverse;
+    align-items: stretch;
+    gap: 28px;
+  }
+
+  .hero-end {
+    align-items: flex-start;
+  }
+
+  .hero-l3 {
+    max-width: none;
+    text-align: left;
+  }
+
+  .hero-cta {
+    align-self: stretch;
+  }
+
+  .hero-hud {
+    font-size: 10.5px;
+  }
+
+  .hero-reg {
+    display: none;
+  }
+}

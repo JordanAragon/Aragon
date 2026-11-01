@@ -90,9 +90,13 @@ export default function SiteHeader() {
     update();
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onScroll);
+    // Al retirarse la precarga, lo que hay debajo de la cabecera cambia sin scroll: se vuelve a mirar.
+    const classWatch = new MutationObserver(onScroll);
+    classWatch.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
     return () => {
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', onScroll);
+      classWatch.disconnect();
       if (raf) cancelAnimationFrame(raf);
     };
   }, [pathname]);

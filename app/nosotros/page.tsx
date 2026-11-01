@@ -9,7 +9,7 @@ import { site } from '../data/site';
 
 export const metadata: Metadata = {
   title: 'Nosotros',
-  description: 'Aragon es una agencia de automatización e IA en Cali fundada por Jordan Aragon. Un equipo pequeño a propósito: quien diseña tu sistema lo construye y lo mantiene.',
+  description: 'Aragon es una agencia de automatización e IA en Cali fundada por Jordan Aragon, para negocios de Colombia y Estados Unidos. Un equipo pequeño a propósito: quien diseña tu sistema lo construye y lo mantiene.',
   alternates: { canonical: '/nosotros' },
 };
 
@@ -17,7 +17,7 @@ const facts = [
   { k: 'Base', v: site.location },
   { k: 'Fundador', v: site.founder },
   { k: 'Horario', v: 'Hora de Colombia (UTC−5)' },
-  { k: 'Clientes', v: 'Colombia y remoto' },
+  { k: 'Clientes', v: 'Colombia y Estados Unidos' },
 ];
 
 export default function AboutPage() {
@@ -41,7 +41,7 @@ export default function AboutPage() {
               Aragon es la agencia de automatización e inteligencia artificial de {site.founder}, desarrollador en Cali, Colombia. Empezó arreglando computadores y redes, y esa curiosidad por entender cómo funcionan las cosas lo llevó a construirlas: primero sus propios proyectos y su propio servidor, después agentes de IA, automatizaciones y software para negocios reales.
             </p>
             <p>
-              El nombre Aragon reúne ese trabajo: AiDEN, un sistema de gestión para viveros con el vivero entero en 3D; Aragon-Server, el servidor donde probamos todo antes de llevarlo a un cliente; y los proyectos que construimos para otros.
+              El nombre Aragon reúne ese trabajo: AiDEN, un sistema de gestión para viveros con el vivero entero en 3D, y las webs que construimos para clientes en Colombia y en Estados Unidos, como la de CHILA, un estudio creativo de Washington DC.
             </p>
             <p>
               Trabajamos con pocos proyectos a la vez para poder responder por cada uno.

@@ -209,6 +209,11 @@
   box-shadow: 0 20px 50px -30px rgb(0 0 0 / 0.8);
 }
 
+/* Sobre papel (el hero, por ejemplo) la cabecera es tinta aunque todavía no sea sólida. */
+.site-header[data-tone='paper'] {
+  color: var(--ink);
+}
+
 .site-header[data-tone='paper'][data-solid='true'] {
   background: rgb(255 255 255 / 0.8);
   border-color: rgb(10 10 10 / 0.08);
@@ -961,147 +966,143 @@
   }
 }
 
-/* ---------- Precarga «poner en orden» ---------- */
+/* ---------- Precarga: el desorden antes del sistema ---------- */
 /*
-  La capa se ve solo con `html.is-preloading` (la pone el script en línea de
-  layout.tsx antes del primer cuadro). Antes del JS ya pinta la noche y la pieza
-  que parpadea; el JS (preloader.tsx) la toma y la lleva hasta el relevo.
+  La capa existe solo con `html.is-preloading` (la pone el script en línea de
+  layout.tsx antes del primer cuadro) y mientras la cuenta se va (data-leaving).
+  No tiene fondo: detrás corre el lienzo del hero con las piezas sueltas.
 */
+.is-preloading {
+  overflow: hidden;
+}
+
 .preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
   display: none;
+  color: var(--on-night);
+  pointer-events: none;
+}
+
+.is-preloading .preloader,
+.preloader[data-leaving='true'] {
+  display: block;
 }
 
 .is-preloading .preloader {
-  display: block;
-  position: fixed;
-  inset: 0;
-  z-index: 300;
-  background: var(--night);
-  color: var(--on-night);
-  cursor: progress;
-  user-select: none;
-  touch-action: none;
-  -webkit-tap-highlight-color: transparent;
+  pointer-events: auto;
 }
 
-.preloader[data-leaving='true'] {
-  opacity: 0;
-  transition: opacity 0.5s cubic-bezier(0.4, 0, 1, 1);
-}
-
-.preloader-canvas {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-}
-
-/* La pieza antes del JS: un cuadrado que parpadea donde nacerá la marca. */
-.preloader-seed {
-  position: absolute;
-  left: 50%;
-  top: 46%;
-  width: 10px;
-  height: 10px;
-  margin: -5px 0 0 -5px;
-  background: var(--on-night);
-  animation: preloader-seed 1.05s steps(1) infinite;
-}
-
-html[data-preload-taken] .preloader-seed {
+.preloader[data-gone='true'] {
   display: none;
 }
 
-@keyframes preloader-seed {
+.pl-brand {
+  position: absolute;
+  top: 26px;
+  left: var(--gutter);
+  margin: 0;
+  font-size: 12px;
+  color: var(--on-night);
+}
+
+.pl-brand i {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-left: 2px;
+  background: currentColor;
+  animation: pl-blink 0.9s steps(1) infinite;
+}
+
+.pl-brand span {
+  color: var(--on-night-3);
+}
+
+@keyframes pl-blink {
   50% {
     opacity: 0;
   }
 }
 
-.preloader-hud {
+.pl-steps {
   position: absolute;
-  left: var(--gutter);
   right: var(--gutter);
-  bottom: calc(28px + env(safe-area-inset-bottom, 0px));
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  gap: 24px;
-  opacity: 0;
-  animation: preloader-hud var(--dur-slow) var(--ease-out) 0.25s forwards;
-}
-
-@keyframes preloader-hud {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-.preloader-count {
-  display: grid;
-  gap: 6px;
-}
-
-.preloader-count strong {
-  font-family: var(--font-display-stack);
-  font-size: clamp(2.5rem, 1.6rem + 3vw, 4.5rem);
-  font-weight: 600;
-  line-height: 0.9;
-  letter-spacing: -0.05em;
-}
-
-.preloader-count span {
-  font-size: var(--t-xs);
-  color: var(--on-night-3);
-}
-
-.preloader-log {
+  bottom: clamp(28px, 5vh, 48px);
+  width: min(360px, calc(100vw - 2 * var(--gutter)));
+  margin: 0;
+  padding: 0;
   list-style: none;
-  display: grid;
-  gap: 4px;
-  min-width: 230px;
-  font-size: var(--t-xs);
+  font-size: 11.5px;
   color: var(--on-night-3);
 }
 
-.preloader-log li {
+.pl-steps li {
   display: flex;
   align-items: baseline;
-  gap: 8px;
+  gap: 10px;
+  padding: 7px 0;
+  border-top: 1px solid var(--night-line);
+  transition: color var(--dur) var(--ease-out);
 }
 
-/* Puntos guía entre el paso y su tiempo, como en una cuenta. */
-.preloader-log li::after {
-  content: '';
-  order: 1;
+.pl-steps li i {
   flex: 1;
   border-bottom: 1px dotted var(--night-line-2);
-  transform: translateY(-3px);
 }
 
-.preloader-log em {
-  order: 2;
-  font-style: normal;
-  font-variant-numeric: tabular-nums;
-}
-
-.preloader-log li[data-done='true'] {
-  color: var(--on-night-2);
-}
-
-.preloader-log li[data-done='true'] em {
+.pl-steps li[data-done] {
   color: var(--on-night);
 }
 
-@media (max-width: 560px) {
-  .preloader-log {
-    min-width: 0;
-    width: 52%;
+.pl-steps .pl-skip {
+  justify-content: flex-end;
+  border-top: 0;
+  color: var(--on-night-3);
+}
+
+/* La cuenta: enorme, abajo a la izquierda, y se va hacia arriba al terminar. */
+.pl-count {
+  position: absolute;
+  left: calc(var(--gutter) - 0.06em);
+  bottom: clamp(18px, 3.5vh, 36px);
+  margin: 0;
+  overflow: hidden;
+  font-family: var(--font-display-stack);
+  font-weight: 800;
+  font-size: clamp(120px, 25vw, 420px);
+  line-height: 0.8;
+  letter-spacing: -0.07em;
+}
+
+.pl-count span {
+  display: block;
+  transition: transform 0.7s var(--ease-in-out);
+}
+
+.pl-brand,
+.pl-steps {
+  transition: opacity 0.35s var(--ease-out);
+}
+
+.preloader[data-leaving='true'] .pl-count span {
+  transform: translateY(105%);
+}
+
+.preloader[data-leaving='true'] .pl-brand,
+.preloader[data-leaving='true'] .pl-steps {
+  opacity: 0;
+}
+
+@media (max-width: 760px) {
+  .pl-steps {
+    bottom: auto;
+    top: 64px;
+  }
+
+  .pl-count {
+    font-size: 36vw;
   }
 }
 

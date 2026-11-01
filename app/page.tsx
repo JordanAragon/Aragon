@@ -3,8 +3,8 @@ import Hero from './components/home/hero';
 import OrderStory from './components/home/order-story';
 import ScrollWords from './components/home/scroll-words';
 import ServicesShowcase from './components/home/services-showcase';
-import StackRibbon from './components/home/stack-ribbon';
-import WorkList from './components/home/work-list';
+import StackBand from './components/home/stack-band';
+import WorkStack from './components/home/work-stack';
 import ContactBlock from './components/contact/contact-block';
 import FaqList from './components/ui/faq-list';
 import ProcessTimeline from './components/ui/process-timeline';
@@ -72,13 +72,13 @@ export default function Home() {
           <div className="split-head">
             <h2 id="work-title">Lo que hemos construido, con su estado tal cual.</h2>
             <div>
-              <p>Productos propios, nuestro propio servidor y proyectos para clientes. Lo que está en desarrollo se dice así.</p>
+              <p>Un producto propio y webs para clientes en Colombia y en Washington DC. Cada uno con su estado tal cual y su captura real.</p>
               <Link href="/trabajo" className="text-link">
                 Ver todo el trabajo <ArrowRight className="arrow" />
               </Link>
             </div>
           </div>
-          <WorkList />
+          <WorkStack />
         </div>
       </section>
 
@@ -107,7 +107,7 @@ export default function Home() {
         </div>
       </section>
 
-      <StackRibbon />
+      <StackBand />
 
       <section className="faq-section paper" data-tone="paper" aria-labelledby="faq-title">
         <div className="shell faq-grid">

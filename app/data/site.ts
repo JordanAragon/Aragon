@@ -10,13 +10,13 @@ export const site = {
   title: 'Aragon · Agencia de automatización e IA: agentes, software a la medida y prototipos en 48 horas',
   shortTitle: 'Aragon',
   description:
-    'Aragon es una agencia de automatización e inteligencia artificial en Cali, Colombia: desarrollo agéntico, software a la medida e infraestructura web de alta velocidad para eliminar procesos manuales. Prototipos en 48 horas y agentes de IA para WhatsApp.',
-  fallbackUrl: 'https://aragon-two.vercel.app',
+    'Aragon es una agencia de automatización e inteligencia artificial en Cali, Colombia, que trabaja con negocios de Colombia y Estados Unidos: agentes de IA para WhatsApp, automatización de procesos y software a la medida sobre infraestructura web de alta velocidad. Prototipo funcionando en 48 horas.',
+  fallbackUrl: 'https://aragons.vercel.app',
   calLink: 'jordan-david-micolta-aragon-cognqx/30min',
   contactEmail: 'jordandavidaragon@outlook.com',
   whatsapp: 'https://wa.me/573158154915',
   whatsappDisplay: '+57 315 815 4915',
-  portfolioUrl: 'https://jordanaragon.vercel.app/',
+  portfolioUrl: 'https://www.jordanco.club/',
   city: 'Cali',
   location: 'Cali, Colombia',
   timeZone: 'America/Bogota',
@@ -31,7 +31,7 @@ export const siteUrl = process.env.NEXT_PUBLIC_SITE_URL
   ? process.env.NEXT_PUBLIC_SITE_URL.replace(/\/$/, '')
   : site.fallbackUrl;
 
-export const siteLastModified = '2026-10-26';
+export const siteLastModified = '2026-11-01';
 
 export const calUrl = `https://cal.com/${site.calLink}`;
 
@@ -52,7 +52,7 @@ export const chapters = [
   { href: '/', label: 'Inicio', title: 'Del desorden al sistema.', teaser: 'Qué le pasa a un negocio que crece con chats y hojas sueltas, y cómo se pone en orden.' },
   { href: '/servicios', label: 'Servicios', title: 'Tres formas de quitarle el trabajo manual a tu operación.', teaser: 'Agentes de IA, automatización y software a la medida, cada uno con su demo.' },
   { href: '/como-trabajamos', label: 'Cómo trabajamos', title: 'Un prototipo funcionando en 48 horas.', teaser: 'Aprobado el alcance, lo tocas antes de comprometer el proyecto completo.' },
-  { href: '/trabajo', label: 'Trabajo', title: 'Lo que hemos construido, con su estado tal cual.', teaser: 'AiDEN, Aragon-Server y el portafolio de Leidy.' },
+  { href: '/trabajo', label: 'Trabajo', title: 'Lo que hemos construido, con su estado tal cual.', teaser: 'AiDEN, CHILA y el portafolio de Leidy.' },
   { href: '/nosotros', label: 'Nosotros', title: 'Una agencia pequeña a propósito.', teaser: 'Quien diseña tu sistema es quien lo construye y lo mantiene.' },
   { href: '/preguntas', label: 'Preguntas', title: 'Lo que casi todos preguntan antes de empezar.', teaser: 'Costos, tiempos, código y datos, en lenguaje claro.' },
   { href: '/contacto', label: 'Contacto', title: '¿Qué parte de tu operación debería estar hecha en software?', teaser: 'Una llamada de 30 minutos o tu caso por escrito.' },

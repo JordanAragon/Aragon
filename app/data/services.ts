@@ -44,8 +44,9 @@ export const services: Service[] = [
     ],
     examples: [
       { title: 'Atención en WhatsApp', body: 'Responde horarios, precios, estado de pedidos y preguntas frecuentes con tu información.' },
-      { title: 'Un agente que hace el trabajo', body: 'No solo contesta: toma el pedido, lo registra en tu sistema, agenda la cita y avisa a tu equipo.' },
+      { title: 'Un agente que hace el trabajo', body: 'Contesta, toma el pedido, lo registra en tu sistema, agenda la cita y le avisa a tu equipo.' },
       { title: 'Asistente interno', body: 'Tu equipo le pregunta por procesos, inventario o clientes y responde con la fuente.' },
+      { title: 'Conversaciones que venden', body: 'El agente pregunta lo justo, cotiza y agenda. Medimos en qué paso se cae cada conversación y ajustamos ahí.' },
     ],
     includes: [
       'Base de conocimiento con tu información',
@@ -53,6 +54,7 @@ export const services: Service[] = [
       'Acciones en tus herramientas: pedidos, citas, avisos',
       'Reglas para pasar a una persona',
       'Registro de conversaciones y de fuentes usadas',
+      'Medición de cada paso hasta la venta o la cita',
       'Pruebas con preguntas reales antes de publicar',
     ],
     stack: ['Modelos de lenguaje', 'WhatsApp Business', 'n8n', 'Bases vectoriales', 'Supabase'],
@@ -60,7 +62,7 @@ export const services: Service[] = [
     faq: [
       { q: '¿El agente puede inventar respuestas?', a: 'Lo limitamos a tu información y a reglas claras. Si no sabe algo, lo dice y pasa la conversación a una persona.' },
       { q: '¿Mis clientes van a saber que es un asistente?', a: 'Sí. Recomendamos decirlo desde el primer mensaje: genera confianza y evita malentendidos.' },
-      { q: '¿Qué es desarrollo agéntico?', a: 'Construir agentes que no solo conversan: consultan tus datos y ejecutan pasos en tus herramientas, como crear un pedido o agendar una cita, con reglas claras de qué pueden hacer solos.' },
+      { q: '¿Qué es desarrollo agéntico?', a: 'Construir agentes que, además de conversar, consultan tus datos y ejecutan pasos en tus herramientas, como crear un pedido o agendar una cita, con reglas claras de lo que pueden hacer solos.' },
     ],
   },
   {
