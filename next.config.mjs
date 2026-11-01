@@ -7,6 +7,8 @@ const nextConfig = {
       { source: '/work/:slug', destination: '/trabajo/:slug', permanent: true },
       // El servicio de servidores e infraestructura salió de la oferta (2026-10-26).
       { source: '/servicios/infraestructura', destination: '/servicios', permanent: true },
+      // Aragon-Server dejó de mostrarse como trabajo (2026-11-01).
+      { source: '/trabajo/aragon-server', destination: '/trabajo', permanent: true },
     ];
   },
   async headers() {

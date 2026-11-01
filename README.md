@@ -34,4 +34,4 @@ npm run build      # lint + typecheck + build
 
 ## Configuración
 
-`NEXT_PUBLIC_SITE_URL` define la URL canónica; sin ella se usa https://aragon-two.vercel.app.
+`NEXT_PUBLIC_SITE_URL` define la URL canónica; sin ella se usa https://aragons.vercel.app.

@@ -21,7 +21,7 @@ export default function WorkPage() {
       <section className="night work-page" data-tone="night" aria-label="Proyectos">
         <div className="shell">
           <WorkList />
-          <p className="work-note mono">Las capturas son de cada proyecto tal como está publicado o corriendo hoy; las direcciones privadas del servidor están ocultas.</p>
+          <p className="work-note mono">Las capturas son de cada proyecto tal como está publicado hoy.</p>
         </div>
       </section>
       <CtaBand />

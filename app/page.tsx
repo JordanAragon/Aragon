@@ -72,7 +72,7 @@ export default function Home() {
           <div className="split-head">
             <h2 id="work-title">Lo que hemos construido, con su estado tal cual.</h2>
             <div>
-              <p>Productos propios, nuestro propio servidor y proyectos para clientes. Lo que está en desarrollo se dice así.</p>
+              <p>Un producto propio y webs para clientes en Colombia y en Washington DC. Cada uno con su estado tal cual y su captura real.</p>
               <Link href="/trabajo" className="text-link">
                 Ver todo el trabajo <ArrowRight className="arrow" />
               </Link>

@@ -49,7 +49,7 @@ export const phases: Phase[] = [
 ];
 
 export const principles = [
-  { title: 'Entender antes de construir', body: 'Ninguna línea de código antes de conocer el proceso real. La mitad de las soluciones salen del diagnóstico.' },
+  { title: 'Entender antes de construir', body: 'Ninguna línea de código antes de conocer el proceso real. A veces el arreglo aparece ahí mismo, sin construir nada.' },
   { title: 'Funciona en producción', body: 'Entregamos sistemas que se usan, con datos reales, monitoreo y respaldos. Un demo bonito no cuenta como entrega.' },
   { title: 'Es tuyo', body: 'El código, los datos y los accesos quedan a tu nombre. Puedes seguir con nosotros o sin nosotros.' },
   { title: 'Sin humo', body: 'Te decimos qué no conviene construir. Si una herramienta que ya existe te sirve, te lo decimos primero.' },

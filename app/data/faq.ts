@@ -27,8 +27,8 @@ export const faqs: Faq[] = [
   {
     id: 'fuera-colombia',
     topic: 'Empezar',
-    q: '¿Trabajan con clientes fuera de Cali o de Colombia?',
-    a: 'Sí. Todo el proceso funciona en remoto: llamadas, revisiones y entregas en línea. Trabajamos en horario de Colombia (UTC−5).',
+    q: '¿Trabajan con clientes fuera de Colombia?',
+    a: 'Sí, sobre todo en Estados Unidos. Todo el proceso es en línea: llamadas, revisiones y entregas. Trabajamos en hora de Colombia (UTC−5): la misma de la costa este de Estados Unidos en invierno y una hora menos en verano.',
   },
   {
     id: 'cuanto-cuesta',

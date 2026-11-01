@@ -1,6 +1,7 @@
 /**
- * Trabajo real. Nada de clientes inventados: productos propios, infraestructura
- * propia y proyectos para clientes con su estado tal cual.
+ * Trabajo real. Nada de clientes inventados: un producto propio y proyectos
+ * para clientes, con su estado tal cual. Los que muestra la web los eligió
+ * David (2026-11-01): AiDEN, CHILA y el portafolio de Leidy.
  */
 
 export type WorkItem = {
@@ -9,7 +10,7 @@ export type WorkItem = {
   kind: string;
   status: string;
   year: string;
-  /** El servicio que muestra el caso. Aragon-Server no tiene: es infraestructura propia, no un servicio que se ofrezca. */
+  /** El servicio que muestra el caso. */
   service?: string;
   summary: string;
   problem: string;
@@ -57,31 +58,34 @@ export const work: WorkItem[] = [
     },
   },
   {
-    slug: 'aragon-server',
-    title: 'Aragon-Server',
-    kind: 'Infraestructura propia',
-    status: 'Operando',
+    slug: 'chila',
+    title: 'CHILA',
+    kind: 'Proyecto para clienta',
+    status: 'Publicado',
     year: '2026',
-    summary: 'Nuestro propio servidor: diez servicios en producción con Docker, certificados y acceso privado.',
+    service: 'Software a la medida',
+    summary: 'Web a medida para CHILA the studio, un estudio creativo de Washington DC, con un panel donde la dueña edita textos, casos y fotos sin tocar código.',
     problem:
-      'Antes de ofrecer infraestructura a un cliente, la operamos nosotros: archivos, música, bases de datos, monitoreo y automatizaciones en un servidor propio.',
+      'El estudio vendía diseño, fotografía y video para marcas, pero su web hablaba casi solo de bodas y cada cambio dependía de una plantilla. Necesitaba presentarse como estudio creativo y poder actualizarse sola.',
     built: [
-      { title: 'Servicios en contenedores', body: 'Nextcloud, Navidrome, PostgreSQL, Redis, Uptime Kuma y Portainer, cada uno aislado y con su configuración versionada.' },
-      { title: 'Proxy con certificados', body: 'Caddy publica cada servicio con su nombre y certificado.' },
-      { title: 'Acceso privado', body: 'Todo el acceso de administración pasa por Tailscale; nada queda expuesto sin necesidad.' },
-      { title: 'Monitoreo', body: 'Uptime Kuma vigila cada servicio y avisa si alguno deja de responder.' },
+      { title: 'Diseño propio', body: 'Una web hecha sobre la marca nueva del estudio, en inglés, para su público en el área de Washington DC.' },
+      { title: 'Panel de edición', body: 'Textos, casos y fotos se cambian desde un panel; la web se actualiza sin pasar por nosotros.' },
+      { title: 'La C en movimiento', body: 'El símbolo del estudio se dibuja con color líquido en WebGPU, con respaldo para equipos que no la tienen.' },
+      { title: 'Contacto por pasos', body: 'Un formulario en cuatro pasos para que cada cliente llegue con lo necesario para cotizar.' },
     ],
     decisions: [
-      { title: 'Red privada antes que puertos abiertos', body: 'Lo administrativo solo se alcanza por Tailscale; lo público pasa por un único proxy.' },
-      { title: 'Secretos fuera del código', body: 'Las credenciales viven en un archivo de entorno fuera del repositorio de configuración.' },
+      { title: 'El panel va incluido', body: 'Si la clienta depende de nosotros para cambiar una foto, la web envejece. El panel es parte del trabajo, no un extra.' },
+      { title: 'Su voz, no la nuestra', body: 'Se partió de los textos que el estudio ya tenía; lo nuevo se escribió en el mismo tono.' },
     ],
-    stack: ['Ubuntu Server', 'Docker', 'Caddy', 'Tailscale', 'PostgreSQL', 'Uptime Kuma'],
-    bar: 'aragon-server — btop',
+    stack: ['Next.js', 'Sanity', 'WebGPU (vgpu)', 'Vercel'],
+    href: 'https://chila-iota.vercel.app/',
+    hrefLabel: 'Abrir CHILA',
+    bar: 'chila-iota.vercel.app',
     shot: {
-      src: '/media/trabajo/aragon-server.webp',
+      src: '/media/trabajo/chila.webp',
       width: 1440,
-      height: 877,
-      alt: 'Monitor del servidor en btop: memoria, discos, tráfico de red y la lista de procesos con Docker, PostgreSQL y Samba corriendo.',
+      height: 900,
+      alt: 'Portada de CHILA: el titular «Ideas worth seeing. Stories worth telling.» junto al símbolo C del estudio, rodeado por un anillo con sus disciplinas.',
     },
   },
   {

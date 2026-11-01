@@ -12,7 +12,7 @@ export default function SiteFooter() {
         <div className="footer-top">
           <div className="footer-lead">
             <h2>Automatización e IA, desde Cali.</h2>
-            <p>Agentes de IA, automatizaciones y software a la medida para negocios en Colombia y en remoto. Prototipos en 48 horas.</p>
+            <p>Agentes de IA, automatizaciones y software a la medida para negocios de Colombia y Estados Unidos. Prototipo funcionando en 48 horas.</p>
             <Link href="/contacto" className="text-link">
               Escribirnos <ArrowRight className="arrow" />
             </Link>

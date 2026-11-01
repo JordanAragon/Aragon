@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import './styles/base.css';
 import './styles/chrome.css';
 import './styles/home.css';
+import './styles/hero.css';
 import './styles/pages.css';
 import './styles/demos.css';
 import { display, mono, sans } from './fonts';
@@ -37,6 +38,8 @@ export const metadata: Metadata = {
     'prototipo en 48 horas',
     'Cali',
     'Colombia',
+    'Estados Unidos',
+    'AI automation agency',
   ],
   alternates: { canonical: '/' },
   formatDetection: { email: false, address: false, telephone: false },
@@ -70,11 +73,12 @@ export const viewport: Viewport = {
 
 /*
   Enciende la precarga antes del primer cuadro (app/components/chrome/preloader.tsx):
-  solo en «/», sin ancla y sin movimiento reducido. Marca también que hay JS, para
-  que los revelados al hacer scroll no escondan nada a quien no lo tiene. Si el JS
-  no toma la capa en 8 s, la capa se retira sola: la página nunca queda tapada.
+  solo en «/», sin ancla, sin movimiento reducido y una vez por sesión. Marca
+  también que hay JS, para que los revelados al hacer scroll no escondan nada a
+  quien no lo tiene. Si el JS no toma la capa en 7 s, la capa se retira sola: la
+  página nunca queda tapada.
 */
-const bootScript = `(function(){try{var r=document.documentElement;r.classList.add('js');var l=window.location;if(l.pathname!=='/'||l.hash)return;if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;r.classList.add('is-preloading');if('scrollRestoration' in history)history.scrollRestoration='manual';window.scrollTo(0,0);setTimeout(function(){if(!r.hasAttribute('data-preload-taken')){r.classList.remove('is-preloading');if('scrollRestoration' in history)history.scrollRestoration='auto';}},8000);}catch(e){}})();`;
+const bootScript = `(function(){try{var r=document.documentElement;r.classList.add('js');var l=window.location;if(l.pathname!=='/'||l.hash)return;if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;try{if(sessionStorage.getItem('aragon:intro'))return;}catch(e){}r.classList.add('is-preloading');if('scrollRestoration' in history)history.scrollRestoration='manual';window.scrollTo(0,0);setTimeout(function(){if(!r.hasAttribute('data-preload-taken')){r.classList.remove('is-preloading');if('scrollRestoration' in history)history.scrollRestoration='auto';}},7000);}catch(e){}})();`;
 
 const structuredData = {
   '@context': 'https://schema.org',
@@ -83,7 +87,7 @@ const structuredData = {
   url: siteUrl,
   description: site.description,
   email: site.contactEmail,
-  areaServed: ['CO', 'Latinoamérica'],
+  areaServed: ['CO', 'US'],
   address: { '@type': 'PostalAddress', addressLocality: 'Cali', addressRegion: 'Valle del Cauca', addressCountry: 'CO' },
   founder: { '@type': 'Person', name: site.founder, url: site.portfolioUrl, sameAs: site.socialLinks.map((l) => l.href) },
   hasOfferCatalog: {
