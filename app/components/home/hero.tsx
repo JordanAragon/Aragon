@@ -1,82 +1,69 @@
 'use client';
 
 import Link from 'next/link';
-import { useRef, useState } from 'react';
-import HeroStage, { type HeroTask } from '../hero/hero-stage';
-import { services } from '../../data/services';
+import { useCallback, useRef, useState } from 'react';
+import HeroField from '../hero/hero-field';
 import { site } from '../../data/site';
 import { ArrowRight } from '../ui/icons';
 
 /*
-  El hero: un solo punto de atención en el centro.
+  El hero: una palabra enorme en el centro, hecha de piezas.
 
-  La A de Aragon está hecha de piezas en orden: es el sistema. Por la izquierda
-  entran tareas sueltas (un mensaje sin responder, un pedido en un cuaderno);
-  al tocar la A cambian de lugar con otras piezas, que salen por la derecha en
-  fila y en color de señal: la misma tarea, resuelta. El titular dice eso
-  mismo en dos golpes, a lado y lado de la A.
+  Lo que un negocio hace a mano (pedidos, citas, mensajes…) flota suelto por la
+  pantalla. Una línea barre la palabra y cada pieza vuela a su lugar: el
+  sistema poniendo en orden. La palabra se sostiene, sale por la derecha ya
+  resuelta y entra la siguiente. El titular se lee en Z: «Automatizamos tus»
+  arriba a la izquierda, la palabra al centro, «con inteligencia artificial.»
+  abajo a la derecha, y la acción justo debajo.
 */
 
-const TASKS: HeroTask[] = [
-  { in: 'mensaje de WhatsApp sin responder · 11:48 p. m.', out: 'respondido por el agente' },
-  { in: 'pedido anotado en un cuaderno', out: 'pedido registrado' },
-  { in: 'cotización pendiente desde el lunes', out: 'cotización enviada' },
-  { in: 'factura en PDF por digitar', out: 'factura leída y guardada' },
-  { in: 'cita por confirmar', out: 'cita confirmada' },
-  { in: 'inventario contado a mano', out: 'inventario al día' },
-  { in: 'reporte armado en Excel cada viernes', out: 'reporte listo sin tocarlo' },
-];
+const WORDS = ['pedidos', 'citas', 'mensajes', 'ventas', 'reportes', 'facturas'];
 
 export default function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
   const slotRef = useRef<HTMLDivElement>(null);
-  const [resolved, setResolved] = useState(0);
+  const countRef = useRef<HTMLSpanElement>(null);
+  const [index, setIndex] = useState(0);
+  const onWord = useCallback((i: number) => setIndex(i), []);
   const fmt = (n: number) => String(n).padStart(2, '0');
 
   return (
-    <section ref={sectionRef} className="hero" data-tone="paper" aria-labelledby="hero-title">
-      <p className="hero-word" aria-hidden="true">
-        ARAGON
-      </p>
+    <section ref={sectionRef} className="hero" data-tone="night" aria-labelledby="hero-title">
+      <HeroField words={WORDS} sectionRef={sectionRef} slotRef={slotRef} countRef={countRef} onWord={onWord} />
 
       <div className="hero-top shell">
         <h1 id="hero-title" className="hero-title">
-          <span className="hero-title-a">Del desorden</span> <span className="hero-title-b">al sistema.</span>
+          <span className="hero-l1">Automatizamos tus</span>
+          <span className="sr-only"> pedidos, citas, mensajes y reportes con inteligencia artificial.</span>
         </h1>
 
-        <dl className="hero-meta hero-meta-left">
-          <div>
-            <dt>agencia</dt>
-            <dd>automatización e IA</dd>
-          </div>
-          <div>
-            <dt>desde</dt>
-            <dd>{site.location}</dd>
-          </div>
-          <div>
-            <dt>para</dt>
-            <dd>Colombia y Estados Unidos</dd>
-          </div>
-        </dl>
-
-        <nav className="hero-meta hero-meta-right" aria-label="Servicios">
-          {services.map((s) => (
-            <Link key={s.slug} href={`/servicios/${s.slug}`}>
-              <span className="tabular">{s.index}</span>
-              {s.name}
-            </Link>
-          ))}
-        </nav>
+        <div className="hero-proof">
+          <p className="hero-proof-number">
+            48<span>h</span>
+          </p>
+          <p className="hero-proof-text">del alcance aprobado al prototipo funcionando</p>
+        </div>
       </div>
 
-
-      {/* En el teléfono la A ocupa este hueco entre el titular y el texto. */}
-      <div ref={slotRef} className="hero-a-slot" aria-hidden="true" />
+      <div ref={slotRef} className="hero-slot" aria-hidden="true">
+        <span className="hero-reg hero-reg-tl" />
+        <span className="hero-reg hero-reg-tr" />
+        <span className="hero-reg hero-reg-bl" />
+        <span className="hero-reg hero-reg-br" />
+        <p className="hero-hud mono">
+          <span>
+            <b className="tabular">{fmt(index + 1)}</b> / {fmt(WORDS.length)} · {WORDS[index]}
+          </span>
+          <span>
+            piezas en orden <b ref={countRef} className="tabular">0</b>
+          </span>
+        </p>
+      </div>
 
       <div className="hero-bottom shell">
         <div className="hero-copy">
           <p className="hero-lead">
-            Somos una agencia de automatización e inteligencia artificial. Construimos agentes que atienden tu WhatsApp, automatizaciones y software a la medida para que lo que hoy se hace a mano se haga solo.
+            Agencia de automatización e inteligencia artificial para negocios de Colombia y Estados Unidos. Agentes que atienden tu WhatsApp, automatizaciones y software a la medida: lo que hoy se hace a mano, hecho solo.
           </p>
           <div className="hero-links">
             <a className="text-link" href={site.whatsapp} target="_blank" rel="noreferrer">
@@ -88,30 +75,15 @@ export default function Hero() {
           </div>
         </div>
 
-        <div className="hero-proof">
-          <p className="hero-proof-number">
-            48<span>h</span>
+        <div className="hero-end">
+          <p className="hero-l3" aria-hidden="true">
+            con inteligencia artificial.
           </p>
-          <p className="hero-proof-text">del alcance aprobado al prototipo funcionando</p>
-        </div>
-      </div>
-
-      <HeroStage tasks={TASKS} pointerTarget={sectionRef} onResolved={setResolved} anchor={slotRef}>
-        <div className="hero-center">
-          <a className="hero-cta" href="#contacto">
-            Agenda 30 minutos
-            <span className="hero-cta-plus" aria-hidden="true" />
+          <a className="btn btn-primary btn-lg hero-cta" href="#contacto">
+            Agenda 30 minutos <ArrowRight className="arrow" />
           </a>
         </div>
-        <p className="hero-legend mono" aria-hidden="true">
-          <span className="hero-legend-in">
-            <i /> cada pieza es una tarea · entra suelta
-          </span>
-          <span className="hero-legend-out">
-            sale resuelta <b className="tabular">{fmt(resolved)}</b>
-          </span>
-        </p>
-      </HeroStage>
+      </div>
     </section>
   );
 }

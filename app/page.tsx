@@ -3,8 +3,8 @@ import Hero from './components/home/hero';
 import OrderStory from './components/home/order-story';
 import ScrollWords from './components/home/scroll-words';
 import ServicesShowcase from './components/home/services-showcase';
-import StackRibbon from './components/home/stack-ribbon';
-import WorkList from './components/home/work-list';
+import StackBand from './components/home/stack-band';
+import WorkStack from './components/home/work-stack';
 import ContactBlock from './components/contact/contact-block';
 import FaqList from './components/ui/faq-list';
 import ProcessTimeline from './components/ui/process-timeline';
@@ -78,7 +78,7 @@ export default function Home() {
               </Link>
             </div>
           </div>
-          <WorkList />
+          <WorkStack />
         </div>
       </section>
 
@@ -107,7 +107,7 @@ export default function Home() {
         </div>
       </section>
 
-      <StackRibbon />
+      <StackBand />
 
       <section className="faq-section paper" data-tone="paper" aria-labelledby="faq-title">
         <div className="shell faq-grid">

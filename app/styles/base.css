@@ -1,8 +1,7 @@
 /*
   Aragon — sistema base. La fuente de verdad visual es DESIGN.md.
-  Tinta y papel, más un solo color de señal. La noche (#0A0A0A) es donde vive lo que
-  se mueve; el papel es para leer. La señal marca lo resuelto y la acción principal:
-  como es lo único en color, la mirada va ahí. Se usa poco o deja de funcionar.
+  Monocromo estricto: tinta y papel. La noche (#0A0A0A) es donde vive lo que se mueve;
+  el papel es para leer. Sin color de acento: la jerarquía sale del peso, el tamaño y la luz.
 */
 
 :root {
@@ -22,11 +21,6 @@
   --ink: #0a0a0a;
   --ink-2: #454545;
   --ink-3: #686866;
-
-  /* Señal: lo resuelto y la acción principal. --signal para formas y texto grande o sobre noche;
-     --signal-ink para texto pequeño sobre papel (4,9:1). */
-  --signal: #ff4d17;
-  --signal-ink: #c4380c;
 
   --font-display-stack: var(--font-display), 'Inter Tight', Inter, ui-sans-serif, system-ui, sans-serif;
   --font-sans-stack: var(--font-sans), Inter, ui-sans-serif, -apple-system, 'Segoe UI', system-ui, sans-serif;

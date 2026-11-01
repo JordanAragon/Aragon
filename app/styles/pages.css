@@ -531,14 +531,22 @@
 }
 
 .principles-wide {
+  display: grid;
   margin-top: clamp(40px, 5vw, 72px);
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
 .principles-wide li {
+  grid-template-columns: minmax(0, 1fr);
+  align-content: start;
+  gap: 12px;
   border-right: 1px solid var(--night-line);
   padding-left: 0;
   padding-right: 24px;
+}
+
+.principles-wide li p {
+  grid-column: auto;
 }
 
 .principles-wide li + li {

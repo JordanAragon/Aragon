@@ -1,505 +1,247 @@
 /*
-  Hero «del desorden al sistema» (app/components/home/hero.tsx y app/components/hero/).
-  Un solo punto de atención: la A hecha de piezas, en el centro, delante de la
-  palabra de marca en color de señal. La mira y la regla llevan la mirada a la A;
-  el titular la rodea en dos golpes. Las medidas de la A llegan del motor como
-  variables (--cx, --cy, --aw, --ah, --lane-y, --cell) en .hero-stage.
+  Hero «Automatizamos tus ___ con inteligencia artificial» (app/components/home/hero.tsx
+  y app/components/hero/). Sobre la noche, a todo el ancho: una palabra enorme hecha
+  de piezas en el centro. Lectura en Z: titular arriba a la izquierda, 48 h arriba a la
+  derecha, la palabra al centro, «con inteligencia artificial.» y la acción abajo a la
+  derecha. El motor publica la caja de la palabra armada en --wx, --wy, --ww y --wh.
 */
 
 .hero {
   position: relative;
-  /* En pantallas bajas el hero pasa un poco del alto de la ventana antes que encimar la A y el texto. */
-  min-height: max(780px, 100svh);
-  background: var(--paper);
-  color: var(--ink);
+  display: grid;
+  grid-template-rows: auto minmax(200px, 1fr) auto;
+  min-height: max(100svh, 700px);
+  padding-top: calc(var(--header-h) + clamp(20px, 4.5vh, 52px));
+  padding-bottom: clamp(24px, 4.5vh, 48px);
+  background: var(--night);
+  color: var(--on-night);
   overflow: hidden;
   isolation: isolate;
-  color-scheme: light;
-  --exit: 0;
 }
 
-/* ---------- La palabra de marca, detrás de la A ---------- */
-.hero-word {
+.hero-canvas {
   position: absolute;
-  left: 50%;
-  top: var(--cy, 50%);
+  inset: 0;
   z-index: 0;
-  margin: 0;
-  translate: -50% -50%;
-  transform: translateY(calc(var(--exit) * -14vh));
-  font-family: var(--font-display-stack);
-  font-weight: 800;
-  font-size: clamp(120px, 21vw, 380px);
-  line-height: 0.8;
-  letter-spacing: -0.06em;
-  color: var(--signal);
-  white-space: nowrap;
-  user-select: none;
-  pointer-events: none;
-  opacity: calc(1 - var(--exit) * 0.9);
-}
-
-/* ---------- El plano: lienzo, mira y etiquetas ---------- */
-.hero-stage {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-}
-
-.hero-canvas,
-.hero-stage canvas[data-hero-gpu] {
-  position: absolute;
-  inset: 0;
   width: 100%;
   height: 100%;
+  pointer-events: none;
 }
 
-.hero-knock {
-  position: absolute;
-  inset: 0;
-  overflow: visible;
-  fill: var(--paper);
-  stroke: var(--paper);
-  stroke-linejoin: round;
-  opacity: calc(1 - var(--exit) * 1.6);
-}
-
-.hero-reticle {
-  position: absolute;
-  inset: 0;
-  overflow: visible;
-  opacity: calc(1 - var(--exit) * 1.6);
-  fill: none;
-  stroke: var(--ink);
-  stroke-width: 1;
-}
-
-.ret-ring {
-  stroke-opacity: 0.14;
-}
-
-.ret-tick {
-  stroke-opacity: 0.22;
-}
-
-.ret-tick-long {
-  stroke-opacity: 0.5;
-}
-
-.ret-cross {
-  stroke-opacity: 0.12;
-}
-
-.ret-corner {
-  stroke-opacity: 0.7;
-  stroke-width: 1.25;
-}
-
-.ret-ruler,
-.ret-rtick {
-  stroke-opacity: 0.22;
-}
-
-.ret-rtick-long {
-  stroke-opacity: 0.45;
-}
-
-/* El dial gira despacio: marca que el sistema está encendido sin pedir atención. */
-@media (prefers-reduced-motion: no-preference) {
-  .ret-dial {
-    animation: ret-turn 160s linear infinite;
-  }
-}
-
-@keyframes ret-turn {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/* Etiqueta de cada tarea: entra suelta por la izquierda, sale resuelta por la derecha. */
-.hero-tags {
-  position: absolute;
-  inset: 0;
-  opacity: calc(1 - var(--exit) * 2);
-}
-
-.hero-tag {
-  position: absolute;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 5px 9px 5px 7px;
-  border: 1px solid var(--line-2);
-  border-radius: 4px;
-  background: var(--paper);
-  color: var(--ink-2);
-  font-size: 11px;
-  line-height: 1.2;
-  white-space: nowrap;
-  animation: hero-tag var(--dur) cubic-bezier(0.33, 1, 0.68, 1) forwards;
-}
-
-.hero-tag i {
-  width: 6px;
-  height: 6px;
-  flex: none;
-  background: #8c8b87;
-}
-
-.hero-tag[data-kind='out'] {
-  color: var(--ink);
-  border-color: var(--ink);
-  animation-timing-function: linear;
-}
-
-.hero-tag[data-kind='out'] i {
-  background: var(--signal);
-}
-
-@keyframes hero-tag {
-  0% {
-    opacity: 0;
-    transform: translate(0, 6px);
-  }
-  8% {
-    opacity: 1;
-    transform: translate(calc(var(--dx) * 0.04), 0);
-  }
-  72% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-    transform: translate(var(--dx), var(--dy));
-  }
-}
-
-/* ---------- Titular y datos de arriba ---------- */
-.hero-top {
+.hero-top,
+.hero-bottom {
   position: relative;
-  z-index: 2;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  align-items: start;
-  padding-top: calc(var(--header-h) + clamp(24px, 5vh, 60px));
-  opacity: calc(1 - var(--exit) * 1.4);
-  transform: translateY(calc(var(--exit) * -40px));
-}
-
-.hero-title {
-  grid-column: 1 / -1;
+  z-index: 1;
   display: flex;
   justify-content: space-between;
+  gap: clamp(20px, 4vw, 64px);
+}
+
+.hero-top {
   align-items: flex-start;
-  gap: 24px;
+}
+
+.hero-bottom {
+  align-items: flex-end;
+}
+
+/* Titular: dos golpes en las esquinas, la palabra en medio. */
+.hero-title,
+.hero-l3 {
   margin: 0;
   font-family: var(--font-display-stack);
   font-weight: 700;
-  font-size: clamp(44px, min(6.2vw, 11.5vh), 108px);
-  line-height: 0.86;
-  letter-spacing: -0.05em;
-  text-transform: uppercase;
+  font-size: clamp(40px, min(5.6vw, 10vh), 100px);
+  line-height: 0.9;
+  letter-spacing: -0.052em;
   text-wrap: balance;
 }
 
-.hero-title-a,
-.hero-title-b {
-  display: block;
-  max-width: 7ch;
-}
-
-.hero-title-b {
+.hero-l3 {
+  max-width: 9.5em;
   text-align: right;
 }
 
-.hero-meta {
-  position: relative;
-  margin: clamp(16px, 2.6vh, 28px) 0 0;
-  padding: 10px 14px;
-  font-family: var(--font-mono-stack);
-  font-size: 11.5px;
-  line-height: 1.75;
-}
-
-/* Esquinas de registro: el mismo marco que encierra a la A. */
-.hero-meta::before,
-.hero-meta::after {
-  content: '';
-  position: absolute;
-  width: 10px;
-  height: 10px;
-  border-color: var(--ink);
-  border-style: solid;
-  opacity: 0.6;
-}
-
-.hero-meta::before {
-  top: 0;
-  left: 0;
-  border-width: 1px 0 0 1px;
-}
-
-.hero-meta::after {
-  bottom: 0;
-  right: 0;
-  border-width: 0 1px 1px 0;
-}
-
-.hero-meta-left {
-  grid-column: 1;
-  justify-self: start;
-}
-
-.hero-meta-left div {
-  display: grid;
-  grid-template-columns: 9ch auto;
-}
-
-.hero-meta-left dt {
-  color: var(--ink-3);
-}
-
-.hero-meta-left dd {
-  margin: 0;
-  color: var(--ink);
-}
-
-.hero-meta-right {
-  grid-column: 2;
-  justify-self: end;
-  display: grid;
-  text-align: right;
-}
-
-.hero-meta-right a {
-  display: inline-flex;
-  justify-content: flex-end;
-  gap: 10px;
-  color: var(--ink);
-  text-decoration: none;
-  pointer-events: auto;
-}
-
-.hero-meta-right a span {
-  color: var(--ink-3);
-}
-
-.hero-meta-right a:hover,
-.hero-meta-right a:focus-visible {
-  color: var(--signal-ink);
-}
-
-/* ---------- La acción principal, sobre la A ---------- */
-.hero-center {
-  position: absolute;
-  left: var(--cx);
-  top: calc(var(--legend-y) + 26px);
-  translate: -50% 0;
-  z-index: 3;
-  pointer-events: auto;
-  opacity: calc(1 - var(--exit) * 1.4);
-}
-
-.hero-cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 16px;
-  height: 48px;
-  padding: 0 7px 0 22px;
-  border-radius: 999px;
-  background: var(--ink);
-  color: var(--paper);
-  font-weight: 600;
-  font-size: 15px;
-  letter-spacing: -0.01em;
-  text-decoration: none;
-  white-space: nowrap;
-  box-shadow: 0 10px 30px -14px rgb(10 10 10 / 0.6);
-  transition:
-    transform var(--dur) var(--ease-out),
-    box-shadow var(--dur) var(--ease-out);
-}
-
-.hero-cta-plus {
-  position: relative;
-  width: 34px;
-  height: 34px;
-  border-radius: 999px;
-  background: var(--signal);
-  transition: transform var(--dur-slow) var(--ease-out);
-}
-
-.hero-cta-plus::before,
-.hero-cta-plus::after {
-  content: '';
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 12px;
-  height: 1.5px;
-  background: #fff;
-  translate: -50% -50%;
-}
-
-.hero-cta-plus::after {
-  rotate: 90deg;
-}
-
-.hero-cta:hover,
-.hero-cta:focus-visible {
-  transform: translateY(-2px);
-  box-shadow: 0 16px 34px -14px rgb(10 10 10 / 0.7);
-}
-
-.hero-cta:hover .hero-cta-plus,
-.hero-cta:focus-visible .hero-cta-plus {
-  transform: rotate(90deg);
-}
-
-.hero-cta:focus-visible {
-  outline: 2px solid var(--signal-ink);
-  outline-offset: 4px;
-}
-
-/* ---------- Leyenda sobre la regla del horizonte ---------- */
-.hero-legend {
-  position: absolute;
-  left: 3%;
-  right: 3%;
-  top: var(--legend-y);
-  display: flex;
-  justify-content: space-between;
-  margin: 0;
-  color: var(--ink-3);
-  font-size: 11px;
-  opacity: calc(1 - var(--exit) * 1.6);
-}
-
-.hero-legend span {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.hero-legend i {
-  width: 6px;
-  height: 6px;
-  background: #8c8b87;
-}
-
-.hero-legend b {
-  font-weight: 500;
-  color: var(--signal-ink);
-}
-
-/* ---------- Abajo: qué hacemos y la promesa ---------- */
-.hero-bottom {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: clamp(18px, 4vh, 40px);
-  z-index: 2;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  gap: 32px;
-  opacity: calc(1 - var(--exit) * 1.4);
-}
-
-.hero-lead {
-  max-width: 41ch;
-  margin: 0;
-  color: var(--ink-2);
-  font-size: clamp(14.5px, 0.35vw + 13px, 16.5px);
-  line-height: 1.55;
-}
-
-.hero-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px 24px;
-  margin-top: 14px;
-}
-
-.hero .text-link {
-  color: var(--ink);
-}
-
+/* 48 h: un número concreto, con su condición escrita. */
 .hero-proof {
-  display: grid;
-  justify-items: end;
+  flex: none;
   text-align: right;
 }
 
 .hero-proof-number {
   margin: 0;
   font-family: var(--font-display-stack);
-  font-weight: 700;
-  font-size: clamp(56px, 6.4vw, 112px);
-  line-height: 0.8;
-  letter-spacing: -0.06em;
+  font-weight: 800;
+  font-size: clamp(52px, 6.6vw, 116px);
+  line-height: 0.78;
+  letter-spacing: -0.065em;
 }
 
 .hero-proof-number span {
   margin-left: 0.04em;
   font-size: 0.42em;
   letter-spacing: -0.02em;
-  color: var(--signal);
+  color: var(--on-night-3);
 }
 
 .hero-proof-text {
-  max-width: 24ch;
-  margin: 10px 0 0;
+  max-width: 21ch;
+  margin: 14px 0 0 auto;
   font-family: var(--font-mono-stack);
   font-size: 11.5px;
   line-height: 1.5;
-  color: var(--ink-2);
+  color: var(--on-night-2);
 }
 
-/* ---------- Entrada (al cargar o al retirarse la precarga) ---------- */
+/* El hueco de la palabra: sus marcas se ubican sobre la sección, no sobre el hueco. */
+.hero-slot {
+  margin-inline: var(--gutter);
+  min-width: 0;
+}
+
+.hero-reg,
+.hero-hud {
+  position: absolute;
+  z-index: 1;
+  opacity: 0;
+  transition:
+    left 0.6s var(--ease-out),
+    top 0.6s var(--ease-out),
+    width 0.6s var(--ease-out),
+    opacity 0.6s var(--ease-out);
+}
+
+.hero[data-ready='true'] .hero-reg,
+.hero[data-ready='true'] .hero-hud {
+  opacity: 1;
+}
+
+.is-preloading .hero .hero-reg,
+.is-preloading .hero .hero-hud {
+  opacity: 0;
+}
+
+.hero-reg {
+  width: 14px;
+  height: 14px;
+  border: 0 solid var(--on-night-3);
+}
+
+.hero-reg-tl {
+  left: calc(var(--wx) - 18px);
+  top: calc(var(--wy) - 18px);
+  border-left-width: 1px;
+  border-top-width: 1px;
+}
+
+.hero-reg-tr {
+  left: calc(var(--wx) + var(--ww) + 4px);
+  top: calc(var(--wy) - 18px);
+  border-right-width: 1px;
+  border-top-width: 1px;
+}
+
+.hero-reg-bl {
+  left: calc(var(--wx) - 18px);
+  top: calc(var(--wy) + var(--wh) + 4px);
+  border-left-width: 1px;
+  border-bottom-width: 1px;
+}
+
+.hero-reg-br {
+  left: calc(var(--wx) + var(--ww) + 4px);
+  top: calc(var(--wy) + var(--wh) + 4px);
+  border-right-width: 1px;
+  border-bottom-width: 1px;
+}
+
+/* La regla bajo la palabra: cuál es y cuántas piezas quedaron en orden (la cuenta es real). */
+.hero-hud {
+  left: var(--wx);
+  top: calc(var(--wy) + var(--wh) + 14px);
+  width: var(--ww);
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 0;
+  padding-top: 10px;
+  font-size: 11.5px;
+  color: var(--on-night-3);
+  white-space: nowrap;
+}
+
+.hero-hud::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto;
+  height: 5px;
+  background:
+    linear-gradient(var(--night-line-2), var(--night-line-2)) top / 100% 1px no-repeat,
+    repeating-linear-gradient(to right, var(--night-line-2) 0 1px, transparent 1px 24px) top / 100% 5px no-repeat;
+}
+
+.hero-hud b {
+  font-weight: 500;
+  color: var(--on-night);
+}
+
+/* Abajo: lo que hacemos a la izquierda; el cierre del titular y la acción a la derecha. */
+.hero-copy {
+  max-width: 44ch;
+}
+
+.hero-lead {
+  margin: 0;
+  font-size: var(--t-md);
+  line-height: 1.55;
+  color: var(--on-night-2);
+}
+
+.hero-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 28px;
+  margin-top: 14px;
+}
+
+.hero-end {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: clamp(18px, 3vh, 28px);
+}
+
+/* ---------- Entrada (con precarga, al irse la precarga) ---------- */
 @media (prefers-reduced-motion: no-preference) {
-  .hero-title-a,
-  .hero-title-b {
-    animation: hero-rise 1s var(--ease-out) 0.1s backwards;
+  .hero-title,
+  .hero-proof,
+  .hero-l3,
+  .hero-copy,
+  .hero-cta {
+    animation: hero-rise 1s var(--ease-out) backwards;
   }
 
-  .hero-title-b {
-    animation-delay: 0.2s;
+  .hero-proof {
+    animation-delay: 0.08s;
   }
 
-  .hero-meta,
-  .hero-legend,
-  .hero-bottom {
-    animation: hero-fade 0.9s var(--ease-out) 0.55s backwards;
+  .hero-l3 {
+    animation-delay: 0.9s;
   }
 
-  .hero-center {
-    animation: hero-fade 0.8s var(--ease-out) 0.9s backwards;
+  .hero-cta {
+    animation-delay: 1.05s;
   }
 
-  .hero-word {
-    animation: hero-word 1.3s var(--ease-out) backwards;
+  .hero-copy {
+    animation-delay: 1.15s;
   }
 
-  .hero-stage[data-ready='true'] .hero-reticle {
-    animation: hero-fade 1.2s var(--ease-out) 0.3s backwards;
-  }
-
-  /* Si la A se arma aquí, su silueta llega cuando las piezas ya están casi en su sitio. */
-  .hero-stage[data-intro='assemble'] .hero-knock {
-    animation: hero-fade 0.6s var(--ease-out) 0.85s backwards;
-  }
-
-  .is-preloading .hero-title-a,
-  .is-preloading .hero-title-b,
-  .is-preloading .hero-meta,
-  .is-preloading .hero-legend,
-  .is-preloading .hero-bottom,
-  .is-preloading .hero-center,
-  .is-preloading .hero-word,
-  .is-preloading .hero-reticle {
+  .is-preloading .hero-title,
+  .is-preloading .hero-proof,
+  .is-preloading .hero-l3,
+  .is-preloading .hero-copy,
+  .is-preloading .hero-cta {
     animation-play-state: paused;
   }
 }
@@ -507,119 +249,84 @@
 @keyframes hero-rise {
   from {
     opacity: 0;
-    transform: translateY(0.45em);
+    translate: 0 28px;
     clip-path: inset(0 0 100% 0);
   }
   to {
-    clip-path: inset(0 0 -10% 0);
+    clip-path: inset(0 0 -20% 0);
   }
 }
 
-@keyframes hero-fade {
-  from {
-    opacity: 0;
-    translate: 0 10px;
+/* ---------- Tableta y teléfono ---------- */
+@media (max-width: 1000px) {
+  .hero-bottom {
+    flex-direction: column-reverse;
+    align-items: stretch;
+    gap: 32px;
   }
 }
 
-@keyframes hero-word {
-  from {
-    opacity: 0;
-    letter-spacing: 0.02em;
-  }
-}
-
-.hero-a-slot {
-  display: none;
-}
-
-/* ---------- Pantallas medianas ---------- */
-@media (max-width: 1100px) {
-  .hero-meta-right {
-    display: none;
-  }
-}
-
-/* ---------- Teléfono ---------- */
 @media (max-width: 760px) {
-  /* En el teléfono todo va en columna: titular, el hueco de la A y el texto. */
   .hero {
-    display: flex;
-    flex-direction: column;
-    min-height: 100svh;
+    grid-template-rows: auto auto auto;
+    min-height: 0;
+    padding-top: calc(var(--header-h) + 28px);
+    padding-bottom: 40px;
   }
 
-  .hero-a-slot {
-    display: block;
-    flex: none;
-    width: 100%;
-    height: calc(86vw * 0.4945 + 212px);
+  .hero-top {
+    align-items: flex-end;
   }
 
-  .hero-word {
-    font-size: 27vw;
+  .hero-title,
+  .hero-l3 {
+    font-size: clamp(34px, 10.4vw, 52px);
   }
 
   .hero-title {
-    display: grid;
-    gap: 2px;
-    font-size: clamp(40px, 12.4vw, 64px);
-  }
-
-  .hero-title-a,
-  .hero-title-b {
-    max-width: none;
-  }
-
-  .hero-meta-left {
-    padding: 8px 10px;
-    font-size: 10.5px;
-  }
-
-  .hero-meta-left div:first-child {
-    display: none;
-  }
-
-  .hero-legend {
-    font-size: 10px;
-  }
-
-  .hero-legend-in {
-    display: none !important;
-  }
-
-  .hero-legend {
-    justify-content: flex-end;
-  }
-
-  .hero-bottom {
-    position: relative;
-    bottom: auto;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 18px;
-    padding-bottom: 32px;
-  }
-
-  .hero-proof {
-    grid-template-columns: auto minmax(0, 1fr);
-    align-items: end;
-    justify-items: start;
-    gap: 14px;
-    text-align: left;
-    order: -1;
+    max-width: 6em;
   }
 
   .hero-proof-number {
-    font-size: 52px;
+    font-size: clamp(44px, 13vw, 64px);
   }
 
   .hero-proof-text {
-    margin: 0;
+    max-width: 15ch;
+    margin-top: 10px;
+    font-size: 11px;
+  }
+
+  /* La palabra se ajusta al ancho; el hueco deja lugar a la regla. */
+  .hero-slot {
+    height: calc(24vw + 56px);
+    margin-block: 26px 30px;
+  }
+
+  .hero-bottom {
+    flex-direction: column-reverse;
+    align-items: stretch;
+    gap: 28px;
+  }
+
+  .hero-end {
+    align-items: flex-start;
+  }
+
+  .hero-l3 {
+    max-width: none;
+    text-align: left;
   }
 
   .hero-cta {
-    height: 44px;
-    font-size: 14px;
+    align-self: stretch;
+  }
+
+  .hero-hud {
+    font-size: 10.5px;
+  }
+
+  .hero-reg {
+    display: none;
   }
 }

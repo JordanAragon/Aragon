@@ -966,12 +966,11 @@
   }
 }
 
-/* ---------- Precarga: el sistema se arma mientras carga ---------- */
+/* ---------- Precarga: el desorden antes del sistema ---------- */
 /*
   La capa existe solo con `html.is-preloading` (la pone el script en línea de
-  layout.tsx antes del primer cuadro) y mientras sus columnas suben
-  (data-leaving). La A de la precarga ocupa el mismo lugar y tamaño que la A del
-  hero (mismas cuentas que app/components/hero/engine.ts).
+  layout.tsx antes del primer cuadro) y mientras la cuenta se va (data-leaving).
+  No tiene fondo: detrás corre el lienzo del hero con las piezas sueltas.
 */
 .is-preloading {
   overflow: hidden;
@@ -999,167 +998,111 @@
   display: none;
 }
 
-.pl-cols {
+.pl-brand {
   position: absolute;
-  inset: 0;
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-}
-
-.pl-col {
-  position: relative;
-  background: var(--night);
-  border-right: 1px solid var(--night-line);
-  /* Cada columna tapa un poco más para que no se vea la costura al subir. */
-  margin-right: -1px;
-  transition: transform 0.95s var(--ease-in-out);
-  transition-delay: calc(var(--i) * 70ms);
-}
-
-.pl-col:last-child {
-  border-right: 0;
-}
-
-/* Las líneas de la retícula: el plano donde se mide todo. */
-.pl-col::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: linear-gradient(to bottom, var(--night-line) 1px, transparent 1px);
-  background-size: 100% 25%;
-  opacity: 0.8;
-}
-
-.pl-label {
-  position: absolute;
-  left: 14px;
-  bottom: 18px;
-  font-family: var(--font-mono-stack);
-  font-size: 11px;
-  color: var(--on-night-3);
-  transition: color var(--dur) var(--ease-out);
-}
-
-.pl-label .tabular {
-  margin-right: 4px;
-}
-
-.pl-label[data-done] {
+  top: 26px;
+  left: var(--gutter);
+  margin: 0;
+  font-size: 12px;
   color: var(--on-night);
 }
 
-.pl-label[data-done]::after {
-  content: '';
+.pl-brand i {
   display: inline-block;
   width: 6px;
   height: 6px;
-  margin-left: 8px;
-  vertical-align: 1px;
-  background: var(--signal);
+  margin-left: 2px;
+  background: currentColor;
+  animation: pl-blink 0.9s steps(1) infinite;
 }
 
-.preloader[data-leaving='true'] .pl-col {
-  transform: translateY(-101%);
-}
-
-.pl-hud {
-  position: absolute;
-  inset: 0;
-  transition: opacity 0.25s var(--ease-out);
-}
-
-.preloader[data-leaving='true'] .pl-hud {
-  opacity: 0;
-}
-
-.pl-count {
-  position: absolute;
-  top: clamp(20px, 4vh, 40px);
-  right: var(--gutter);
-  display: flex;
-  align-items: flex-start;
-  gap: 4px;
-  margin: 0;
-  font-family: var(--font-display-stack);
-  font-weight: 700;
-  font-size: clamp(72px, 11vw, 176px);
-  line-height: 0.8;
-  letter-spacing: -0.06em;
-}
-
-.pl-count small {
-  font-size: 0.3em;
-  letter-spacing: 0;
-  color: var(--signal);
-}
-
-.pl-symbol {
-  position: absolute;
-  left: 50%;
-  /* Igual que la A del hero: centro a la mitad de max(100vh, 780px) y alto ≤ 36 % de ese alto. */
-  top: calc(max(100vh, 780px) * 0.5);
-  width: min(52vw, 860px, calc(max(100vh, 780px) * 0.728));
-  height: auto;
-  translate: -50% -50%;
-  overflow: visible;
-}
-
-.pl-outline {
-  fill: none;
-  stroke: var(--on-night-3);
-  stroke-width: 0.25;
-  vector-effect: non-scaling-stroke;
-}
-
-.pl-fill {
-  fill: url(#pl-cells);
-}
-
-.pl-fill-gray {
-  fill: url(#pl-cells-gray);
-}
-
-.pl-status {
-  position: absolute;
-  left: var(--gutter);
-  right: var(--gutter);
-  top: calc(max(100vh, 780px) * 0.5 + min(52vw, 860px, calc(max(100vh, 780px) * 0.728)) * 0.2473 + 28px);
-  display: flex;
-  justify-content: center;
-  gap: 18px;
-  margin: 0;
-  font-size: 11.5px;
-  color: var(--on-night-2);
-}
-
-.pl-skip {
+.pl-brand span {
   color: var(--on-night-3);
 }
 
+@keyframes pl-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.pl-steps {
+  position: absolute;
+  right: var(--gutter);
+  bottom: clamp(28px, 5vh, 48px);
+  width: min(360px, calc(100vw - 2 * var(--gutter)));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 11.5px;
+  color: var(--on-night-3);
+}
+
+.pl-steps li {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 7px 0;
+  border-top: 1px solid var(--night-line);
+  transition: color var(--dur) var(--ease-out);
+}
+
+.pl-steps li i {
+  flex: 1;
+  border-bottom: 1px dotted var(--night-line-2);
+}
+
+.pl-steps li[data-done] {
+  color: var(--on-night);
+}
+
+.pl-steps .pl-skip {
+  justify-content: flex-end;
+  border-top: 0;
+  color: var(--on-night-3);
+}
+
+/* La cuenta: enorme, abajo a la izquierda, y se va hacia arriba al terminar. */
+.pl-count {
+  position: absolute;
+  left: calc(var(--gutter) - 0.06em);
+  bottom: clamp(18px, 3.5vh, 36px);
+  margin: 0;
+  overflow: hidden;
+  font-family: var(--font-display-stack);
+  font-weight: 800;
+  font-size: clamp(120px, 25vw, 420px);
+  line-height: 0.8;
+  letter-spacing: -0.07em;
+}
+
+.pl-count span {
+  display: block;
+  transition: transform 0.7s var(--ease-in-out);
+}
+
+.pl-brand,
+.pl-steps {
+  transition: opacity 0.35s var(--ease-out);
+}
+
+.preloader[data-leaving='true'] .pl-count span {
+  transform: translateY(105%);
+}
+
+.preloader[data-leaving='true'] .pl-brand,
+.preloader[data-leaving='true'] .pl-steps {
+  opacity: 0;
+}
+
 @media (max-width: 760px) {
-  .pl-cols {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    grid-template-rows: repeat(2, minmax(0, 1fr));
+  .pl-steps {
+    bottom: auto;
+    top: 64px;
   }
 
-  .pl-col:nth-child(2) {
-    border-right: 0;
-  }
-
-  .pl-col:nth-child(-n + 2) {
-    border-bottom: 1px solid var(--night-line);
-  }
-
-  .pl-symbol {
-    top: 46%;
-    width: min(86vw, 60.7vh);
-  }
-
-  .pl-status {
-    top: calc(46% + min(86vw, 60.7vh) * 0.2473 + 24px);
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
+  .pl-count {
+    font-size: 36vw;
   }
 }
 
