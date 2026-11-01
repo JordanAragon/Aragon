@@ -1044,11 +1044,11 @@
   margin-right: 4px;
 }
 
-.pl-label[data-done='true'] {
+.pl-label[data-done] {
   color: var(--on-night);
 }
 
-.pl-label[data-done='true']::after {
+.pl-label[data-done]::after {
   content: '';
   display: inline-block;
   width: 6px;
@@ -1096,8 +1096,9 @@
 .pl-symbol {
   position: absolute;
   left: 50%;
-  top: 53%;
-  width: min(52vw, 860px, 80.9vh);
+  /* Igual que la A del hero: centro a la mitad de max(100vh, 780px) y alto ≤ 36 % de ese alto. */
+  top: calc(max(100vh, 780px) * 0.5);
+  width: min(52vw, 860px, calc(max(100vh, 780px) * 0.728));
   height: auto;
   translate: -50% -50%;
   overflow: visible;
@@ -1122,7 +1123,7 @@
   position: absolute;
   left: var(--gutter);
   right: var(--gutter);
-  top: calc(53% + min(52vw, 860px, 80.9vh) * 0.2473 + 28px);
+  top: calc(max(100vh, 780px) * 0.5 + min(52vw, 860px, calc(max(100vh, 780px) * 0.728)) * 0.2473 + 28px);
   display: flex;
   justify-content: center;
   gap: 18px;

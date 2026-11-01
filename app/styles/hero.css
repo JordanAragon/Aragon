@@ -8,7 +8,8 @@
 
 .hero {
   position: relative;
-  min-height: max(680px, 100svh);
+  /* En pantallas bajas el hero pasa un poco del alto de la ventana antes que encimar la A y el texto. */
+  min-height: max(780px, 100svh);
   background: var(--paper);
   color: var(--ink);
   overflow: hidden;
@@ -21,7 +22,7 @@
 .hero-word {
   position: absolute;
   left: 50%;
-  top: var(--cy, 53%);
+  top: var(--cy, 50%);
   z-index: 0;
   margin: 0;
   translate: -50% -50%;
@@ -196,7 +197,7 @@
   margin: 0;
   font-family: var(--font-display-stack);
   font-weight: 700;
-  font-size: clamp(44px, 6.2vw, 108px);
+  font-size: clamp(44px, min(6.2vw, 11.5vh), 108px);
   line-height: 0.86;
   letter-spacing: -0.05em;
   text-transform: uppercase;

@@ -136,10 +136,10 @@ export class HeroEngine {
       cx = anchor.cx;
       cy = Math.round(anchor.top + (aw * (SYMBOL_H / SYMBOL_W)) / 2 + 56);
     } else {
-      const maxByHeight = height * 0.4 * (SYMBOL_W / SYMBOL_H);
+      const maxByHeight = height * 0.36 * (SYMBOL_W / SYMBOL_H);
       aw = Math.round(Math.min(width * 0.52, 860, maxByHeight));
       cx = width / 2;
-      cy = Math.round(height * 0.53);
+      cy = Math.round(height * 0.5);
     }
     const ah = aw * (SYMBOL_H / SYMBOL_W);
     const cell = Math.max(4.5, aw / (narrow ? 62 : 98));

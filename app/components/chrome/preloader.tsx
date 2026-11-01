@@ -55,10 +55,9 @@ export default function Preloader() {
     let disposed = false;
     const timers: number[] = [];
 
+    // Lo que de verdad terminó limita la cuenta; la columna se marca cuando la cuenta llega a su tramo.
     const mark = (key: StepKey) => {
-      if (done[key]) return;
       done[key] = true;
-      layer.querySelector(`[data-step="${key}"]`)?.setAttribute('data-done', 'true');
     };
 
     document.fonts?.ready.then(() => mark('fonts')).catch(() => mark('fonts'));
@@ -74,7 +73,7 @@ export default function Preloader() {
       fillRef.current?.setAttribute('y', '0');
       fillRef.current?.setAttribute('height', String(SYMBOL_H));
       if (statusRef.current) statusRef.current.textContent = 'listo';
-      layer.querySelector('[data-step="ready"]')?.setAttribute('data-done', 'true');
+      layer.querySelectorAll('[data-step]').forEach((el) => el.setAttribute('data-done', ''));
       try {
         sessionStorage.setItem(SEEN_KEY, '1');
       } catch {
@@ -113,8 +112,15 @@ export default function Preloader() {
         fillRef.current.setAttribute('y', String(SYMBOL_H * (1 - shown)));
         fillRef.current.setAttribute('height', String(SYMBOL_H * shown));
       }
-      const current = STEPS.find((step) => !done[step.key]);
-      if (statusRef.current && current) statusRef.current.textContent = current.status;
+      let edge = 0;
+      let current: (typeof STEPS)[number] | null = null;
+      for (const step of STEPS) {
+        edge += step.weight;
+        const passed = shown >= edge - 0.001;
+        layer.querySelector(`[data-step="${step.key}"]`)?.toggleAttribute('data-done', passed);
+        if (!passed && !current) current = step;
+      }
+      if (statusRef.current) statusRef.current.textContent = current ? current.status : 'armando el sistema';
       if (shown >= 1 || t > T_MAX) {
         finish();
         return;
@@ -185,7 +191,7 @@ export default function Preloader() {
         </svg>
 
         <p className="pl-status mono">
-          <span ref={statusRef}>cargando</span>
+          <span ref={statusRef}>{STEPS[0].status}</span>
           <span className="pl-skip">clic o tecla para entrar</span>
         </p>
       </div>
