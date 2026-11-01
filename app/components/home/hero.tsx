@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useRef, useState } from 'react';
 import HeroStage, { type HeroTask } from '../hero/hero-stage';
 import { services } from '../../data/services';
-import { calUrl, site } from '../../data/site';
+import { site } from '../../data/site';
 import { ArrowRight } from '../ui/icons';
 
 /*
@@ -98,7 +98,7 @@ export default function Hero() {
 
       <HeroStage tasks={TASKS} pointerTarget={sectionRef} onResolved={setResolved} anchor={slotRef}>
         <div className="hero-center">
-          <a className="hero-cta" href={calUrl} target="_blank" rel="noreferrer">
+          <a className="hero-cta" href="#contacto">
             Agenda 30 minutos
             <span className="hero-cta-plus" aria-hidden="true" />
           </a>
